@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+	<LinearLayout 
+	  	android:id="@+id/main_tab_labels"
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/tab_menu_layout_height"
+	    android:orientation="horizontal"
+	    android:background="@color/background_color">
+	 		<!-- tab1 -->
+	        <LinearLayout 
+	            android:id="@+id/main_tab_select_1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	
+	            <TextView
+	            	android:id="@+id/tab_label_1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="@dimen/tab_menu_height"
+		            android:paddingLeft="@dimen/tab_menu_label_padding"
+		            android:paddingRight="@dimen/tab_menu_label_padding"
+	                android:paddingTop="@dimen/tab_menu_padding_top"
+	                android:gravity="center"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/tab_menu_1"/>
+	            <TextView 
+				    android:id="@+id/tab_active_line_1"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	
+	        </LinearLayout>
+	        
+	        <!-- tab2 -->
+	        
+	        <LinearLayout 
+	            android:id="@+id/main_tab_select_2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	            
+	            <TextView
+	            	android:id="@+id/tab_label_2"
+	                android:layout_width="wrap_content"
+		            android:paddingLeft="@dimen/tab_menu_label_padding"
+		            android:paddingRight="@dimen/tab_menu_label_padding"
+	                android:layout_height="@dimen/tab_menu_height"
+	                android:gravity="center"
+	                android:paddingTop="@dimen/tab_menu_padding_top"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/tab_menu_2" />
+				<TextView 
+				    android:id="@+id/tab_active_line_2"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	        </LinearLayout>
+	        
+	        <!-- tab3 -->
+	        <LinearLayout 
+	            android:id="@+id/main_tab_select_3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	            
+	            <TextView
+	            	android:id="@+id/tab_label_3"
+	                android:layout_width="wrap_content"
+		            android:paddingLeft="@dimen/tab_menu_label_padding"
+		            android:paddingRight="@dimen/tab_menu_label_padding"
+	                android:layout_height="@dimen/tab_menu_height"
+	                android:paddingTop="@dimen/tab_menu_padding_top"
+	                android:gravity="center"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/tab_menu_3" />
+				<TextView 
+				    android:id="@+id/tab_active_line_3"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	        </LinearLayout>
+	</LinearLayout>
+</merge>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- actionbar pull to refresh -->
+    <string name="pull_to_refresh_pull_label">새로고침 하려면 아래로 당기세요.</string>
+    <string name="pull_to_refresh_release_label">지금 놓으시면 새로고침 됩니다.</string>
+    <string name="pull_to_refresh_refreshing_label">새로고침 진행중.</string>
+    
+    
+</resources>

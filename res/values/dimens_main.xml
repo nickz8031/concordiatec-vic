@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- tab menu -->
+    <dimen name="tab_menu_layout_height">50dp</dimen>
+    <dimen name="tab_menu_height">48dp</dimen>
+    <dimen name="tab_menu_padding_top">3dp</dimen>
+    <dimen name="tab_menu_label_padding">14dp</dimen>
+</resources>
