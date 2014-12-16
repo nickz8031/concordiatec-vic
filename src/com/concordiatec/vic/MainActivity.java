@@ -18,7 +18,7 @@ import android.view.View.OnClickListener;
 
 public class MainActivity extends BaseSherlockFragmentActivity {
 
-	private final String DEBUG_TAG = this.getClass().getSimpleName();
+	//private final String DEBUG_TAG = this.getClass().getSimpleName();
 
 	private ViewPager mainVp;
 	private List<Fragment> viewPagerViews;
