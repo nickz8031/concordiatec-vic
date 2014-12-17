@@ -7,4 +7,13 @@ public class TimeUtil {
 	public static String getUnixTimestampMills() {
 		return (System.currentTimeMillis()+"");
 	}
+	
+	/**
+	 * like 4 hours ago
+	 * @param pastTime
+	 * @return
+	 */
+	public static String getTimePast( int pastTime ){
+		return ""+pastTime;
+	}
 }

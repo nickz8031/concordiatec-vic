@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <string name="news_content_image">소식 관련 이미지</string>
+    <string name="desc_store_type">가게 유형</string>
+    <string name="desc_comment_button">댓글버튼</string>
 </resources>

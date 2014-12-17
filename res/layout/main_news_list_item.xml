@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/mni_layout_border_width"
+    android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
+    android:background="@drawable/news_item_shadow">
+    
+    <!-- store infomation blcok -->
+    <RelativeLayout 
+        android:id="@+id/store_info_layout"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mni_store_layout_height"
+	    android:layout_marginLeft="@dimen/tab_menu_margin_left"
+	    android:layout_marginRight="@dimen/tab_menu_margin_left"
+        android:gravity="center_vertical"
+        android:background="@drawable/news_store_info_border"
+        >
+        
+        <!-- right -->
+        <LinearLayout 
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/mni_store_type_img"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/mni_normal_margin_width"
+            android:paddingLeft="@dimen/mni_normal_margin_width"
+            android:paddingBottom="@dimen/mni_normal_margin_width"
+            android:id="@+id/list_store_type">
+            
+            <ImageView 
+				    android:id="@+id/news_store_type_img"
+				    android:layout_width="@dimen/mni_store_type_img_width"
+				    android:layout_height="@dimen/mni_store_type_img_height"
+				    android:contentDescription="@string/desc_store_type"
+				    android:src="@drawable/demo_store_type" />
+            
+        </LinearLayout>
+        
+        <!-- left -->
+        <LinearLayout
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/list_store_type"
+            android:id="@+id/list_store_name_addr"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView 
+                android:id="@+id/news_store_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/mni_store_name"
+                android:text="@string/demo_store_name"
+                />
+            <TextView
+                android:id="@+id/news_store_addr" 
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:textSize="@dimen/text_12"
+                android:textColor="@color/mni_store_addr"
+                android:text="@string/demo_store_addr"
+                />
+        </LinearLayout>
+        
+    </RelativeLayout>
+    <!-- store information end -->
+    
+    
+    <!-- writer infomation -->
+
+    <RelativeLayout
+        android:id="@+id/writer_info_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/store_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mni_store_layout_height"
+	    android:layout_marginLeft="@dimen/tab_menu_margin_left"
+	    android:layout_marginRight="@dimen/tab_menu_margin_left" >
+
+        <LinearLayout
+            android:id="@+id/news_writer_photo_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+        	android:gravity="center_vertical" >
+
+            <com.concordiatec.vic.widget.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/news_writer_photo"
+                android:layout_width="@dimen/mni_writer_photo_width"
+                android:layout_height="@dimen/mni_writer_photo_height"
+                android:src="@drawable/demo_avatar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/news_writer_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/news_writer_photo_layout"
+            android:paddingLeft="@dimen/mni_writer_info_left_padding"
+            android:orientation="vertical"
+        	android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/news_writer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/demo_writer_name"
+                android:textColor="@color/mni_writer_name"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/news_write_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/demo_write_time"
+                android:textColor="@color/mni_write_time"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <!-- content -->
+    <RelativeLayout 
+        android:id="@+id/news_content_layout"
+        android:layout_below="@id/writer_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/mni_normal_margin_width"
+        android:layout_marginLeft="@dimen/mni_normal_margin_width"
+        android:layout_marginRight="@dimen/mni_normal_margin_width"
+        >
+        <TextView 
+            android:id="@+id/news_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/demo_news_content"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/normal_font"
+            />
+    </RelativeLayout>
+    <!-- content image -->
+    <RelativeLayout 
+        android:id="@+id/news_content_image_layout"
+        android:layout_below="@id/news_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView 
+            android:id="@+id/news_content_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/demo_content_img"
+            android:layout_margin="@dimen/mni_layout_border_width"
+            android:contentDescription="@string/news_content_image"
+            android:adjustViewBounds="true"
+            />
+    </RelativeLayout>
+    
+    <!-- control area share&like&comment -->
+    <RelativeLayout 
+        android:id="@+id/news_ctrl_area"
+        android:layout_below="@id/news_content_image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mni_ctrl_layout_height"
+        android:layout_margin="@dimen/mni_ctrl_layout_padding"
+        android:gravity="center_vertical">
+        
+        <!-- left -->
+        <TextView
+            android:id="@+id/news_like_btn"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/mni_ctrl_btn_margin"
+            android:drawableLeft="@drawable/ic_action_thumb_up"
+            android:drawablePadding="@dimen/mni_ctrl_btn_drawable_padding"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/mni_ctrl_btn_text"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:text="@string/demo_like_count"
+            android:clickable="true"
+            android:background="@drawable/news_ctrl_btn_border" />
+        
+        <ImageButton
+            android:id="@+id/news_share_btn"
+            android:layout_toRightOf="@id/news_like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_share_24dp"
+            android:contentDescription="@string/desc_comment_button"
+            android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:background="@drawable/news_ctrl_btn_border" />
+        
+        <!-- right -->
+        <TextView
+            android:id="@+id/news_comment_btn"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_communication_comment"
+            android:drawablePadding="@dimen/mni_ctrl_btn_drawable_padding"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/mni_ctrl_btn_text"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:text="@string/demo_comment_count"
+            android:clickable="true"
+            android:background="@drawable/news_ctrl_btn_border" />
+        
+        <LinearLayout
+            android:id="@+id/news_commentor_photos"
+            android:layout_toLeftOf="@id/news_comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
+            android:orientation="horizontal">
+            
+            <com.concordiatec.vic.widget.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/mni_ctrl_commentor_photo_width"
+                android:layout_height="@dimen/mni_ctrl_commentor_photo_height"
+                android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
+                android:src="@drawable/ic_default_avatar" />
+            
+            <com.concordiatec.vic.widget.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/mni_ctrl_commentor_photo_width"
+                android:layout_height="@dimen/mni_ctrl_commentor_photo_height"
+                android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
+                android:src="@drawable/ic_default_avatar" />
+            
+            <com.concordiatec.vic.widget.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/mni_ctrl_commentor_photo_width"
+                android:layout_height="@dimen/mni_ctrl_commentor_photo_height"
+                android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
+                android:src="@drawable/ic_default_avatar" />
+            
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <!-- comment contents -->
+    <RelativeLayout 
+        android:id="@+id/comment_layout_area"
+        android:layout_below="@id/news_ctrl_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/mni_comment_layout_padding"
+        android:paddingBottom="@dimen/mni_comment_layout_padding"
+        android:layout_marginLeft="@dimen/mni_comment_layout_padding"
+       	android:layout_marginRight="@dimen/mni_comment_layout_padding"
+       	android:background="@drawable/news_comment_border">
+        <TextView 
+            android:id="@+id/display_comment_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/mni_comment_content_margin_verticle"
+            android:paddingBottom="@dimen/mni_comment_content_margin_verticle"
+            android:text="@string/demo_comment_contents"/>
+    </RelativeLayout>
+    
+</RelativeLayout>
