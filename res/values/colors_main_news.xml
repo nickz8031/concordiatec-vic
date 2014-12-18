@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- font color -->
     <color name="mni_store_name">#5178BB</color>
     <color name="mni_store_addr">#757575</color>
     <color name="mni_store_border">#E4E5E4</color>
     
     <color name="mni_writer_name">#231F20</color>
     <color name="mni_write_time">#757575</color>
-    
     <color name="mni_ctrl_btn_text">#757575</color>
     
+    
+    <!-- other -->
     <color name="mni_background">#FFFFFF</color>
     
     

@@ -69,28 +69,28 @@ public class MainNewsAdapter extends BaseAdapter {
 		if (viewMap.get(position) == null) {
 			Article apData = getItem(position);
 			convertView = inflater.inflate(R.layout.main_news_list_item , parent , false);
-			holder = new MainNewsHolder();
-			
-			holder.shopName.setText(apData.getShopName());
-			holder.shopAddress.setText(apData.getShopAddr());
-			
-			holder.writerName.setText(apData.getWriterName());
-			
-			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(holder.writerPhoto);
-			
-			holder.writeTime.setText( TimeUtil.getTimePast(apData.getPastTime()) );
-			holder.content.setText(apData.getContent());
-			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(holder.coverImage);
-			holder.likeCount.setText(apData.getLikeCount());
-			holder.commentCount.setText(apData.getCommentCount());
-			if( apData.getLatestComments() != null && apData.getLatestComments().size() > 0 ){
-				CircleImageView imageView;
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.commentorPhotosLayout.getLayoutParams();
-				for (int i = 0; i < apData.getLatestComments().size(); i++) {
-					imageView = new CircleImageView(context);
-					//imageView.setIma
-				}
-			}
+//			holder = new MainNewsHolder();
+//			
+//			holder.shopName.setText(apData.getShopName());
+//			holder.shopAddress.setText(apData.getShopAddr());
+//			
+//			holder.writerName.setText(apData.getWriterName());
+//			
+//			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(holder.writerPhoto);
+//			
+//			holder.writeTime.setText( TimeUtil.getTimePast(apData.getPastTime()) );
+//			holder.content.setText(apData.getContent());
+//			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(holder.coverImage);
+//			holder.likeCount.setText(apData.getLikeCount());
+//			holder.commentCount.setText(apData.getCommentCount());
+//			if( apData.getLatestComments() != null && apData.getLatestComments().size() > 0 ){
+//				CircleImageView imageView;
+//				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.commentorPhotosLayout.getLayoutParams();
+//				for (int i = 0; i < apData.getLatestComments().size(); i++) {
+//					imageView = new CircleImageView(context);
+//					//imageView.setIma
+//				}
+//			}
 			
 			viewMap.put(position, convertView);
 			convertView.startAnimation(animation);

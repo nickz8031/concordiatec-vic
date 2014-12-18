@@ -2,7 +2,7 @@
 <resources>
     <!-- font color -->
     <color name="normal_font">#231F20</color>
-    
+    <color name="deep_light_font">#FFBBBBBB</color>
     <!-- /end -->
     
     
