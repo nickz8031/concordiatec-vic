@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/mni_layout_border_width"
     android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
+    android:descendantFocusability="blocksDescendants"
     android:background="@drawable/news_item_shadow">
     
     <!-- store infomation blcok -->
@@ -183,6 +184,7 @@
             android:drawableLeft="@drawable/ic_action_thumb_up"
             android:drawablePadding="@dimen/mni_ctrl_btn_drawable_padding"
             android:textSize="@dimen/text_16"
+            android:textStyle="bold"
             android:textColor="@color/mni_ctrl_btn_text"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
@@ -211,6 +213,7 @@
             android:drawableLeft="@drawable/ic_communication_comment"
             android:drawablePadding="@dimen/mni_ctrl_btn_drawable_padding"
             android:textSize="@dimen/text_16"
+            android:textStyle="bold"
             android:textColor="@color/mni_ctrl_btn_text"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"

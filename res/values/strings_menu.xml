@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_refresh">새로 고침</string>
+    <string name="menu_setting">설정</string>
+    <string name="menu_suggestion">의견 보내기</string>
+    <string name="menu_help">도움말</string>
+    <string name="menu_notification">소식</string>
+    <string name="menu_cart">카트</string>
+</resources>

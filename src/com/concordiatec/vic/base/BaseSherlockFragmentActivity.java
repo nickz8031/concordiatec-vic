@@ -1,4 +1,4 @@
-package com.concordiatec.vic;
+package com.concordiatec.vic.base;
 
 import java.util.Timer;
 import java.util.TimerTask;

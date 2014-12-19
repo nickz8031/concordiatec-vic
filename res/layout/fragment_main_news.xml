@@ -10,15 +10,17 @@
 	    android:layout_height="match_parent"
 	    android:background="@color/background_color"
 	    >
-	    <com.concordiatec.vic.widget.ObservableListView
+	    <ListView
 	        android:id="@+id/news_list"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:layout_margin="@dimen/mni_layout_margin_horizontal"
+	        android:layout_marginLeft="@dimen/mni_layout_margin_horizontal"
+	        android:layout_marginRight="@dimen/mni_layout_margin_horizontal"
+	        android:layout_marginBottom="@dimen/mni_layout_margin_horizontal"
 	        android:divider="@color/background_color"
 	   		android:dividerHeight="@dimen/mni_layout_margin_bottom"
 	   		android:drawSelectorOnTop="true"
-	   		android:clickable="true" />
+	   		android:scrollbars="none" />
 	    
 	    <include
 	        android:id="@+id/sort_menu"

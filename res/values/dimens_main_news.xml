@@ -36,7 +36,7 @@
     <dimen name="mni_content_margin_bottom">16dp</dimen>
     
     <!-- control area -->
-    <dimen name="mni_ctrl_layout_height">30dp</dimen>
+    <dimen name="mni_ctrl_layout_height">32dp</dimen>
     <dimen name="mni_ctrl_layout_padding">8dp</dimen>
     <dimen name="mni_ctrl_commentor_photo_margin">4dp</dimen>
     <dimen name="mni_ctrl_commentor_photo_width">24dp</dimen>
@@ -44,6 +44,7 @@
     <dimen name="mni_ctrl_btn_radius">2dp</dimen>
     <dimen name="mni_ctrl_btn_drawable_padding">4dp</dimen>
     <dimen name="mni_ctrl_btn_padding_horizontal">8dp</dimen>
+    <dimen name="mni_ctrl_btn_padding_verticle">4dp</dimen>
     <dimen name="mni_ctrl_btn_margin">16dp</dimen>
     
     <!-- comment area -->
