@@ -28,11 +28,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.concordiatec.vic.adapter.MainNewsAdapter;
+import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.model.Article;
+import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatech.vic.R;
 
-public class MainNewsFragment extends SherlockFragment implements OnRefreshListener {
+public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshListener {
 	private View rootView;
 	private LayoutInflater inflater;
 	private ListView newsListView;
@@ -135,14 +137,14 @@ public class MainNewsFragment extends SherlockFragment implements OnRefreshListe
 			AlphaAnimation animation;
 			if (sortContentLayout.getVisibility() == View.GONE) {
 				v.setBackgroundResource(R.drawable.sorting_top_style_active);
-				sortContentLayout.startAnimation(fadeInAnimation());
+				sortContentLayout.startAnimation(AniUtil.fadeInAnimation());
 				sortContentLayout.setVisibility(View.VISIBLE);
 				
 				setSortbarDrawableRight( R.drawable.drop_up_24 );
 			} else {
 				v.setBackgroundResource(R.drawable.sorting_top_style);
 				setSortbarDrawableRight( R.drawable.drop_down_24 );
-				animation = (AlphaAnimation) fadeOutAnimation();
+				animation = (AlphaAnimation) AniUtil.fadeOutAnimation();
 				animation.setAnimationListener(new AnimationListener() {
 					@Override
 					public void onAnimationStart(Animation animation) {}
@@ -159,21 +161,5 @@ public class MainNewsFragment extends SherlockFragment implements OnRefreshListe
 	}
 	protected void setSortbarDrawableRight(int resId){
 		sortCurrentSelect.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(resId), null);
-	}
-	
-	private int animationDuration = 200;
-
-	private Animation fadeInAnimation() {
-		AlphaAnimation animation = new AlphaAnimation(0, 1);
-		animation.setDuration(animationDuration);
-		animation.setFillAfter(true);
-		return animation;
-	}
-
-	private Animation fadeOutAnimation() {
-		AlphaAnimation animation = new AlphaAnimation(1, 0);
-		animation.setDuration(animationDuration);
-		animation.setFillAfter(true);
-		return animation;
 	}
 }

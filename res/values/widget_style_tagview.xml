@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget"/>
+    <style name="Widget.TagView" parent="@android:style/Widget.TextView">
+        <item name="tagCornerRadius">2dp</item>
+        <item name="tagPaddingHor">8dp</item>
+        <item name="tagPaddingVert">2dp</item>
+        <item name="tagUppercase">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_12</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>

@@ -3,44 +3,31 @@ package com.concordiatec.vic.adapter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Article;
-import com.concordiatec.vic.util.LogUtil;
-import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatech.vic.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainNewsAdapter extends BaseAdapter {
+public class MainNewsAdapter extends VicBaseAdapter {
 	private List<Article> data;
-	private Animation animation;
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
 
-	@SuppressLint("UseSparseArrays")
 	public MainNewsAdapter(Context context, List<Article> data) {
+		super();
 		this.context = context;
 		this.data = data;
-		if (animation == null) {
-			animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.3f, Animation.RELATIVE_TO_SELF, 0.0f);
-			animation.setDuration(300);
-		}
-		inflater = LayoutInflater.from(context);
-		viewMap = new HashMap<Integer, View>();
+		this.inflater = LayoutInflater.from(context);
+		this.viewMap = new HashMap<Integer, View>();
 	}
 
 	@Override
@@ -60,9 +47,9 @@ public class MainNewsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		MainNewsHolder holder;
+//		NewsHolder holder;
 		if (viewMap.get(position) == null) {
-			Article apData = getItem(position);
+//			Article apData = getItem(position);
 			convertView = inflater.inflate(R.layout.main_news_list_item, parent, false);
 			// holder = new MainNewsHolder();
 			//
@@ -96,11 +83,11 @@ public class MainNewsAdapter extends BaseAdapter {
 			convertView = viewMap.get(position);
 			// holder = (MainNewsHolder) convertView.getTag();
 		}
-		
 		return convertView;
 	}
 
-	private static class MainNewsHolder {
+	@SuppressWarnings("unused")
+	private static class NewsHolder {
 		TextView shopName;
 		TextView shopAddress;
 		ImageView shopType;

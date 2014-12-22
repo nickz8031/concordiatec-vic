@@ -5,7 +5,7 @@
     android:paddingTop="@dimen/mni_layout_border_width"
     android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/news_item_shadow">
+    android:background="@drawable/list_item_shadow">
     
     <!-- store infomation blcok -->
     <RelativeLayout 

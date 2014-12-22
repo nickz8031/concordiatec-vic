@@ -1,3 +1,6 @@
+/**
+ * 글(소식) 모델
+ */
 package com.concordiatec.vic.model;
 
 import java.util.List;
@@ -67,14 +70,6 @@ public class Article {
 	 * latest comment objects of article
 	 */
 	private List<Comment> latestComments;
-	/**
-	 * is like by request user
-	 */
-	private boolean isLikeByViewer;
-	/**
-	 * The user id who requested article
-	 */
-	private int viewerId;
 	
 	public int getId() {
 		return id;
@@ -165,18 +160,6 @@ public class Article {
 	}
 	public void setLatestComments(List<Comment> latestComments) {
 		this.latestComments = latestComments;
-	}
-	public boolean isLikeByViewer() {
-		return isLikeByViewer;
-	}
-	public void setLikeByViewer(boolean isLikeByViewer) {
-		this.isLikeByViewer = isLikeByViewer;
-	}
-	public int getViewerId() {
-		return viewerId;
-	}
-	public void setViewerId(int viewerId) {
-		this.viewerId = viewerId;
 	}
 	public String getWriterPhotoURL() {
 		return writerPhotoURL;

@@ -9,5 +9,7 @@
     <color name="theme_color">#2cb1e1</color>
     <color name="background_color">#FFEEEEEE</color>
     
+    <color name="effect_color">#ef7d20</color>
+    
     
 </resources>

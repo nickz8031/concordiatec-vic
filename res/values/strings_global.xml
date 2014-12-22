@@ -12,4 +12,9 @@
 	<string name="demo_like_count">66</string>
 	<string name="demo_comment_count">581</string>
 	<string name="demo_comment_contents">MICHALE Shoulders I love that pic your my #1 singer/songwriter! +Hannah Walker I agree...</string>
+	
+	<!-- coupon demo string -->
+	<string name="demo_shop_name">스타벅스</string>
+	<string name="demo_coupon_title">아메리카노+크레마놀 세트</string>
+	
 </resources>

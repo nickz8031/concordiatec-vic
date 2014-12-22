@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_price_string">%1$s원</string>
+    <string name="format_end_time">%1$s 마감</string>
+    <string name="format_location_range_meter">%1$s m</string>
+    <string name="format_location_range_kilometer">%1$s km</string>
+    <!-- example : 45/100 -->
+    <string name="format_surplus_total_count">%1$s/%2$s</string>
+</resources>
