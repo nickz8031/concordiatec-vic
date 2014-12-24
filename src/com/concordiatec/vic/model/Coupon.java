@@ -4,7 +4,7 @@
 package com.concordiatec.vic.model;
 
 
-public class Coupon {
+public class Coupon extends Model {
 	/**
 	 * 쿠폰 아이디
 	 */

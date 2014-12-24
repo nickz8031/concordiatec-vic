@@ -5,7 +5,15 @@
     android:orientation="vertical" >
     <TextView 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Main infomation fragment"/>
+    
+    <Button
+        android:id="@+id/click_post_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Click me to post!"
+        android:layout_margin="20dp" 
+        />
 </LinearLayout>

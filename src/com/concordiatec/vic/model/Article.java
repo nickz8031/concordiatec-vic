@@ -4,8 +4,9 @@
 package com.concordiatec.vic.model;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
-public class Article {
+public class Article extends Model {
 	/**
 	 * article id
 	 */
@@ -17,6 +18,7 @@ public class Article {
 	/**
 	 * article link type if it is not normal type
 	 */
+	@SerializedName("effected_id")
 	private int effectId;
 	/**
 	 * article contents
@@ -25,50 +27,62 @@ public class Article {
 	/**
 	 * past time from write article
 	 */
+	@SerializedName("pasttime")
 	private int pastTime;
 	/**
 	 * writer id
 	 */
+	@SerializedName("writer_id")
 	private int writerId;
 	/**
 	 * writer name
 	 */
+	@SerializedName("writer_name")
 	private String writerName;
 	/**
 	 * writer photo
 	 */
+	@SerializedName("writer_photo")
 	private String writerPhotoURL;
 	/**
 	 * cover image
 	 */
+	@SerializedName("image")
 	private String coverImageURL;
 	/**
 	 * appoint shop id
 	 */
+	@SerializedName("shop_id")
 	private int shopId;
 	/**
 	 * appoint shop name
 	 */
+	@SerializedName("shop_name")
 	private String shopName;
 	/**
 	 * appoint shop address
 	 */
+	@SerializedName("shop_addr")
 	private String shopAddr;
 	/**
 	 * appoint shop group id
 	 */
+	@SerializedName("shop_group")
 	private int shopGroupId;
 	/**
 	 * be liked count
 	 */
+	@SerializedName("like_count")
 	private int likeCount;
 	/**
 	 * comment count of article
 	 */
+	@SerializedName("comment_count")
 	private int commentCount;
 	/**
 	 * latest comment objects of article
 	 */
+	@SerializedName("lastest_comments")
 	private List<Comment> latestComments;
 	
 	public int getId() {
@@ -166,6 +180,10 @@ public class Article {
 	}
 	public void setWriterPhotoURL(String writerPhotoURL) {
 		this.writerPhotoURL = writerPhotoURL;
+	}
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", kind=" + kind + ", effectId=" + effectId + ", content=" + content + ", pastTime=" + pastTime + ", writerId=" + writerId + ", writerName=" + writerName + ", writerPhotoURL=" + writerPhotoURL + ", coverImageURL=" + coverImageURL + ", shopId=" + shopId + ", shopName=" + shopName + ", shopAddr=" + shopAddr + ", shopGroupId=" + shopGroupId + ", likeCount=" + likeCount + ", commentCount=" + commentCount + ", latestComments=" + latestComments + "]";
 	}
 	
 }

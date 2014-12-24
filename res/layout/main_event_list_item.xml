@@ -110,7 +110,7 @@
             android:textSize="@dimen/text_14"
             android:textColor="@color/effect_color"
             android:gravity="center_vertical"
-            android:drawableStart="@drawable/ic_action_schedule"
+            android:drawableLeft="@drawable/ic_action_query_builder"
             android:drawablePadding="3dp"
             />
     </LinearLayout>
@@ -144,10 +144,29 @@
             <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="match_parent"
+	            android:layout_marginRight="5dp"
 	            android:text="@string/cp_surplus"
 	            android:textColor="@color/coupon_normal_ctrl_text"
 	            android:gravity="center"
 	            android:textSize="@dimen/text_16"/>
+            <TextView 
+                android:id="@+id/coupon_surplus_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/text_16"
+                android:gravity="center_vertical"
+                android:textColor="@color/effect_color"
+                android:text="3"
+                />
+            <TextView
+                android:id="@+id/coupon_total_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/coupon_normal_ctrl_text"
+                android:textSize="@dimen/text_16"
+                android:text="/15" 
+                />
         </LinearLayout>
         <!-- 찜하기 -->
         <LinearLayout
@@ -157,6 +176,7 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center"
+            android:clickable="true"
 	        android:background="@drawable/cp_btn_border_t_b">
             <ImageView 
                 android:layout_width="wrap_content"

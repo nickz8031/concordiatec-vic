@@ -3,4 +3,4 @@
  */
 package com.concordiatec.vic.model;
 
-public class User {}
+public class User extends Model {}

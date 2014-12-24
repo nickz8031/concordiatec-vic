@@ -8,7 +8,24 @@ public class LogUtil {
 		Log.e(TAG , "*------[ " + msg + " ]------*");
 	}
 	
-	public static void show( int msg ){
-		LogUtil.show( msg + "");
+	public static void show( String msg , String tag ){
+		Log.e(tag , "*------[ " + msg + " ]------*");
 	}
+	
+	public static void showDebug(String msg){
+		Log.d(TAG , "*------[ " + msg + " ]------*");
+	}
+	
+	public static void showDebug(String msg , String tag){
+		Log.d(tag , "*------[ " + msg + " ]------*");
+	}
+	
+	public static void showInfo(String msg){
+		Log.i(TAG , "*------[ " + msg + " ]------*");
+	}
+	
+	public static void showInfo(String msg , String tag){
+		Log.i(tag , "*------[ " + msg + " ]------*");
+	}
+	
 }
