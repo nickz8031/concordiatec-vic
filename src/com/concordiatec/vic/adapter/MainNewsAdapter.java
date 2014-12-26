@@ -3,7 +3,10 @@ package com.concordiatec.vic.adapter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Article;
+import com.concordiatec.vic.util.StringUtil;
+import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatech.vic.R;
 import android.annotation.SuppressLint;
@@ -16,11 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+@SuppressLint("UseSparseArrays")
 public class MainNewsAdapter extends VicBaseAdapter {
 	private List<Article> data;
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
+//	private ImageLoader mImageLoader;
 
 	public MainNewsAdapter(Context context, List<Article> data) {
 		super();
@@ -47,58 +52,63 @@ public class MainNewsAdapter extends VicBaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-//		NewsHolder holder;
 		if (viewMap.get(position) == null) {
-//			Article apData = getItem(position);
+			Article apData = getItem(position);
 			convertView = inflater.inflate(R.layout.main_news_list_item, parent, false);
-			// holder = new MainNewsHolder();
-			//
-			// holder.shopName.setText(apData.getShopName());
-			// holder.shopAddress.setText(apData.getShopAddr());
-			//
-			// holder.writerName.setText(apData.getWriterName());
-			//
-			// Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(holder.writerPhoto);
-			//
-			// holder.writeTime.setText(
-			// TimeUtil.getTimePast(apData.getPastTime()) );
-			// holder.content.setText(apData.getContent());
-			// Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(holder.coverImage);
-			// holder.likeCount.setText(apData.getLikeCount());
-			// holder.commentCount.setText(apData.getCommentCount());
-			// if( apData.getLatestComments() != null &&
-			// apData.getLatestComments().size() > 0 ){
-			// CircleImageView imageView;
-			// LinearLayout.LayoutParams layoutParams =
-			// (LinearLayout.LayoutParams)
-			// holder.commentorPhotosLayout.getLayoutParams();
-			// for (int i = 0; i < apData.getLatestComments().size(); i++) {
-			// imageView = new CircleImageView(context);
-			// //imageView.setIma
-			// }
-			// }
+			
+			NewsHolder.storeInfoLayout = (RelativeLayout) convertView.findViewById(R.id.store_info_layout);
+			NewsHolder.writerName = (TextView) convertView.findViewById(R.id.news_writer_name);
+			NewsHolder.writeTime = (TextView) convertView.findViewById(R.id.news_write_time);
+			NewsHolder.content = (TextView) convertView.findViewById(R.id.news_content);
+			NewsHolder.likeCount = (TextView) convertView.findViewById(R.id.news_like_btn);
+			NewsHolder.commentCount = (TextView) convertView.findViewById(R.id.news_comment_btn);
+			NewsHolder.writerPhoto = (CircleImageView) convertView.findViewById(R.id.news_writer_photo);
+			NewsHolder.coverImage = (ImageView) convertView.findViewById(R.id.news_content_img);
+			
+			if( StringUtil.isEmpty(apData.getShopName()) ){
+				NewsHolder.storeInfoLayout.setVisibility(View.GONE);
+			}else {
+				NewsHolder.storeName = (TextView) convertView.findViewById(R.id.news_store_name);
+				NewsHolder.storeAddress = (TextView) convertView.findViewById(R.id.news_store_addr);
+				
+				NewsHolder.storeName.setText( apData.getShopName() );
+				NewsHolder.storeAddress.setText( apData.getShopAddr() );
+			}
+			
+			NewsHolder.writerName.setText( apData.getWriterName() );
+			NewsHolder.writeTime.setText( TimeUtil.getTimePast( context, apData.getPastTime() ) );
+			NewsHolder.content.setText( apData.getContent() );
+			NewsHolder.likeCount.setText( apData.getLikeCount()+"" );
+			NewsHolder.commentCount.setText( apData.getCommentCount()+"" );
+			
+			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(NewsHolder.writerPhoto);
+			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(NewsHolder.coverImage);
+			
 			viewMap.put(position, convertView);
 			convertView.startAnimation(animation);
 		} else {
 			convertView = viewMap.get(position);
-			// holder = (MainNewsHolder) convertView.getTag();
 		}
 		return convertView;
 	}
 
 	@SuppressWarnings("unused")
 	private static class NewsHolder {
-		TextView shopName;
-		TextView shopAddress;
-		ImageView shopType;
-		CircleImageView writerPhoto;
-		TextView writerName;
-		TextView writeTime;
-		TextView content;
-		ImageView coverImage;
-		TextView likeCount;
-		TextView commentCount;
-		LinearLayout commentorPhotosLayout;
-		RelativeLayout commentContentsLayout;
+		static TextView storeName;
+		static TextView storeAddress;
+		static TextView writerName;
+		static TextView writeTime;
+		static TextView content;
+		static TextView likeCount;
+		static TextView commentCount;
+		static ImageView storeType;
+		static CircleImageView writerPhoto;
+		static ImageView coverImage;
+		
+		static LinearLayout commentorPhotosLayout;
+		static RelativeLayout commentContentsLayout;
+		static RelativeLayout storeInfoLayout;
+		
+		
 	}
 }

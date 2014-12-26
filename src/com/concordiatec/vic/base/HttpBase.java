@@ -40,8 +40,12 @@ public class HttpBase {
 		return params;
 	}
 	
-	protected String getServerImgPath( int writerId ){
-		return API_IMG_URL + "/" + writerId + "/";
+	protected String getServerImgPath( int writerId , String fileName ){
+		return API_IMG_URL + "/" + writerId + "/" + fileName;
+	}
+	
+	protected int getIntValue( Object object ){
+		return Double.valueOf(object.toString()).intValue();
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.concordiatec.vic.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +30,7 @@ import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatech.vic.R;
+import com.google.gson.internal.LinkedTreeMap;
 
 public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshListener {
 	private View rootView;
@@ -56,6 +58,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();
+		getArticles();
 	}
 
 	/**
@@ -70,12 +73,14 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		listHeaderPaddingView.setLayoutParams(params);
 		newsListView.addHeaderView(listHeaderPaddingView);
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	private void getArticles(){
-		ArticleService.single().getArticles(new VicResponseListener() {
+		ArticleService.single(getActivity()).getArticles(new VicResponseListener() {
 			@Override
 			public void onResponse(Object data) {
-				
+				listData = ArticleService.single(getActivity()).transListToModel( (ArrayList<LinkedTreeMap<String,Object>>)data );
+				initAdapter();
 			}
 		});
 	}

@@ -158,7 +158,6 @@
             android:id="@+id/news_content_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/demo_content_img"
             android:layout_margin="@dimen/mni_layout_border_width"
             android:contentDescription="@string/news_content_image"
             android:adjustViewBounds="true"

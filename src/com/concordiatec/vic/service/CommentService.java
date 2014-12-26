@@ -10,12 +10,12 @@ public class CommentService extends HttpBase {
 	public static CommentService cs;
 	
 	
-	public List<Comment> mapListToBeanList( List<LinkedTreeMap<String, Object>> list ){
+	public List<Comment> mapListToModelList( List<LinkedTreeMap<String, Object>> list ){
 		List<Comment> cList = new ArrayList<Comment>();
 		for( LinkedTreeMap<String, Object> map : list ){
 			Comment cmt = new Comment();
-			cmt.setId( Integer.valueOf(map.get("comment_id").toString()) );
-			cmt.setWriterId( Integer.valueOf(map.get("user_id").toString()) );
+			cmt.setId( getIntValue(map.get("comment_id")) );
+			cmt.setWriterId( getIntValue(map.get("user_id")) );
 			cmt.setWriterName( map.get("user_name").toString() );
 			cmt.setWriterPhotoURL( map.get("user_photo").toString() );
 			cmt.setContent( map.get("comment_text").toString() );

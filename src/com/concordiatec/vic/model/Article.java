@@ -85,6 +85,8 @@ public class Article extends Model {
 	@SerializedName("lastest_comments")
 	private List<Comment> latestComments;
 	
+	private boolean isLike;
+	
 	public int getId() {
 		return id;
 	}
@@ -178,6 +180,13 @@ public class Article extends Model {
 	public String getWriterPhotoURL() {
 		return writerPhotoURL;
 	}
+	public boolean isLike() {
+		return isLike;
+	}
+	public void setLike(boolean isLike) {
+		this.isLike = isLike;
+	}
+	
 	public void setWriterPhotoURL(String writerPhotoURL) {
 		this.writerPhotoURL = writerPhotoURL;
 	}
@@ -185,5 +194,4 @@ public class Article extends Model {
 	public String toString() {
 		return "Article [id=" + id + ", kind=" + kind + ", effectId=" + effectId + ", content=" + content + ", pastTime=" + pastTime + ", writerId=" + writerId + ", writerName=" + writerName + ", writerPhotoURL=" + writerPhotoURL + ", coverImageURL=" + coverImageURL + ", shopId=" + shopId + ", shopName=" + shopName + ", shopAddr=" + shopAddr + ", shopGroupId=" + shopGroupId + ", likeCount=" + likeCount + ", commentCount=" + commentCount + ", latestComments=" + latestComments + "]";
 	}
-	
 }
