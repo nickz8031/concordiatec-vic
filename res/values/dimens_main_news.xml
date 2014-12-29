@@ -38,6 +38,7 @@
     <!-- control area -->
     <dimen name="mni_ctrl_layout_height">32dp</dimen>
     <dimen name="mni_ctrl_layout_padding">8dp</dimen>
+    <dimen name="mni_ctrl_layout_padding_vert">16dp</dimen>
     <dimen name="mni_ctrl_commentor_photo_margin">4dp</dimen>
     <dimen name="mni_ctrl_commentor_photo_width">24dp</dimen>
     <dimen name="mni_ctrl_commentor_photo_height">24dp</dimen>

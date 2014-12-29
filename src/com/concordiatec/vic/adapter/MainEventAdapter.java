@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.Map;
 import com.concordiatec.vic.model.Coupon;
 import com.concordiatec.vic.widget.TagView;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainEventAdapter extends VicBaseAdapter {

@@ -9,7 +9,7 @@ import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
 import com.concordiatec.vic.fragment.MainEventFragment;
 import com.concordiatec.vic.fragment.MainInfoFragment;
 import com.concordiatec.vic.fragment.MainNewsFragment;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;

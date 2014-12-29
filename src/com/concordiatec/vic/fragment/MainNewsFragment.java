@@ -1,12 +1,13 @@
 package com.concordiatec.vic.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,17 +20,22 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AbsListView.OnScrollListener;
 import com.concordiatec.vic.adapter.MainNewsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.util.AniUtil;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.ArticleDetailActivity;
+import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshListener {
@@ -42,6 +48,11 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private LinearLayout sortCurrentLayout;
 	private RelativeLayout sortContentLayout;
 	private TextView sortCurrentSelect;
+	private MainNewsAdapter adapter;
+	private ArticleService aService;
+	
+	private boolean isRefresh = false;
+	public boolean isLoadingNow = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,10 +66,11 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	 * init widgets in main news fragment
 	 */
 	private void initWidgets(){
+		aService = ArticleService.single(getActivity());
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();
-		getArticles();
+		this.getArticles();
 	}
 
 	/**
@@ -72,25 +84,32 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		AbsListView.LayoutParams params = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, height);
 		listHeaderPaddingView.setLayoutParams(params);
 		newsListView.addHeaderView(listHeaderPaddingView);
+		newsListView.setOnScrollListener(new ListViewScrollListener());
+		newsListView.setOnItemClickListener(new ListViewItemClickListener());
 	}
 
-	@SuppressWarnings("unchecked")
 	private void getArticles(){
-		ArticleService.single(getActivity()).getArticles(new VicResponseListener() {
+		aService.getArticles(new VicResponseListener() {
 			@Override
 			public void onResponse(Object data) {
-				listData = ArticleService.single(getActivity()).transListToModel( (ArrayList<LinkedTreeMap<String,Object>>)data );
-				initAdapter();
+				setAdapter(data);
 			}
+			@Override
+			public void onResponseNoData() {}
 		});
 	}
 	
-	private void initAdapter(){
-		newsListView.setAdapter(new MainNewsAdapter(getActivity(), listData));
+	@SuppressWarnings("unchecked")
+	private void setAdapter(Object data){
+		listData = aService.transListToModel( (ArrayList<LinkedTreeMap<String,Object>>)data );
+		if( !isRefresh ){
+			adapter = new MainNewsAdapter(getActivity(), listData);
+		}else{
+			adapter.setData(listData);
+			ptrLayout.setRefreshComplete();
+		}
+		newsListView.setAdapter(adapter);
 	}
-	
-	
-	
 	
 	/**
 	 * initialize ActionBar pull to refresh widget
@@ -118,20 +137,28 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 
 	@Override
 	public void onRefreshStarted(View view) {
-		// demo
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
+		adapter.clear();
+		this.isRefresh = true;
+		getArticles();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void getMore(){
+		isLoadingNow = true;
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("article_id", adapter.getLastRecordId()+"");
+		aService.getArticles(new VicResponseListener() {
 			@Override
-			public void run() {
-				getActivity().runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						ptrLayout.setRefreshComplete();
-					}
-				});
+			public void onResponse(Object data) {
+				List<Article> tmpData = aService.transListToModel( (ArrayList<LinkedTreeMap<String,Object>>)data );
+				adapter.addData(tmpData);
+				isLoadingNow = false;
 			}
-		};
-		timer.schedule(task, 3000);
+			@Override
+			public void onResponseNoData() {
+				isLoadingNow = false;
+			}
+		} , paramMap);
 	}
 
 	private final class SortClickListener implements OnClickListener {
@@ -162,6 +189,32 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			}
 		}
 	}
+	
+	private final class ListViewItemClickListener implements OnItemClickListener{
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			Intent intent = new Intent(getActivity() , ArticleDetailActivity.class);
+			startActivity(intent);
+		}
+		
+	}
+	private final class ListViewScrollListener implements OnScrollListener {
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+			switch (scrollState) {
+			case OnScrollListener.SCROLL_STATE_IDLE:
+				if (isLoadingNow  == false && view.getLastVisiblePosition() >= (view.getCount()/2)) {
+					getMore();
+				}
+				break;
+			}
+		}
+
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		}
+	}
+	
 	protected void setSortbarDrawableRight(int resId){
 		sortCurrentSelect.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(resId), null);
 	}

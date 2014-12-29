@@ -1,6 +1,6 @@
 package com.concordiatec.vic.widget;
 
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 
 import android.widget.ImageView;
 import android.content.Context;

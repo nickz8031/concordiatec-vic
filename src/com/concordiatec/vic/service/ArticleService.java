@@ -25,17 +25,32 @@ public class ArticleService extends HttpBase {
 	}
 	
 	public void getArticles(VicResponseListener listener) {
+		getArticles(listener, null); 
+	}
+	
+	public void getArticles(VicResponseListener listener ,Map<String, String> params) {
 		final VicResponseListener lis = listener;
 		ArticleInf ai = restAdapter.create(ArticleInf.class);
-		Map<String, String> params = getAuthMap();
-		ai.getArticles(params, new Callback<ResData>() {
+		Map<String, String> postParams = getAuthMap();
+		if( params != null ){
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				postParams.put(entry.getKey(), entry.getValue());
+			}
+		}
+		ai.getArticles(postParams, new Callback<ResData>() {
 			@Override
 			public void success(ResData data, Response arg1) {
-				//return data list with no error
-				if (data.getStatus().equals("0")) {
+				
+				switch (Integer.valueOf( data.getStatus() )) {
+				case 0: //successful
 					lis.onResponse(data.getData());
-				} else {
+					break;
+				case 402: //no data
+					lis.onResponseNoData();
+					break;
+				default:
 					LogUtil.show(data.getMsg() + " [code:" + data.getStatus() + "]");
+					break;
 				}
 			}
 

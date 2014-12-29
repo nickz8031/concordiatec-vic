@@ -36,8 +36,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import com.concordiatec.vic.util.LogUtil;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 
 public class TagView extends TextView {
 

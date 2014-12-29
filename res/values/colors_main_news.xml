@@ -9,9 +9,11 @@
     <color name="mni_write_time">#757575</color>
     <color name="mni_ctrl_btn_text">#353535</color>
     
+    <color name="d_comment_hint">#BCBCBC</color>
+    
     
     <!-- other -->
     <color name="mni_background">#FFFFFF</color>
     
-    
+    <color name="d_like_share_border">#E4E5E4</color>
 </resources>

@@ -29,8 +29,7 @@ import com.concordiatec.vic.adapter.MainEventAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.model.Coupon;
 import com.concordiatec.vic.util.AniUtil;
-import com.concordiatec.vic.util.LogUtil;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 
 public class MainEventFragment extends BaseSherlockFragment implements OnRefreshListener {
 

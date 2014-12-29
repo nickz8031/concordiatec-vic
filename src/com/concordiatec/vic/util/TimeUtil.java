@@ -2,7 +2,7 @@ package com.concordiatec.vic.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 import android.content.Context;
 
 @SuppressWarnings("unused")

@@ -3,11 +3,11 @@ package com.concordiatec.vic.base;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.R;
 
-public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
+public class BaseSherlockActivity extends SherlockActivity {
 	private static int backFlagChangeSec = 0;
     private static int backFlagMaxSec = 2;
     private Timer backPressTimer;  

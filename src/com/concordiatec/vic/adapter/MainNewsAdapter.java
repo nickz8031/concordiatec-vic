@@ -8,7 +8,7 @@ import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -25,7 +25,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
-//	private ImageLoader mImageLoader;
 
 	public MainNewsAdapter(Context context, List<Article> data) {
 		super();
@@ -33,6 +32,39 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		this.data = data;
 		this.inflater = LayoutInflater.from(context);
 		this.viewMap = new HashMap<Integer, View>();
+	}
+	
+	public void clear(){
+		this.data.clear();
+	}
+	
+	public void setData( List<Article> data ){
+		this.data = data;
+		notifyDataSetChanged();
+	}
+	
+	public void addData( Article data ){
+		if(data != null){
+			this.data.add(data);
+		}
+	}
+	
+	public void addData( List<Article> data ){
+		if(data != null && data.size()>0 ){
+			for (int i = 0; i < data.size(); i++) {
+				addData( data.get(i) );
+			}
+			notifyDataSetChanged();
+		}
+	}
+	
+	public int getLastRecordId(){
+		if( this.data.size()>0 ){
+			return this.data.get(this.data.size()-1).getId();
+		}else{
+			return 0;
+		}
+		
 	}
 
 	@Override
@@ -89,7 +121,17 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		} else {
 			convertView = viewMap.get(position);
 		}
+		this.clearAnimation(position);
 		return convertView;
+	}
+	
+	private void clearAnimation(int viewPos){
+		for (int i = 0; i < viewMap.size(); i++) {
+			if( i == viewPos ){
+				continue;
+			}
+			viewMap.get(i).clearAnimation();
+		}
 	}
 
 	@SuppressWarnings("unused")

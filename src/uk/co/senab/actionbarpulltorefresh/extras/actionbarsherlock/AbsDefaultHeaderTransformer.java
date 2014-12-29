@@ -16,7 +16,7 @@
 
 package uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock;
 
-import com.concordiatech.vic.R;
+import com.concordiatec.vic.R;
 
 import android.app.Activity;
 import android.content.Context;
