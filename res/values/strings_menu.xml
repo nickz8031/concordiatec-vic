@@ -6,4 +6,9 @@
     <string name="menu_help">도움말</string>
     <string name="menu_notification">소식</string>
     <string name="menu_cart">카트</string>
+    
+    <!-- article detail page menu -->
+    <string name="menu_ignore">무시하기</string>
+    <string name="menu_copy_text">텍스트 복사</string>
+    <string name="menu_report">신고하기</string>
 </resources>

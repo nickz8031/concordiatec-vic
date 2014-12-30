@@ -5,18 +5,23 @@ import java.util.List;
 import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Article;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 @SuppressLint("UseSparseArrays")
@@ -25,6 +30,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
+	private static float coverImageViewWidthPixel = 0;
 
 	public MainNewsAdapter(Context context, List<Article> data) {
 		super();
@@ -76,6 +82,10 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	public Article getItem(int position) {
 		return data.get(position);
 	}
+	
+	public Article getItem(long position) {
+		return data.get((int)position);
+	}
 
 	@Override
 	public long getItemId(int position) {
@@ -112,6 +122,15 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			NewsHolder.content.setText( apData.getContent() );
 			NewsHolder.likeCount.setText( apData.getLikeCount()+"" );
 			NewsHolder.commentCount.setText( apData.getCommentCount()+"" );
+			//set cover imageView height
+			if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
+				LayoutParams layoutParams = new LayoutParams( 
+													LayoutParams.MATCH_PARENT , 
+													getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight()
+											) );
+				NewsHolder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
+			}
+			
 			
 			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(NewsHolder.writerPhoto);
 			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(NewsHolder.coverImage);
@@ -133,6 +152,28 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			viewMap.get(i).clearAnimation();
 		}
 	}
+	
+	/**
+	 * get content cover image height
+	 * @param oldWidth
+	 * @param oldHeight
+	 * @return
+	 */
+	private int getImageViewHeight( int w , int h ){
+		if( coverImageViewWidthPixel == 0 ){
+			WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);  
+			Display display = windowManager.getDefaultDisplay();  
+			DisplayMetrics dm = new DisplayMetrics();
+			display.getMetrics(dm);
+			float marginHor = context.getResources().getDimension(R.dimen.mni_layout_margin_horizontal) * 2;
+			float adjustMargin = context.getResources().getDimension(R.dimen.mni_layout_border_width) * 2;
+			coverImageViewWidthPixel = dm.widthPixels - marginHor - adjustMargin;
+		}
+		float scale = coverImageViewWidthPixel / w;
+		float realHeight = h * scale;
+		return Math.round(realHeight);
+	}
+	
 
 	@SuppressWarnings("unused")
 	private static class NewsHolder {
@@ -150,7 +191,5 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		static LinearLayout commentorPhotosLayout;
 		static RelativeLayout commentContentsLayout;
 		static RelativeLayout storeInfoLayout;
-		
-		
 	}
 }

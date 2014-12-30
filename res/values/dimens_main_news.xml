@@ -54,5 +54,7 @@
     <dimen name="mni_comment_content_margin_verticle">8dp</dimen>
     
     
+    <!-- detail page -->
+    <dimen name="detail_comment_input">48dp</dimen>
     
 </resources>

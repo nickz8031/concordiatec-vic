@@ -194,6 +194,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Intent intent = new Intent(getActivity() , ArticleDetailActivity.class);
+			intent.putExtra("article_id", adapter.getItem(id).getId());
 			startActivity(intent);
 		}
 		

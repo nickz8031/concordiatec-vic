@@ -50,6 +50,19 @@ public class Article extends Model {
 	@SerializedName("image")
 	private String coverImageURL;
 	/**
+	 * cover image width
+	 */
+	@SerializedName("image_width")
+	private int coverImageWidth;
+	/**
+	 * cover image height
+	 */
+	@SerializedName("image_height")
+	private int coverImageHeight;
+	
+	@SerializedName("images")
+	private List<ArticleImages> images;
+	/**
 	 * appoint shop id
 	 */
 	@SerializedName("shop_id")
@@ -74,6 +87,9 @@ public class Article extends Model {
 	 */
 	@SerializedName("like_count")
 	private int likeCount;
+	
+	@SerializedName("share_count")
+	private int shareCount;
 	/**
 	 * comment count of article
 	 */
@@ -135,6 +151,18 @@ public class Article extends Model {
 	public void setCoverImageURL(String coverImageURL) {
 		this.coverImageURL = coverImageURL;
 	}
+	public int getCoverImageWidth() {
+		return coverImageWidth;
+	}
+	public void setCoverImageWidth(int coverImageWidth) {
+		this.coverImageWidth = coverImageWidth;
+	}
+	public int getCoverImageHeight() {
+		return coverImageHeight;
+	}
+	public void setCoverImageHeight(int coverImageHeight) {
+		this.coverImageHeight = coverImageHeight;
+	}
 	public int getShopId() {
 		return shopId;
 	}
@@ -190,8 +218,17 @@ public class Article extends Model {
 	public void setWriterPhotoURL(String writerPhotoURL) {
 		this.writerPhotoURL = writerPhotoURL;
 	}
-	@Override
-	public String toString() {
-		return "Article [id=" + id + ", kind=" + kind + ", effectId=" + effectId + ", content=" + content + ", pastTime=" + pastTime + ", writerId=" + writerId + ", writerName=" + writerName + ", writerPhotoURL=" + writerPhotoURL + ", coverImageURL=" + coverImageURL + ", shopId=" + shopId + ", shopName=" + shopName + ", shopAddr=" + shopAddr + ", shopGroupId=" + shopGroupId + ", likeCount=" + likeCount + ", commentCount=" + commentCount + ", latestComments=" + latestComments + "]";
+	
+	public List<ArticleImages> getImages() {
+		return images;
+	}
+	public void setImages(List<ArticleImages> images) {
+		this.images = images;
+	}
+	public int getShareCount() {
+		return 0;
+	}
+	public void setShareCount(int shareCount) {
+		this.shareCount = shareCount;
 	}
 }

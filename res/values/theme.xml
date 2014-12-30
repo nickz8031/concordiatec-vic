@@ -8,6 +8,10 @@
         <item name="tagViewStyle">@style/Widget.TagView</item>
     </style>
     
+    <style name="SubTheme" parent="AppTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_action_navigation_arrow_back</item>
+    </style>
+    
     <style name="ActionBarTitle" parent="@android:style/TextAppearance.Holo.Large">
         <item name="android:textColor">@android:color/white</item>
     	<item name="android:textSize">@dimen/text_18</item>

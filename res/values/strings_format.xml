@@ -7,5 +7,5 @@
     <!-- example : 45/100 -->
     <string name="format_surplus_total_count">%1$s/%2$s</string>
     
-    <string name="format_detail_like_share">%1$s명이 이 소식을 좋아함. %2$s명이 다시 공유함</string>
+    <string name="format_detail_like_share">%1$d명이 이 소식을 좋아함. %2$d명이 다시 공유함</string>
 </resources>
