@@ -3,14 +3,17 @@ package com.concordiatec.vic.adapter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.bumptech.glide.Glide;
 import com.concordiatec.vic.R;
-import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.Comment;
+import com.concordiatec.vic.util.TimeUtil;
+import com.concordiatec.vic.widget.CircleImageView;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 public class ArticleDetailCommentAdapter extends BaseAdapter {
 	private List<Comment> data;
@@ -42,7 +45,20 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (viewMap.get(position) == null) {
+			Comment comment = (Comment) getItem(position);
+			
 			convertView = inflater.inflate(R.layout.article_detail_comment_list_item, parent, false);
+			CommentHolder.commentorPhoto = (CircleImageView) convertView.findViewById(R.id.ar_d_commentor_photo);
+			CommentHolder.content = (TextView) convertView.findViewById(R.id.ar_d_comment_content);
+			CommentHolder.pastTime = (TextView) convertView.findViewById(R.id.ar_d_comment_time);
+			CommentHolder.name = (TextView) convertView.findViewById(R.id.ar_d_commentor_name);
+			
+			Glide.with(context).load(comment.getWriterPhotoURL()).crossFade().into(CommentHolder.commentorPhoto);
+			
+			CommentHolder.content.setText( comment.getContent() );
+			CommentHolder.pastTime.setText( TimeUtil.getTimePast( context, comment.getPastTime() ) );
+			CommentHolder.name.setText( comment.getWriterName() );
+			
 			viewMap.put(position, convertView);
 		}else{
 			convertView = viewMap.get(position);
@@ -72,5 +88,14 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 			}
 			notifyDataSetChanged();
 		}
+	}
+	
+	@SuppressWarnings("unused")
+	private static class CommentHolder {
+		static CircleImageView commentorPhoto;
+		static TextView name;
+		static TextView pastTime;
+		static TextView content;
+		
 	}
 }

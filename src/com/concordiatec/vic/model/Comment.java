@@ -31,9 +31,23 @@ public class Comment extends Model {
 	/**
 	 * 댓글 공감수
 	 */
-	private int upCount;
-	
-	
+	private int plusCount;
+	/**
+	 * reply comment id
+	 */
+	private int replyId;
+	/**
+	 * be replied user id
+	 */
+	private int replyWhose;
+	/**
+	 * be replied user name
+	 */
+	private String replyWhoseName; 
+	/**
+	 * is plus to this comment
+	 */
+	private boolean isPlus;
 	public String getContent() {
 		return content;
 	}
@@ -52,12 +66,6 @@ public class Comment extends Model {
 	public void setPastTime(int pastTime) {
 		this.pastTime = pastTime;
 	}
-	public int getUpCount() {
-		return upCount;
-	}
-	public void setUpCount(int upCount) {
-		this.upCount = upCount;
-	}
 	public int getWriterId() {
 		return writerId;
 	}
@@ -75,6 +83,36 @@ public class Comment extends Model {
 	}
 	public void setWriterPhotoURL(String writerPhotoURL) {
 		this.writerPhotoURL = writerPhotoURL;
+	}
+	public int getPlusCount() {
+		return plusCount;
+	}
+	public void setPlusCount(int plusCount) {
+		this.plusCount = plusCount;
+	}
+	public boolean isPlus() {
+		return isPlus;
+	}
+	public void setPlus(boolean isPlus) {
+		this.isPlus = isPlus;
+	}
+	public int getReplyId() {
+		return replyId;
+	}
+	public void setReplyId(int replyId) {
+		this.replyId = replyId;
+	}
+	public int getReplyWhose() {
+		return replyWhose;
+	}
+	public void setReplyWhose(int replyWhose) {
+		this.replyWhose = replyWhose;
+	}
+	public String getReplyWhoseName() {
+		return replyWhoseName;
+	}
+	public void setReplyWhoseName(String replyWhoseName) {
+		this.replyWhoseName = replyWhoseName;
 	}
 	
 }

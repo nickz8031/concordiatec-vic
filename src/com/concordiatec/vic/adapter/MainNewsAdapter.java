@@ -5,19 +5,16 @@ import java.util.List;
 import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Article;
-import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.tools.ImageViewPreload;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,7 +27,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
-	private static float coverImageViewWidthPixel = 0;
+	private ImageViewPreload viewPreload;
 
 	public MainNewsAdapter(Context context, List<Article> data) {
 		super();
@@ -38,6 +35,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		this.data = data;
 		this.inflater = LayoutInflater.from(context);
 		this.viewMap = new HashMap<Integer, View>();
+		this.viewPreload = new ImageViewPreload(context);
 	}
 	
 	public void clear(){
@@ -160,18 +158,9 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	 * @return
 	 */
 	private int getImageViewHeight( int w , int h ){
-		if( coverImageViewWidthPixel == 0 ){
-			WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);  
-			Display display = windowManager.getDefaultDisplay();  
-			DisplayMetrics dm = new DisplayMetrics();
-			display.getMetrics(dm);
-			float marginHor = context.getResources().getDimension(R.dimen.mni_layout_margin_horizontal) * 2;
-			float adjustMargin = context.getResources().getDimension(R.dimen.mni_layout_border_width) * 2;
-			coverImageViewWidthPixel = dm.widthPixels - marginHor - adjustMargin;
-		}
-		float scale = coverImageViewWidthPixel / w;
-		float realHeight = h * scale;
-		return Math.round(realHeight);
+		float marginHor = context.getResources().getDimension(R.dimen.mni_layout_margin_horizontal) * 2;
+		float adjustMargin = context.getResources().getDimension(R.dimen.mni_layout_border_width) * 2;
+		return Math.round(viewPreload.viewHeight(w, h, ( marginHor+adjustMargin ) ) );
 	}
 	
 

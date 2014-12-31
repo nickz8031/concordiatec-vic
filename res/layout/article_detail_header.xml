@@ -148,10 +148,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mni_layout_border_width"
-            android:src="@drawable/demo_content_img"
             android:contentDescription="@string/news_content_image"
-            android:adjustViewBounds="true"
-            />
+            android:visibility="gone"
+            android:adjustViewBounds="true"/>
+        
+        <com.daimajia.slider.library.SliderLayout
+	        android:id="@+id/news_content_img_slider"
+	        android:layout_width="match_parent"
+	        android:layout_height="200dp"
+	        android:visibility="gone">
+            <com.daimajia.slider.library.Indicators.PagerIndicator
+		        android:id="@+id/custom_indicator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"/>
+        </com.daimajia.slider.library.SliderLayout>
+        
+        
     </RelativeLayout>
     
     <!-- control area share&like&comment -->

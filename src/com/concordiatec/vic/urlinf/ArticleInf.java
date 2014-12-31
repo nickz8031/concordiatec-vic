@@ -1,4 +1,4 @@
-package com.concordiatec.vic.request;
+package com.concordiatec.vic.urlinf;
 
 import java.util.Map;
 import com.concordiatec.vic.model.ResData;

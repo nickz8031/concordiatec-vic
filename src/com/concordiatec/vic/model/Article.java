@@ -99,7 +99,7 @@ public class Article extends Model {
 	 * latest comment objects of article
 	 */
 	@SerializedName("lastest_comments")
-	private List<Comment> latestComments;
+	private List<LastestComment> latestComments;
 	
 	private boolean isLike;
 	
@@ -199,10 +199,10 @@ public class Article extends Model {
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
 	}
-	public List<Comment> getLatestComments() {
+	public List<LastestComment> getLatestComments() {
 		return latestComments;
 	}
-	public void setLatestComments(List<Comment> latestComments) {
+	public void setLatestComments(List<LastestComment> latestComments) {
 		this.latestComments = latestComments;
 	}
 	public String getWriterPhotoURL() {

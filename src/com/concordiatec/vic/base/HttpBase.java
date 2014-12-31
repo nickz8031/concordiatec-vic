@@ -43,6 +43,9 @@ public class HttpBase {
 	protected String getServerImgPath( int writerId , String fileName ){
 		return API_IMG_URL + "/" + writerId + "/" + fileName;
 	}
+	protected String getServerImgPath( int writerId ){
+		return getServerImgPath(writerId , "");
+	}
 	
 	protected int getIntValue( Object object ){
 		return Double.valueOf(object.toString()).intValue();

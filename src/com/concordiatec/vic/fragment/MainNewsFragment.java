@@ -31,7 +31,7 @@ import com.concordiatec.vic.adapter.MainNewsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
-import com.concordiatec.vic.service.ArticleService;
+import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.ArticleDetailActivity;
@@ -49,7 +49,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private RelativeLayout sortContentLayout;
 	private TextView sortCurrentSelect;
 	private MainNewsAdapter adapter;
-	private ArticleService aService;
+	private ArticleListService aService;
 	
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
@@ -66,7 +66,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	 * init widgets in main news fragment
 	 */
 	private void initWidgets(){
-		aService = ArticleService.single(getActivity());
+		aService = ArticleListService.single(getActivity());
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();
@@ -101,7 +101,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	
 	@SuppressWarnings("unchecked")
 	private void setAdapter(Object data){
-		listData = aService.transListToModel( (ArrayList<LinkedTreeMap<String,Object>>)data );
+		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 		if( !isRefresh ){
 			adapter = new MainNewsAdapter(getActivity(), listData);
 		}else{
@@ -150,7 +150,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		aService.getArticles(new VicResponseListener() {
 			@Override
 			public void onResponse(Object data) {
-				List<Article> tmpData = aService.transListToModel( (ArrayList<LinkedTreeMap<String,Object>>)data );
+				List<Article> tmpData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 				adapter.addData(tmpData);
 				isLoadingNow = false;
 			}
