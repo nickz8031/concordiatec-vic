@@ -1,6 +1,7 @@
 package com.concordiatec.vic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.actionbarsherlock.view.Menu;
 import com.bumptech.glide.Glide;
@@ -25,18 +26,29 @@ import com.concordiatec.vic.widget.CircleImageView;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.google.gson.internal.LinkedTreeMap;
+import android.R.menu;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 @SuppressLint("InflateParams")
@@ -51,13 +63,18 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private CommentService commentService;
 	private int articleId;
 	private LinearLayout progress;
+	private ScrollView contentScroll;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.article_detail);
 		
+		contentScroll = (ScrollView) findViewById(R.id.ar_d_content_scroll);
+		
 		progress = (LinearLayout) findViewById(R.id.detail_loading);
+		
+		contentView = LayoutInflater.from(this).inflate(R.layout.article_detail_header, null);
 		
 		commentList = (ListView)findViewById(R.id.ar_d_comment_list);
 		commentContent = (EditText)findViewById(R.id.ar_d_comment_input);
@@ -80,13 +97,14 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	 * initialize content view
 	 */
 	private void initListView(){
-		contentView = LayoutInflater.from(this).inflate(R.layout.article_detail_header, null);
-		commentList.addHeaderView( contentView );
 		TextView footerPadding = new TextView(this);
 		int height = (int) getResources().getDimension(R.dimen.detail_comment_input);
 		AbsListView.LayoutParams params = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, height);
 		footerPadding.setLayoutParams(params);
 		commentList.addFooterView(footerPadding);
+		
+		registerForContextMenu( commentList );
+		
 		fillContent();
 	}
 	
@@ -134,11 +152,12 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				likeCount.setText( detail.getLikeCount()+"" );
 				commentCount.setText( detail.getCommentCount()+"" );
 				String lst = likeShareText.getText().toString();
+				
 				likeShareText.setText( String.format(lst, detail.getLikeCount() , detail.getShareCount() ) );
 				
 				
 				List<ArticleImages> imgs = detail.getImages();
-
+				
 				if( imgs.size() > 1 ){
 					//make viewPager
 					for (int i = 0; i < imgs.size(); i++) {
@@ -152,9 +171,13 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					sliderLayout.setVisibility(View.VISIBLE);
 				}else{
 					//show image
-					Glide.with(ArticleDetailActivity.this).load(imgs.get(0).getName()).into(contentImg);
+					Glide.with(ArticleDetailActivity.this).load(imgs.get(0).getName()).crossFade().into(contentImg);
 					contentImg.setVisibility(View.VISIBLE);
 				}
+				
+				commentCount.setOnClickListener(new CommentBtnClickListener());
+				
+				
 				progress.setVisibility(View.GONE);
 			}
 		}, articleId);
@@ -164,29 +187,85 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private void getComments(){
 		commentService.getComments(new VicResponseListener() {
 			@Override
-			public void onResponseNoData() {}
+			public void onResponseNoData() {
+				commentList.setVisibility(View.GONE);
+				contentScroll.setVisibility(View.VISIBLE);
+				contentScroll.addView(contentView);
+			}
 			@Override
 			public void onResponse(Object data) {
 				List<Comment> listComments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
-				commentList.setAdapter( new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments) );
+				if( listComments != null && listComments.size() > 0 ){
+					commentList.addHeaderView( contentView );
+					commentList.setAdapter( new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments) );
+					commentList.setOnItemClickListener(new OnItemClickListener() {
+
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							
+							HashMap<String, Boolean> dataStatus = new HashMap<String, Boolean>();
+							dataStatus.put("is_like", position%2 == 0);
+							dataStatus.put("is_show_plus", position%2 == 1);
+							
+							parent.setTag(dataStatus);
+							ArticleDetailActivity.this.openContextMenu( parent );
+						}
+						
+					});
+				}
 			}
 		}, articleId);
 	}
 	
-	/**
-	 * initialize comments list
-	 */
-	private void initComments(){
-		comments = new ArrayList<Comment>();
-		for (int i = 0; i < 15; i++) {
-			Comment c = new Comment();
-			c.setId(i+1);
-			comments.add(c);
+	private final class CommentBtnClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			commentContent.requestFocus();
+			InputMethodManager imm = (InputMethodManager) commentContent.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+			
+		}
+	}
+		
+	private final static int CONTEXT_COMMENT_PLUS = 1;
+	private final static int CONTEXT_COMMENT_PLUS_CANCEL = 2;
+	private final static int CONTEXT_COMMENT_REPLY = 3;
+	private final static int CONTEXT_COMMENT_CONTENT_COPY = 4;
+	private final static int CONTEXT_COMMENT_REPORT = 5;
+	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 6;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+
+		menu.setHeaderTitle(R.string.comment_context_title);
+		HashMap<String, Boolean> status = (HashMap<String, Boolean>) v.getTag();
+		//+1 혹은 취소
+		if( status.get("is_like") ){
+			menu.add(0, CONTEXT_COMMENT_PLUS_CANCEL, CONTEXT_COMMENT_PLUS_CANCEL, R.string.comment_plus_cancel);
+		}else {
+			menu.add(0, CONTEXT_COMMENT_PLUS, CONTEXT_COMMENT_PLUS, R.string.comment_plus);
+		}
+		//답글
+		menu.add(0, CONTEXT_COMMENT_REPLY, CONTEXT_COMMENT_REPLY, R.string.comment_reply);
+		//복사
+		menu.add(0, CONTEXT_COMMENT_CONTENT_COPY, CONTEXT_COMMENT_CONTENT_COPY, R.string.comment_copy);
+		//신고
+		menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.comment_report);
+		
+		if( status.get("is_show_plus") ){
+			menu.add(0, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, R.string.comment_show_plus_member);
 		}
 		
-		adapter = new ArticleDetailCommentAdapter(this , comments);
-		commentList.setAdapter(adapter);
+		
 	}
 	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		
+		LogUtil.show(item.getItemId() + "");
+		
+		return true;
+	}
 }
 	

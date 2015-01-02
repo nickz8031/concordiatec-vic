@@ -92,7 +92,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		aService.getArticles(new VicResponseListener() {
 			@Override
 			public void onResponse(Object data) {
-				setAdapter(data);
+				setAdapterData(data);
 			}
 			@Override
 			public void onResponseNoData() {}
@@ -100,7 +100,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void setAdapter(Object data){
+	private void setAdapterData(Object data){
 		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 		if( !isRefresh ){
 			adapter = new MainNewsAdapter(getActivity(), listData);

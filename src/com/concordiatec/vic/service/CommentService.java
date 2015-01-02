@@ -41,6 +41,9 @@ public class CommentService extends HttpBase implements VicServiceInterface {
 					case 0: //successful
 						lis.onResponse(data.getData());
 						break;
+					case 1: //no data
+						lis.onResponseNoData();
+						break;
 					case 402: //no data
 						lis.onResponseNoData();
 						break;
@@ -79,7 +82,7 @@ public class CommentService extends HttpBase implements VicServiceInterface {
 		cmt.setId( getIntValue(map.get("id")) );
 		cmt.setWriterId( getIntValue(map.get("user_id")) );
 		cmt.setWriterName( map.get("name").toString() );
-		cmt.setWriterPhotoURL( map.get("photo").toString() );
+		cmt.setWriterPhotoURL( getServerImgPath( getIntValue(map.get("user_id")) , map.get("photo").toString()) );
 		cmt.setContent( map.get("comment").toString() );
 		cmt.setPastTime( getIntValue(map.get("pastime")) );
 		cmt.setReplyId(getIntValue(map.get("reply_id")));

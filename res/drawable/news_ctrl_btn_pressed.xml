@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <stroke android:width="1px" android:color="#DBDBDB" />
+    <solid android:color="#D1D1D1"/>
+    <corners android:radius="@dimen/mni_ctrl_btn_radius"/>
+</shape>

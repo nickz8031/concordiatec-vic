@@ -46,6 +46,7 @@ public class ArticleDetailImageService extends HttpBase implements VicServiceInt
 		if (adis == null) {
 			adis = new ArticleDetailImageService(context , serverPath);
 		}
+		adis.serverPath = serverPath;
 		return adis;
 	}
 }

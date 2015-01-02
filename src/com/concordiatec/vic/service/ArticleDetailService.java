@@ -50,7 +50,6 @@ public class ArticleDetailService extends HttpBase implements VicServiceInterfac
 		article.setWriterName( map.get("writer_name").toString() );
 		
 		String serverPath = this.getServerImgPath(article.getWriterId());
-		
 		String pUrl = serverPath + map.get("writer_photo").toString();
 		article.setWriterPhotoURL( pUrl );
 		

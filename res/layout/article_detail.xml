@@ -7,7 +7,13 @@
     android:paddingTop="@dimen/mni_layout_border_width"
     android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
     android:background="@drawable/list_item_shadow">
-    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ar_d_content_scroll"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/detail_comment_input"
+        android:scrollbars="none" />
     <ListView 
         android:layout_alignParentTop="true"
         android:id="@+id/ar_d_comment_list"
@@ -15,7 +21,10 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/white"
         android:dividerHeight="0dp"
-        android:scrollbars="none"/>
+        android:drawSelectorOnTop="true"
+        android:scrollbars="none"
+        android:listSelector="@drawable/lv_selector"
+        />
     
     <LinearLayout
         android:id="@+id/comment_write_block" 
@@ -27,7 +36,9 @@
         android:paddingTop="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="@drawable/article_detail_comment_write">
+        android:background="@drawable/article_detail_comment_write"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
         <EditText 
             android:id="@+id/ar_d_comment_input"
             android:layout_width="0dp"

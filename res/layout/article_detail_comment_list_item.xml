@@ -10,14 +10,13 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-    	android:background="@drawable/ar_d_comment_block_border">
+    	android:background="@drawable/ar_d_comment_block">
     	
         <com.concordiatec.vic.widget.CircleImageView 
 	        android:id="@+id/ar_d_commentor_photo"
 	        android:layout_width="24dp"
 	        android:layout_height="24dp"
 	        android:layout_marginRight="16dp"
-	        android:contentDescription="asd"
 	        android:src="@drawable/demo_avatar"
 	        />
 	    <LinearLayout 

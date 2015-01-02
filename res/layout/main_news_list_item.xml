@@ -93,11 +93,9 @@
         	android:gravity="center_vertical" >
 
             <com.concordiatec.vic.widget.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/news_writer_photo"
                 android:layout_width="@dimen/mni_writer_photo_width"
-                android:layout_height="@dimen/mni_writer_photo_height"
-                android:src="@drawable/demo_avatar" />
+                android:layout_height="@dimen/mni_writer_photo_height" />
         </LinearLayout>
 
         <LinearLayout
@@ -170,7 +168,7 @@
         android:layout_below="@id/news_content_image_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mni_ctrl_layout_height"
-        android:layout_margin="@dimen/mni_ctrl_layout_padding"
+        android:padding="@dimen/mni_ctrl_layout_padding"
         android:gravity="center_vertical">
         
         <!-- left -->
@@ -190,7 +188,7 @@
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
             android:text="@string/demo_like_count"
             android:clickable="true"
-            android:background="@drawable/news_ctrl_btn_border" />
+            android:background="@drawable/news_ctrl_btn" />
         
         <ImageButton
             android:id="@+id/news_share_btn"
@@ -201,7 +199,7 @@
             android:contentDescription="@string/desc_comment_button"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
-            android:background="@drawable/news_ctrl_btn_border" />
+            android:background="@drawable/news_ctrl_btn" />
         
         <!-- right -->
         <TextView
@@ -219,7 +217,7 @@
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
             android:text="@string/demo_comment_count"
             android:clickable="true"
-            android:background="@drawable/news_ctrl_btn_border" />
+            android:background="@drawable/news_ctrl_btn" />
         
         <LinearLayout
             android:id="@+id/news_commentor_photos"
@@ -228,35 +226,13 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
-            android:orientation="horizontal">
-            
-            <com.concordiatec.vic.widget.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="@dimen/mni_ctrl_commentor_photo_width"
-                android:layout_height="@dimen/mni_ctrl_commentor_photo_height"
-                android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
-                android:src="@drawable/ic_default_avatar" />
-            
-            <com.concordiatec.vic.widget.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="@dimen/mni_ctrl_commentor_photo_width"
-                android:layout_height="@dimen/mni_ctrl_commentor_photo_height"
-                android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
-                android:src="@drawable/ic_default_avatar" />
-            
-            <com.concordiatec.vic.widget.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="@dimen/mni_ctrl_commentor_photo_width"
-                android:layout_height="@dimen/mni_ctrl_commentor_photo_height"
-                android:layout_marginRight="@dimen/mni_ctrl_commentor_photo_margin"
-                android:src="@drawable/ic_default_avatar" />
-            
-        </LinearLayout>
+            android:visibility="gone"
+            android:orientation="horizontal" />
     </RelativeLayout>
     
     <!-- comment contents -->
     <RelativeLayout 
-        android:id="@+id/comment_layout_area"
+        android:id="@+id/display_comment_layout"
         android:layout_below="@id/news_ctrl_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -264,14 +240,19 @@
         android:paddingBottom="@dimen/mni_comment_layout_padding"
         android:layout_marginLeft="@dimen/mni_comment_layout_padding"
        	android:layout_marginRight="@dimen/mni_comment_layout_padding"
-       	android:background="@drawable/news_comment_border">
-        <TextView 
+       	android:background="@drawable/news_comment_border"
+        android:visibility="gone">
+        <ViewFlipper 
             android:id="@+id/display_comment_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/mni_comment_content_margin_verticle"
             android:paddingBottom="@dimen/mni_comment_content_margin_verticle"
-            android:text="@string/demo_comment_contents"/>
+            android:autoStart="true"
+            android:inAnimation="@anim/long_fade_in"
+            android:outAnimation="@anim/long_fade_out"
+            android:flipInterval="3000" />
+        
     </RelativeLayout>
     
 </RelativeLayout>

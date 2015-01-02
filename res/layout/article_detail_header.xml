@@ -172,7 +172,7 @@
         android:id="@+id/news_ctrl_area"
         android:layout_below="@id/news_content_image_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mni_ctrl_layout_height"
+        android:layout_height="@dimen/detail_ctrl_layout_height"
 	    android:layout_marginLeft="16dp"
 	    android:layout_marginRight="16dp"
         android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
@@ -196,7 +196,7 @@
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
             android:text="@string/demo_like_count"
             android:clickable="true"
-            android:background="@drawable/news_ctrl_btn_border" />
+            android:background="@drawable/news_ctrl_btn_selector" />
         
         <ImageButton
             android:id="@+id/news_share_btn"
@@ -205,9 +205,10 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_share_24dp"
             android:contentDescription="@string/desc_comment_button"
+            android:clickable="true"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
-            android:background="@drawable/news_ctrl_btn_border" />
+            android:background="@drawable/news_ctrl_btn_selector" />
         
         <!-- right -->
         <TextView
@@ -225,7 +226,7 @@
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
             android:text="@string/demo_comment_count"
             android:clickable="true"
-            android:background="@drawable/news_ctrl_btn_border" />
+            android:background="@drawable/news_ctrl_btn_selector" />
         
     </RelativeLayout>
     
