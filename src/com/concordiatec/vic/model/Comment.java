@@ -3,7 +3,7 @@
  */
 package com.concordiatec.vic.model;
 
-public class Comment extends Model {
+public class Comment extends VicModel {
 	/**
 	 * 댓글 아이디
 	 */

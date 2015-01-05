@@ -9,6 +9,13 @@
 	<string name="time_format_string_month"> 개월</string>
 	<string name="time_format_string_year"> 년</string>
 	
+    <string name="setting">설정</string>
+    <string name="login">로그인</string>
+    <string name="signup">회원가입</string>
+    <string name="findpwd">비밀번호 찾기</string>
+    <string name="logout">로그아웃</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
 	
 	
 	<string name="demo_store_name">디퀸즈 뉴 코멕스점(12월 오픈예정)</string>

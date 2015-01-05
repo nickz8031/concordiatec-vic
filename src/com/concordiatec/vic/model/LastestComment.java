@@ -2,7 +2,7 @@ package com.concordiatec.vic.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LastestComment extends Model{
+public class LastestComment extends VicModel{
 	
 	@SerializedName("comment_id")
 	private int commentId;

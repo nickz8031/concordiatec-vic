@@ -7,16 +7,16 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.content.Context;
-import com.concordiatec.vic.base.HttpBase;
 import com.concordiatec.vic.inf.VicServiceInterface;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.urlinf.CommentInf;
+import com.concordiatec.vic.requestinf.CommentInf;
+import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class CommentService extends HttpBase implements VicServiceInterface {
+public class CommentService extends HttpUtil implements VicServiceInterface {
 	public static CommentService cs;
 	private Context context;
 	

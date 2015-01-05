@@ -44,4 +44,8 @@ public class EncryptUtil {
         return null;
     }
 	
+	public static String EncPwd( String pwd ){
+		return EncryptUtil.MD5(pwd);
+	}
+	
 }

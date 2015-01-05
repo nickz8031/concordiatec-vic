@@ -8,7 +8,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.content.Context;
 import com.bumptech.glide.Glide;
-import com.concordiatec.vic.base.HttpBase;
 import com.concordiatec.vic.inf.VicServiceInterface;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
@@ -16,12 +15,13 @@ import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.urlinf.ArticleInf;
+import com.concordiatec.vic.requestinf.ArticleInf;
+import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
 @SuppressWarnings("unused")
-public class ArticleListService extends HttpBase implements VicServiceInterface{
+public class ArticleListService extends HttpUtil implements VicServiceInterface{
 	public static ArticleListService ars;
 	private Context context;
 	

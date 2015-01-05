@@ -1,6 +1,6 @@
 package com.concordiatec.vic.model;
 
-public class ArticleImages {
+public class ArticleImages extends VicModel {
 	private int id;
 	private String name;
 	public String getName() {

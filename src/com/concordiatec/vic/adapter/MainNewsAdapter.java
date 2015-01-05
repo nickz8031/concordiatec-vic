@@ -14,17 +14,28 @@ import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.widget.CustomViewFlipper;
 import com.concordiatec.vic.widget.CustomViewFlipper.OnFlipListener;
+import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.R;
+import com.concordiatec.vic.R.anim;
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -134,6 +145,20 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			NewsHolder.content.setText( apData.getContent() );
 			NewsHolder.likeCount.setText( apData.getLikeCount()+"" );
 			NewsHolder.commentCount.setText( apData.getCommentCount()+"" );
+			
+			//click comment icon move to detail activity
+			NewsHolder.commentCount.setOnClickListener(new CommentIconClickListener(apData.getId()));
+			
+
+			if( apData.isLike() ){
+				likeArticle(NewsHolder.likeCount);
+				NewsHolder.likeCount.setTag(true);
+			}
+			
+			//click up icon do up process
+			NewsHolder.likeCount.setOnClickListener(new LikeIconClickListener(apData.getId()));
+			
+			
 			//set cover imageView height
 			if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
 				LayoutParams layoutParams = new LayoutParams( 
@@ -143,17 +168,18 @@ public class MainNewsAdapter extends VicBaseAdapter {
 				NewsHolder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
 			}
 			
-			NewsHolder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
-			NewsHolder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
-			NewsHolder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
-			
+			//writer profile photo
 			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(NewsHolder.writerPhoto);
+			//article cover image
 			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(NewsHolder.coverImage);
 			
 			List<LastestComment> lastestComments = apData.getLatestComments();
+			//if has comments
 			if( lastestComments != null && lastestComments.size() > 0 ){
 				
-				
+				NewsHolder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
+				NewsHolder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
+				NewsHolder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
 				
 				for (int i = 0; i < lastestComments.size(); i++) {
 					LastestComment c = lastestComments.get(i);
@@ -178,6 +204,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 					span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, c.getUserName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 					TextView tvContent = new TextView(context);
 					tvContent.setText( span );
+					tvContent.setGravity(Gravity.CENTER_VERTICAL);
 					NewsHolder.commentFlip.addView(tvContent);
 					NewsHolder.commentFlip.setOnFlipListener(new OnFlipListener() {
 						@Override
@@ -189,6 +216,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 					});
 					
 				}
+				//stop auto flip if there is only one comment
 				if( lastestComments.size() == 1 ){
 					NewsHolder.commentFlip.stopFlipping();
 					NewsHolder.commentFlip.setAutoStart(false);
@@ -207,6 +235,110 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		return convertView;
 	}
 	
+	/**
+	 * click comment icon move to detail activity
+	 * @author Nick.z
+	 */
+	private final class CommentIconClickListener implements OnClickListener{
+		private int articleId;
+		public CommentIconClickListener( int articleId ) {
+			this.articleId = articleId;
+		}
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(context , ArticleDetailActivity.class);
+			intent.putExtra("article_id", articleId);
+			context.startActivity(intent);
+		}
+		
+	}
+	
+	/**
+	 * click like button 
+	 * @author Nick.z
+	 */
+	private final class LikeIconClickListener implements OnClickListener{
+		private int articleId;
+		public LikeIconClickListener( int articleId ) {
+			this.articleId = articleId;
+			
+		}
+		@Override
+		public void onClick(View v) {
+			final TextView t = (TextView)v;
+			int likeCount = Integer.parseInt(t.getText().toString());
+			if( v.getTag() == null ){
+				t.setText((likeCount+1) + "");
+				likeArticle(t);
+				activeLikeAnimation(t);
+				t.setTag(true);
+			}else{
+				if( likeCount > 0 ){
+					t.setText((likeCount-1) + "");
+				}
+				dislikeArticle(t);
+				t.setTag(null);
+			}
+		}
+	}
+	
+	/**
+	 * like action
+	 * @param v
+	 */
+	private void likeArticle( View v ){
+		TextView t = (TextView) v;
+		t.setTextColor(Color.WHITE);
+		t.setBackgroundResource(R.drawable.news_ctrl_btn_active);
+		Drawable drawable = res.getDrawable(R.drawable.ic_action_thumb_up_white);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+		t.setCompoundDrawables(drawable, null, null, null);
+	}
+	/**
+	 * dislike action
+	 * @param v
+	 */
+	private void dislikeArticle( View v ){
+		TextView t = (TextView) v;
+		t.setTextColor( res.getColor(R.color.mni_ctrl_btn_text) );
+		t.setBackgroundResource(R.drawable.news_ctrl_btn_selector);
+		Drawable drawable = res.getDrawable(R.drawable.ic_action_thumb_up);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+		t.setCompoundDrawables(drawable, null, null, null);
+	}
+	
+	/**
+	 * start animation with like action
+	 * @param v
+	 */
+	private void activeLikeAnimation( View v ){
+		final View target = v;
+		final Animation toBig = AnimationUtils.loadAnimation(context, R.anim.big_scale);
+		final Animation toNormal = AnimationUtils.loadAnimation(context, R.anim.small_scale);
+		target.setAnimation(toBig);
+		toBig.start();
+		toBig.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				target.clearAnimation();
+				target.setAnimation(toNormal);
+				toNormal.start();
+			}
+		});
+	}
+	
+	
+	/**
+	 * set commenter photo border with comment text flip
+	 * @param wrap
+	 * @param position
+	 */
 	private void setCmtPhotoBorder( ViewGroup wrap , int position ){
 		int borderWidth = 2;
 		for (int i = 0; i < wrap.getChildCount(); i++) {

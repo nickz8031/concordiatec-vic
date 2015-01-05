@@ -7,17 +7,17 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.content.Context;
-import com.concordiatec.vic.base.HttpBase;
 import com.concordiatec.vic.inf.VicServiceInterface;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.urlinf.ArticleInf;
+import com.concordiatec.vic.requestinf.ArticleInf;
+import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class ArticleDetailService extends HttpBase implements VicServiceInterface {
+public class ArticleDetailService extends HttpUtil implements VicServiceInterface {
 
 	private static ArticleDetailService ads;
 	private Context context;
@@ -27,7 +27,7 @@ public class ArticleDetailService extends HttpBase implements VicServiceInterfac
 	}
 	
 	@Override
-	public List<?> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
+	public List<Article> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -97,15 +97,18 @@ public class ArticleDetailService extends HttpBase implements VicServiceInterfac
 			@Override
 			public void success(ResData data, Response arg1) {
 				switch (Integer.valueOf( data.getStatus() )) {
-				case 0: //successful
-					lis.onResponse(data.getData());
-					break;
-				case 402: //no data
-					lis.onResponseNoData();
-					break;
-				default:
-					LogUtil.show(data.getMsg() + " [code:" + data.getStatus() + "]");
-					break;
+					case 0: //successful
+						lis.onResponse(data.getData());
+						break;
+					case 1: //no data
+						lis.onResponseNoData();
+						break;
+					case 402: //no data
+						lis.onResponseNoData();
+						break;
+					default:
+						LogUtil.show(data.getMsg() + " [code:" + data.getStatus() + "]");
+						break;
 			}
 		}});
 	}

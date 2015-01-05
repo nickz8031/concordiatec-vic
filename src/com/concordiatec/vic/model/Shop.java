@@ -3,4 +3,4 @@
  */
 package com.concordiatec.vic.model;
 
-public class Shop extends Model {}
+public class Shop extends VicModel {}

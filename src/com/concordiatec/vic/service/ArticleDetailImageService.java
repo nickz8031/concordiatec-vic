@@ -3,13 +3,12 @@ package com.concordiatec.vic.service;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import com.bumptech.glide.Glide;
-import com.concordiatec.vic.base.HttpBase;
 import com.concordiatec.vic.inf.VicServiceInterface;
 import com.concordiatec.vic.model.ArticleImages;
+import com.concordiatec.vic.util.HttpUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class ArticleDetailImageService extends HttpBase implements VicServiceInterface {
+public class ArticleDetailImageService extends HttpUtil implements VicServiceInterface {
 	
 	private static ArticleDetailImageService adis;
 	private String serverPath;

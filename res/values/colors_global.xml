@@ -7,8 +7,18 @@
     
     
     <color name="theme_color">#2cb1e1</color>
+    <color name="theme_wrap_color">#0780ab</color>
     <color name="background_color">#FFEEEEEE</color>
     <color name="background_color_alpha">#70EEEEEE</color>
+    
+    <!-- default buttons -->
+    <color name="default_btn_color">#DEDEDE</color>
+    <color name="default_btn_active_color">#CCCCCC</color>
+    <color name="default_btn_border_color">#CDCDCD</color>
+    
+    <color name="primary_btn_color">#2cb1e1</color>
+    <color name="primary_btn_active_color">#0780ab</color>
+    <color name="primary_btn_border_color">#0780ab</color>
     
     <color name="effect_color">#ef7d20</color>
     

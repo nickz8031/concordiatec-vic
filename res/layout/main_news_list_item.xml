@@ -168,16 +168,13 @@
         android:layout_below="@id/news_content_image_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mni_ctrl_layout_height"
-        android:padding="@dimen/mni_ctrl_layout_padding"
         android:gravity="center_vertical">
         
         <!-- left -->
         <TextView
             android:id="@+id/news_like_btn"
-            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/mni_ctrl_btn_margin"
             android:drawableLeft="@drawable/ic_action_thumb_up"
             android:drawablePadding="@dimen/mni_ctrl_btn_drawable_padding"
             android:textSize="@dimen/text_16"
@@ -186,9 +183,13 @@
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:layout_marginLeft="@dimen/mni_ctrl_layout_padding"
+            android:layout_marginRight="@dimen/mni_ctrl_btn_margin"
+            android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
+            android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
             android:text="@string/demo_like_count"
             android:clickable="true"
-            android:background="@drawable/news_ctrl_btn" />
+            android:background="@drawable/news_ctrl_btn_selector" />
         
         <ImageButton
             android:id="@+id/news_share_btn"
@@ -199,7 +200,9 @@
             android:contentDescription="@string/desc_comment_button"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
-            android:background="@drawable/news_ctrl_btn" />
+            android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
+            android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
+            android:background="@drawable/news_ctrl_btn_selector" />
         
         <!-- right -->
         <TextView
@@ -215,9 +218,12 @@
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
+            android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
+            android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
+            android:layout_marginRight="@dimen/mni_ctrl_layout_padding"
             android:text="@string/demo_comment_count"
             android:clickable="true"
-            android:background="@drawable/news_ctrl_btn" />
+            android:background="@drawable/news_ctrl_btn_selector" />
         
         <LinearLayout
             android:id="@+id/news_commentor_photos"

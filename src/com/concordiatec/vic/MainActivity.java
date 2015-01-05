@@ -3,12 +3,17 @@ package com.concordiatec.vic;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.adapter.MainVpAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
 import com.concordiatec.vic.fragment.MainEventFragment;
 import com.concordiatec.vic.fragment.MainInfoFragment;
 import com.concordiatec.vic.fragment.MainNewsFragment;
+import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +24,6 @@ import android.view.ViewConfiguration;
 import android.view.View.OnClickListener;
 
 public class MainActivity extends BaseSherlockFragmentActivity {
-	// private final String DEBUG_TAG = this.getClass().getSimpleName();
 	private ViewPager mainVp;
 	private List<Fragment> viewPagerViews;
 	private int initFragmentPosition = 0;
@@ -110,4 +114,54 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 			setFragmentActive(arg0);
 		}
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		LogUtil.show(item.getItemId()+"");
+		switch (item.getItemId()){
+		case android.R.id.home:
+				LogUtil.show("11111111");
+			break;
+	    default:  
+	        return super.onOptionsItemSelected(item);  
+	    } 
+		return true;
+	}
+	
+	private static int backFlagChangeSec = 0;
+    private static int backFlagMaxSec = 2;
+    private Timer backPressTimer;  
+    private TimerTask backPressTask;
+	@Override
+    public void onBackPressed() {
+		if( backFlagChangeSec > 0 && backFlagChangeSec <= backFlagMaxSec ){
+			closeApplication();
+		}else{
+			if( backPressTask != null && backPressTimer!=null ){
+				backPressTask.cancel();
+	        	backPressTimer.cancel();
+			}
+        	backFlagChangeSec = 0;
+			backPressTimer = new Timer();
+			backPressTask = new TimerTask() {  
+		        @Override  
+		        public void run() {
+		            runOnUiThread(new Runnable() {      // UI thread  
+		                @Override  
+		                public void run() {
+		                    backFlagChangeSec++;
+		                }  
+		            });  
+		        }  
+		    };
+			backPressTimer.schedule(backPressTask, 0 , 1000);
+			NotifyUtil.toast( this , getString(R.string.double_back_press) );
+		}
+		
+    }
+	
+	public void closeApplication() {
+		finish();
+		android.os.Process.killProcess(android.os.Process.myPid());
+    }
 }

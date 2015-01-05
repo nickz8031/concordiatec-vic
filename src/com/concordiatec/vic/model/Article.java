@@ -6,7 +6,7 @@ package com.concordiatec.vic.model;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class Article extends Model {
+public class Article extends VicModel {
 	/**
 	 * article id
 	 */
