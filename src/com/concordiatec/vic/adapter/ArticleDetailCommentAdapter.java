@@ -33,7 +33,7 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public Comment getItem(int position) {
 		return data.get(position);
 	}
 

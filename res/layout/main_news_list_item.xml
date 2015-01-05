@@ -242,7 +242,7 @@
        	android:layout_marginRight="@dimen/mni_comment_layout_padding"
        	android:background="@drawable/news_comment_border"
         android:visibility="gone">
-        <ViewFlipper 
+        <com.concordiatec.vic.widget.CustomViewFlipper 
             android:id="@+id/display_comment_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

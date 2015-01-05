@@ -21,6 +21,7 @@ import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.CommentService;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
+import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.daimajia.slider.library.SliderLayout;
@@ -128,8 +129,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			public void onResponse(Object data) {
 				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data );
 				
-				TextView storeName = (TextView) contentView.findViewById(R.id.news_store_name);
-				TextView storeAddr = (TextView) contentView.findViewById(R.id.news_store_addr);
+				
 				CircleImageView imageView = (CircleImageView) contentView.findViewById(R.id.news_writer_photo);
 				TextView writerName = (TextView) contentView.findViewById(R.id.news_writer_name);
 				TextView writeTime = (TextView) contentView.findViewById(R.id.news_write_time);
@@ -141,8 +141,17 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				SliderLayout sliderLayout = (SliderLayout) contentView.findViewById(R.id.news_content_img_slider);
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
 				
-				storeName.setText( detail.getShopName() );
-				storeAddr.setText( detail.getShopAddr() );
+				if( !StringUtil.isEmpty(detail.getShopName()) ){
+					TextView storeName = (TextView) contentView.findViewById(R.id.news_store_name);
+					TextView storeAddr = (TextView) contentView.findViewById(R.id.news_store_addr);
+					
+					storeName.setText( detail.getShopName() );
+					storeAddr.setText( detail.getShopAddr() );
+				}else{
+					RelativeLayout storeInfoLayout = (RelativeLayout) contentView.findViewById(R.id.store_info_layout);
+					storeInfoLayout.setVisibility(View.GONE);
+				}
+				
 				
 				Glide.with(ArticleDetailActivity.this).load(detail.getWriterPhotoURL()).crossFade().into(imageView);
 				
@@ -196,17 +205,24 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			public void onResponse(Object data) {
 				List<Comment> listComments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
 				if( listComments != null && listComments.size() > 0 ){
+					adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments);
 					commentList.addHeaderView( contentView );
-					commentList.setAdapter( new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments) );
+					commentList.setAdapter( adapter );
 					commentList.setOnItemClickListener(new OnItemClickListener() {
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 							
 							HashMap<String, Boolean> dataStatus = new HashMap<String, Boolean>();
-							dataStatus.put("is_like", position%2 == 0);
-							dataStatus.put("is_show_plus", position%2 == 1);
 							
+							Comment cmt = adapter.getItem((int) id);
+							
+							if( cmt.isPlus() ){
+								dataStatus.put("is_like", true);
+							}
+							if( cmt.getPlusCount() > 0 ){
+								dataStatus.put("is_show_plus", true);
+							}
 							parent.setTag(dataStatus);
 							ArticleDetailActivity.this.openContextMenu( parent );
 						}
@@ -241,7 +257,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		menu.setHeaderTitle(R.string.comment_context_title);
 		HashMap<String, Boolean> status = (HashMap<String, Boolean>) v.getTag();
 		//+1 혹은 취소
-		if( status.get("is_like") ){
+		if( status.containsKey("is_like") ){
 			menu.add(0, CONTEXT_COMMENT_PLUS_CANCEL, CONTEXT_COMMENT_PLUS_CANCEL, R.string.comment_plus_cancel);
 		}else {
 			menu.add(0, CONTEXT_COMMENT_PLUS, CONTEXT_COMMENT_PLUS, R.string.comment_plus);
@@ -253,7 +269,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		//신고
 		menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.comment_report);
 		
-		if( status.get("is_show_plus") ){
+		if( status.containsKey("is_show_plus") ){
 			menu.add(0, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, R.string.comment_show_plus_member);
 		}
 		

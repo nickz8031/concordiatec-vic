@@ -10,5 +10,5 @@
     
     <dimen name="zerofit">0dp</dimen>
     
-     <integer name="long_anim_time">1000</integer>
+     <integer name="long_anim_time">1500</integer>
 </resources>

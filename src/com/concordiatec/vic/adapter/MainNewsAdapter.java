@@ -4,32 +4,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.bumptech.glide.Glide;
+import com.concordiatec.vic.R.color;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.tools.ImageViewPreload;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
+import com.concordiatec.vic.widget.CustomViewFlipper;
+import com.concordiatec.vic.widget.CustomViewFlipper.OnFlipListener;
 import com.concordiatec.vic.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ViewFlipper;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
+@SuppressLint("UseSparseArrays")
 public class MainNewsAdapter extends VicBaseAdapter {
 	private List<Article> data;
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
-	private Resources res;
 	private ImageViewPreload viewPreload;
+	private Resources res;
 
 	public MainNewsAdapter(Context context, List<Article> data) {
 		super();
@@ -95,98 +106,117 @@ public class MainNewsAdapter extends VicBaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = convertView;
-		NewsHolder holder;
-		if (view == null) {
-			view = inflater.inflate(R.layout.main_news_list_item, parent, false);
-			holder = new NewsHolder();
+		if (viewMap.get(position) == null) {
+			Article apData = getItem(position);
+			convertView = inflater.inflate(R.layout.main_news_list_item, parent, false);
 			
-			holder.storeInfoLayout = (RelativeLayout) view.findViewById(R.id.store_info_layout);
-			holder.storeName = (TextView) view.findViewById(R.id.news_store_name);
-			holder.storeAddress = (TextView) view.findViewById(R.id.news_store_addr);
-
-			holder.writerPhoto = (CircleImageView) view.findViewById(R.id.news_writer_photo);
-			holder.writerName = (TextView) view.findViewById(R.id.news_writer_name);
-			holder.writeTime = (TextView) view.findViewById(R.id.news_write_time);
+			NewsHolder.storeInfoLayout = (RelativeLayout) convertView.findViewById(R.id.store_info_layout);
+			NewsHolder.writerName = (TextView) convertView.findViewById(R.id.news_writer_name);
+			NewsHolder.writeTime = (TextView) convertView.findViewById(R.id.news_write_time);
+			NewsHolder.content = (TextView) convertView.findViewById(R.id.news_content);
+			NewsHolder.likeCount = (TextView) convertView.findViewById(R.id.news_like_btn);
+			NewsHolder.commentCount = (TextView) convertView.findViewById(R.id.news_comment_btn);
+			NewsHolder.writerPhoto = (CircleImageView) convertView.findViewById(R.id.news_writer_photo);
+			NewsHolder.coverImage = (ImageView) convertView.findViewById(R.id.news_content_img);
 			
-			holder.content = (TextView) view.findViewById(R.id.news_content);
-			holder.coverImage = (ImageView) view.findViewById(R.id.news_content_img);
-			
-			holder.likeCount = (TextView) view.findViewById(R.id.news_like_btn);
-			holder.commentCount = (TextView) view.findViewById(R.id.news_comment_btn);
-			
-			holder.commentorPhotosLayout = (LinearLayout) view.findViewById(R.id.news_commentor_photos);
-			holder.commentLayout = (RelativeLayout) view.findViewById(R.id.display_comment_layout);
-			holder.commentFlip = (ViewFlipper) view.findViewById(R.id.display_comment_content);
-			
-			//viewMap.put(position, convertView);
-			view.setTag(holder);
-			view.startAnimation(animation);
-		} else {
-			//convertView = viewMap.get(position);
-			holder = (NewsHolder) view.getTag();
-		}
-		
-		Article apData = getItem(position);
-		if( StringUtil.isEmpty(apData.getShopName()) ){
-			holder.storeInfoLayout.setVisibility(View.GONE);
-		}else {
-			holder.storeName.setText( apData.getShopName() );
-			holder.storeAddress.setText( apData.getShopAddr() );
-		}
-		
-		Glide.with(context)
-		.load(apData.getWriterPhotoURL())
-		.crossFade()
-		.into(holder.writerPhoto);
-		
-		
-		holder.writerName.setText( apData.getWriterName() );
-		holder.writeTime.setText( TimeUtil.getTimePast( context, apData.getPastTime() ) );
-		holder.content.setText( apData.getContent() );
-		holder.likeCount.setText( apData.getLikeCount()+"" );
-		holder.commentCount.setText( apData.getCommentCount()+"" );
-		//set cover imageView height
-		if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
-			LayoutParams layoutParams = new LayoutParams( 
-												LayoutParams.MATCH_PARENT , 
-												getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight()
-										) );
-			holder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
-		}
-		Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(holder.coverImage);
-		
-		List<LastestComment> lastestComments = apData.getLatestComments();
-		if( lastestComments != null && lastestComments.size() > 0 ){
-			for (int i = 0; i < lastestComments.size(); i++) {
+			if( StringUtil.isEmpty(apData.getShopName()) ){
+				NewsHolder.storeInfoLayout.setVisibility(View.GONE);
+			}else {
+				NewsHolder.storeName = (TextView) convertView.findViewById(R.id.news_store_name);
+				NewsHolder.storeAddress = (TextView) convertView.findViewById(R.id.news_store_addr);
 				
-				LastestComment c = lastestComments.get(i);
-				//commenter photo
-				CircleImageView iView = new CircleImageView(context);
-				int cpSize = (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_width);
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cpSize , cpSize);
-				params.setMargins(0, 0, (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_margin), 0);
-				iView.setLayoutParams(params);
-				holder.commentorPhotosLayout.addView(iView);
-				Glide.with(context)
-				.load(c.getUserPhoto())
-				.crossFade()
-				.into(iView);
-				
-				//comment content
-				TextView tv = new TextView(context);
-				tv.setBackgroundResource(android.R.color.white);
-				tv.setText( c.getCommentText() );
-				holder.commentFlip.addView(tv);
+				NewsHolder.storeName.setText( apData.getShopName() );
+				NewsHolder.storeAddress.setText( apData.getShopAddr() );
 			}
 			
-			//display
-			holder.commentorPhotosLayout.setVisibility(View.VISIBLE);
-			holder.commentLayout.setVisibility(View.VISIBLE);
+			NewsHolder.writerName.setText( apData.getWriterName() );
+			NewsHolder.writeTime.setText( TimeUtil.getTimePast( context, apData.getPastTime() ) );
+			NewsHolder.content.setText( apData.getContent() );
+			NewsHolder.likeCount.setText( apData.getLikeCount()+"" );
+			NewsHolder.commentCount.setText( apData.getCommentCount()+"" );
+			//set cover imageView height
+			if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
+				LayoutParams layoutParams = new LayoutParams( 
+													LayoutParams.MATCH_PARENT , 
+													getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight()
+											) );
+				NewsHolder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
+			}
+			
+			NewsHolder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
+			NewsHolder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
+			NewsHolder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
+			
+			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(NewsHolder.writerPhoto);
+			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(NewsHolder.coverImage);
+			
+			List<LastestComment> lastestComments = apData.getLatestComments();
+			if( lastestComments != null && lastestComments.size() > 0 ){
+				
+				
+				
+				for (int i = 0; i < lastestComments.size(); i++) {
+					LastestComment c = lastestComments.get(i);
+					//commenter photo
+					CircleImageView iView = new CircleImageView(context);
+					int cpSize = (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_width);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cpSize , cpSize);
+					params.setMargins(0, 0, (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_margin), 0);
+					iView.setLayoutParams(params);
+					iView.setBorderColor(res.getColor(R.color.effect_color));
+					Glide.with(context)
+					.load(c.getUserPhoto())
+					.crossFade()
+					.into(iView);
+					
+					NewsHolder.commentorPhotosLayout.addView(iView);
+					final ViewGroup cpl = NewsHolder.commentorPhotosLayout;
+
+					setCmtPhotoBorder( cpl , 0 );
+					
+					SpannableString span = new SpannableString(c.getUserName() + " " + c.getCommentText());
+					span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, c.getUserName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					TextView tvContent = new TextView(context);
+					tvContent.setText( span );
+					NewsHolder.commentFlip.addView(tvContent);
+					NewsHolder.commentFlip.setOnFlipListener(new OnFlipListener() {
+						@Override
+						public void onShowPrevious(CustomViewFlipper flipper) {}
+						@Override
+						public void onShowNext(CustomViewFlipper flipper) {
+							setCmtPhotoBorder( cpl ,  flipper.getDisplayedChild() );
+						}
+					});
+					
+				}
+				if( lastestComments.size() == 1 ){
+					NewsHolder.commentFlip.stopFlipping();
+					NewsHolder.commentFlip.setAutoStart(false);
+				}
+				//display
+				NewsHolder.commentorPhotosLayout.setVisibility(View.VISIBLE);
+				NewsHolder.commentLayout.setVisibility(View.VISIBLE);
+			}
+			
+			viewMap.put(position, convertView);
+			convertView.startAnimation(animation);
+		} else {
+			convertView = viewMap.get(position);
 		}
-		
 		this.clearAnimation(position);
-		return view;
+		return convertView;
+	}
+	
+	private void setCmtPhotoBorder( ViewGroup wrap , int position ){
+		int borderWidth = 2;
+		for (int i = 0; i < wrap.getChildCount(); i++) {
+			CircleImageView civ = (CircleImageView) wrap.getChildAt(i);
+			if( i == position ){
+				civ.setBorderWidth(borderWidth);
+			}else{
+				civ.setBorderWidth(0);
+			}
+		}
 	}
 	
 	private void clearAnimation(int viewPos){
@@ -212,21 +242,22 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	
 
 	@SuppressWarnings("unused")
-	class NewsHolder {
-		TextView storeName;
-		TextView storeAddress;
-		TextView writerName;
-		TextView writeTime;
-		TextView content;
-		TextView likeCount;
-		TextView commentCount;
-		ImageView storeType;
-		CircleImageView writerPhoto;
-		ImageView coverImage;
+	private static class NewsHolder {
+		static TextView storeName;
+		static TextView storeAddress;
+		static TextView writerName;
+		static TextView writeTime;
+		static TextView content;
+		static TextView likeCount;
+		static TextView commentCount;
+		static ImageView storeType;
+		static CircleImageView writerPhoto;
+		static ImageView coverImage;
 		
-		LinearLayout commentorPhotosLayout;
-		RelativeLayout commentLayout;
-		ViewFlipper commentFlip;
-		RelativeLayout storeInfoLayout;
+		static LinearLayout commentorPhotosLayout;
+		static RelativeLayout commentContentsLayout;
+		static RelativeLayout commentLayout;
+		static CustomViewFlipper commentFlip;
+		static RelativeLayout storeInfoLayout;
 	}
 }
