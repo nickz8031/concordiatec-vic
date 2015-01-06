@@ -18,6 +18,7 @@ import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.requestinf.ArticleInf;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.ResponseUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
 @SuppressWarnings("unused")
@@ -44,7 +45,7 @@ public class ArticleListService extends HttpUtil implements VicServiceInterface{
 		final VicResponseListener lis = listener;
 		ArticleInf ai = restAdapter.create(ArticleInf.class);
 		Map<String, String> postParams = getAuthMap();
-		if( params != null ){
+		if( params != null && params.size() > 0 ){
 			for (Map.Entry<String, String> entry : params.entrySet()) {
 				postParams.put(entry.getKey(), entry.getValue());
 			}
@@ -52,23 +53,11 @@ public class ArticleListService extends HttpUtil implements VicServiceInterface{
 		ai.getArticles(postParams, new Callback<ResData>() {
 			@Override
 			public void success(ResData data, Response arg1) {
-				
-				switch (Integer.valueOf( data.getStatus() )) {
-					case 0: //successful
-						lis.onResponse(data.getData());
-						break;
-					case 402: //no data
-						lis.onResponseNoData();
-						break;
-					default:
-						LogUtil.show(data.getMsg() + " [code:" + data.getStatus() + "]");
-						break;
-				}
+				ResponseUtil.processResp(data, lis);
 			}
-
 			@Override
 			public void failure(RetrofitError err) {
-				LogUtil.show(err.getMessage());
+				lis.onFailure(err.getMessage());
 			}
 		});
 	}
@@ -94,6 +83,10 @@ public class ArticleListService extends HttpUtil implements VicServiceInterface{
 		
 		String pUrl = this.getServerImgPath(article.getWriterId() , map.get("writer_photo").toString());
 		String cUrl = this.getServerImgPath(article.getWriterId() , map.get("image").toString());
+		
+//		article.setCoverImageWidth( getIntValue(map.get("img_width")) );
+//		article.setCoverImageHeight( getIntValue(map.get("img_height")) );
+		
 		article.setWriterPhotoURL( pUrl );
 		article.setCoverImageURL( cUrl );
 		

@@ -2,7 +2,7 @@ package com.concordiatec.vic.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.activeandroid.ActiveAndroid;
+import com.concordiatec.vic.helper.DebugConverter;
 import retrofit.RestAdapter;
 
 public class HttpUtil {
@@ -22,6 +22,10 @@ public class HttpUtil {
 	 */
 	protected RestAdapter buildConnection() {
 		return new RestAdapter.Builder().setEndpoint( API_URL ).build();
+	}
+	
+	protected void setDebugConnection(){
+		this.restAdapter =  new RestAdapter.Builder().setConverter(new DebugConverter()).setEndpoint( API_URL ).build();
 	}
 	
 	public static String getEncodedAuthKey(){

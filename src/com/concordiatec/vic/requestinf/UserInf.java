@@ -9,6 +9,6 @@ import com.concordiatec.vic.model.ResData;
 
 public interface UserInf {
 	@FormUrlEncoded
-	@POST("/?r=login")
+	@POST("/?r=site/login")
 	void login(@FieldMap Map<String, String> map, Callback<ResData> response);
 }

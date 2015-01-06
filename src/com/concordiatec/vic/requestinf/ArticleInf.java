@@ -15,4 +15,8 @@ public interface ArticleInf {
 	@FormUrlEncoded
 	@POST("/?r=article/view")
 	void getDetail(@FieldMap Map<String, String> map , Callback<ResData> response);
+	
+	@FormUrlEncoded
+	@POST("/?r=article/like")
+	void likeArticle(@FieldMap Map<String, String> map , Callback<ResData> response);
 }

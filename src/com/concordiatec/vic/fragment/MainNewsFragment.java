@@ -31,9 +31,11 @@ import com.concordiatec.vic.adapter.MainNewsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
+import com.concordiatec.vic.model.ResData;
+import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleListService;
+import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.AniUtil;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
@@ -50,6 +52,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private TextView sortCurrentSelect;
 	private MainNewsAdapter adapter;
 	private ArticleListService aService;
+	private User loginUser;
 	
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
@@ -67,6 +70,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	 */
 	private void initWidgets(){
 		aService = ArticleListService.single(getActivity());
+		loginUser = new UserService(getActivity()).getLoginUser();
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();
@@ -89,14 +93,25 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 
 	private void getArticles(){
+		Map<String, String> map = new HashMap<String, String>();
+		if( loginUser != null ){
+			map.put("user_id", loginUser.usrId+"");
+		}
+		
 		aService.getArticles(new VicResponseListener() {
 			@Override
-			public void onResponse(Object data) {
+			public void onSuccess(Object data) {
 				setAdapterData(data);
 			}
+
 			@Override
-			public void onResponseNoData() {}
-		});
+			public void onFailure(String reason) {
+			}
+
+			@Override
+			public void onError(ResData error) {
+			}
+		} , map);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -104,11 +119,11 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 		if( !isRefresh ){
 			adapter = new MainNewsAdapter(getActivity(), listData);
+			newsListView.setAdapter(adapter);
 		}else{
 			adapter.setData(listData);
 			ptrLayout.setRefreshComplete();
 		}
-		newsListView.setAdapter(adapter);
 	}
 	
 	/**
@@ -149,15 +164,15 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		paramMap.put("article_id", adapter.getLastRecordId()+"");
 		aService.getArticles(new VicResponseListener() {
 			@Override
-			public void onResponse(Object data) {
+			public void onSuccess(Object data) {
 				List<Article> tmpData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 				adapter.addData(tmpData);
 				isLoadingNow = false;
 			}
 			@Override
-			public void onResponseNoData() {
-				isLoadingNow = false;
-			}
+			public void onError(ResData error) {}
+			@Override
+			public void onFailure(String reason) {}
 		} , paramMap);
 	}
 

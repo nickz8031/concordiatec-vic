@@ -16,6 +16,7 @@ import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.Comment;
+import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.service.ArticleDetailService;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.CommentService;
@@ -119,14 +120,10 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	
 	private void getArticleContents(){
 		detailService.getDetail(new VicResponseListener() {
-			@Override
-			public void onResponseNoData() {
-				noDataToast(ArticleDetailActivity.this);
-			}
-
+			
 			@SuppressWarnings("unchecked")
 			@Override
-			public void onResponse(Object data) {
+			public void onSuccess(Object data) {
 				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data );
 				
 				
@@ -189,6 +186,12 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				
 				progress.setVisibility(View.GONE);
 			}
+
+			@Override
+			public void onError(ResData error) {}
+
+			@Override
+			public void onFailure(String reason) {}
 		}, articleId);
 	}
 
@@ -196,13 +199,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private void getComments(){
 		commentService.getComments(new VicResponseListener() {
 			@Override
-			public void onResponseNoData() {
-				commentList.setVisibility(View.GONE);
-				contentScroll.setVisibility(View.VISIBLE);
-				contentScroll.addView(contentView);
-			}
-			@Override
-			public void onResponse(Object data) {
+			public void onSuccess(Object data) {
 				List<Comment> listComments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
 				if( listComments != null && listComments.size() > 0 ){
 					adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments);
@@ -230,6 +227,14 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					});
 				}
 			}
+			@Override
+			public void onError(ResData error) {
+				commentList.setVisibility(View.GONE);
+				contentScroll.setVisibility(View.VISIBLE);
+				contentScroll.addView(contentView);
+			}
+			@Override
+			public void onFailure(String reason) {}
 		}, articleId);
 	}
 	

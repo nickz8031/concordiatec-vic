@@ -14,6 +14,7 @@ import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.requestinf.CommentInf;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.ResponseUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class CommentService extends HttpUtil implements VicServiceInterface {
@@ -37,25 +38,12 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 		commentInf.getComments(postParams, new Callback<ResData>() {
 			@Override
 			public void success(ResData data, Response arg1) {
-				switch (Integer.valueOf( data.getStatus() )) {
-					case 0: //successful
-						lis.onResponse(data.getData());
-						break;
-					case 1: //no data
-						lis.onResponseNoData();
-						break;
-					case 402: //no data
-						lis.onResponseNoData();
-						break;
-					default:
-						LogUtil.show(data.getMsg() + " [code:" + data.getStatus() + "]");
-						break;
-				}
+				ResponseUtil.processResp(data, lis);
 			}
 			
 			@Override
 			public void failure(RetrofitError err) {
-				LogUtil.show(err.getMessage());
+				lis.onFailure(err.getMessage());
 			}
 		});
 		

@@ -1,7 +1,13 @@
 package com.concordiatec.vic;
 
 import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.listener.VicResponseListener;
+import com.concordiatec.vic.model.ResData;
+import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.NotifyUtil;
+import com.google.gson.internal.LinkedTreeMap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -23,6 +29,7 @@ public class LoginActivity extends SubPageSherlockActivity{
 	private EditText pwd;
 	private ImageView clearEmail;
 	private ImageView clearPwd;
+	private UserService lService;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,8 @@ public class LoginActivity extends SubPageSherlockActivity{
 		setContentView(R.layout.activity_login);
 		
 		setTitle(getString(R.string.login));
+		
+		lService = new UserService(this);
 		
 		//email edit text
 		email = (EditText) findViewById(R.id.user_account);
@@ -124,7 +133,6 @@ public class LoginActivity extends SubPageSherlockActivity{
 	private final class loginClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			
 			String emailPattern = "[a-zA-Z0-9]?[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+.[a-z]{2,5}";
 			boolean emailFalseFlag = (!email.getText().toString().matches(emailPattern) || email.getText().length()<1);
 			boolean pwdFalseFlag = (pwd.getText().length()<1);
@@ -135,43 +143,27 @@ public class LoginActivity extends SubPageSherlockActivity{
 				pwd.requestFocus();
 				showErrorNotify();
 			}else{
-				LoginActivity.this.setResult(RESULT_OK);
-				LoginActivity.this.finish();
-				
-//				final MemberDataProcessor mds = new MemberDataProcessor(getApplicationContext());
-//				
-//				Map<String, String> params = mds.makeSignInPostData(email.getText().toString() , pwd.getText().toString());
-//				
-//				Response.Listener<String> responseListener = new Response.Listener<String>(){
-//					@Override
-//					public void onResponse(String result) {
-//						if(result== null){
-//							showErrorNotify(R.string.server_connection_error);
-//						}else{
-//
-//							Map<String, Object> resultMap = ParseHttpResponseProcessor.getData(result);
-//							if( resultMap == null || resultMap.containsKey("err_code") ){
-//								showErrorNotify();
-//							}else{
-//								try {
-//									JSONObject object = new JSONObject(resultMap.get("data").toString());
-//									Member mb = new Member(
-//											Integer.valueOf(object.getString("id"))
-//											, object.getString("account")
-//											, object.getString("name"));
-//									mds.setMemberLoginStatus(mb);
-//								} catch (JSONException e) {
-//									e.printStackTrace();
-//								}
-//								LoginActivity.this.setResult(RESULT_OK);
-//								LoginActivity.this.finish();
-//							}
-//						}
-//					}
-//				};
-//				
-//				HttpUtil.getInstance(getApplicationContext()).doPost(UrlHelper.REQUEST_ROUTER_LOGIN , params , responseListener);				
-				
+				lService.doLogin(
+					email.getText().toString(), 
+					EncryptUtil.EncPwd(pwd.getText().toString()) , 
+					new VicResponseListener() {
+						@Override
+						public void onSuccess(Object data) {
+							User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data);
+							usr.pwd = pwd.getText().toString();
+							lService.login(usr);
+							LoginActivity.this.setResult(RESULT_OK);
+							LoginActivity.this.finish();
+						}
+
+						@Override
+						public void onError(ResData error) {
+							showErrorNotify();
+						}
+
+						@Override
+						public void onFailure(String reason) {}
+					});
 			}
 		}
 	}

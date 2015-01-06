@@ -4,35 +4,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.bumptech.glide.Glide;
-import com.concordiatec.vic.R.color;
+import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.LastestComment;
+import com.concordiatec.vic.model.ResData;
+import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.service.ArticleService;
+import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.ImageViewPreload;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.widget.CustomViewFlipper;
 import com.concordiatec.vic.widget.CustomViewFlipper.OnFlipListener;
 import com.concordiatec.vic.ArticleDetailActivity;
+import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
-import com.concordiatec.vic.R.anim;
-import android.R.bool;
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -42,18 +42,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 @SuppressLint("UseSparseArrays")
 public class MainNewsAdapter extends VicBaseAdapter {
 	private List<Article> data;
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
-	private Context context;
+	private Activity context;
 	private ImageViewPreload viewPreload;
 	private Resources res;
+	private ArticleService aService;
+	private UserService uService;
 
-	public MainNewsAdapter(Context context, List<Article> data) {
+	public MainNewsAdapter(Activity context, List<Article> data) {
 		super();
 		this.context = context;
 		this.res = context.getResources();
@@ -61,6 +62,8 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		this.inflater = LayoutInflater.from(context);
 		this.viewMap = new HashMap<Integer, View>();
 		this.viewPreload = new ImageViewPreload(context);
+		this.aService = new ArticleService(context);
+		this.uService = new UserService(context);
 	}
 	
 	public void clear(){
@@ -151,7 +154,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			
 
 			if( apData.isLike() ){
-				likeArticle(NewsHolder.likeCount);
+				setLike(NewsHolder.likeCount);
 				NewsHolder.likeCount.setTag(true);
 			}
 			
@@ -261,24 +264,21 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		private int articleId;
 		public LikeIconClickListener( int articleId ) {
 			this.articleId = articleId;
-			
 		}
 		@Override
 		public void onClick(View v) {
-			final TextView t = (TextView)v;
-			int likeCount = Integer.parseInt(t.getText().toString());
-			if( v.getTag() == null ){
-				t.setText((likeCount+1) + "");
-				likeArticle(t);
-				activeLikeAnimation(t);
-				t.setTag(true);
-			}else{
-				if( likeCount > 0 ){
-					t.setText((likeCount-1) + "");
-				}
-				dislikeArticle(t);
-				t.setTag(null);
+			
+			if( uService.getLoginUser() == null ){
+				Intent intent = new Intent(context , LoginActivity.class);
+				context.startActivityForResult(intent , 0);
+				return;
 			}
+			
+			final TextView t = (TextView)v;
+			if( v.getTag() == null ){
+				activeLikeAnimation(t);
+			}
+			likeArticle(t , articleId);
 		}
 	}
 	
@@ -286,7 +286,34 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	 * like action
 	 * @param v
 	 */
-	private void likeArticle( View v ){
+	private void likeArticle( View v , int articleId ){
+		final View view = v;
+		final TextView t = (TextView) v;
+		final boolean isLike = (v.getTag() == null);
+		aService.likeArticle(uService.getLoginUser().usrId, articleId, new VicResponseListener() {
+			@Override
+			public void onSuccess(Object data) {
+				int likeCount = Integer.parseInt(t.getText().toString());
+				if( isLike ){
+					t.setText((likeCount+1) + "");
+					setLike(view);
+					view.setTag(true);
+				}else{
+					if( likeCount > 0 ){
+						t.setText((likeCount-1) + "");
+					}
+					setDislike(view);
+					view.setTag(null);
+				}
+			}
+			@Override
+			public void onFailure(String reason) {}
+			@Override
+			public void onError(ResData error) {}
+		});
+	}
+	
+	private void setLike(View v){
 		TextView t = (TextView) v;
 		t.setTextColor(Color.WHITE);
 		t.setBackgroundResource(R.drawable.news_ctrl_btn_active);
@@ -294,11 +321,8 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 		t.setCompoundDrawables(drawable, null, null, null);
 	}
-	/**
-	 * dislike action
-	 * @param v
-	 */
-	private void dislikeArticle( View v ){
+	
+	private void setDislike( View v ){
 		TextView t = (TextView) v;
 		t.setTextColor( res.getColor(R.color.mni_ctrl_btn_text) );
 		t.setBackgroundResource(R.drawable.news_ctrl_btn_selector);
