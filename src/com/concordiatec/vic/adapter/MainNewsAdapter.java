@@ -12,6 +12,7 @@ import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.ImageViewPreload;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
@@ -68,6 +69,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	
 	public void clear(){
 		this.data.clear();
+		viewMap.clear();
 	}
 	
 	public void setData( List<Article> data ){
@@ -152,7 +154,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			//click comment icon move to detail activity
 			NewsHolder.commentCount.setOnClickListener(new CommentIconClickListener(apData.getId()));
 			
-
 			if( apData.isLike() ){
 				setLike(NewsHolder.likeCount);
 				NewsHolder.likeCount.setTag(true);

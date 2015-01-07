@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#33000000"
+    android:gravity="center_vertical"
+    android:id="@+id/progress_view_group"
+    >
+
+    <ProgressBar
+        android:id="@+id/loadingImageView"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#00FFFFFF" />
+    <TextView 
+        android:id="@+id/loadingImageText"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:textColor="@color/normal_font"
+        android:textSize="@dimen/text_14"
+        />
+
+</LinearLayout>

@@ -83,11 +83,11 @@ public class ArticleListService extends HttpUtil implements VicServiceInterface{
 		
 		String pUrl = this.getServerImgPath(article.getWriterId() , map.get("writer_photo").toString());
 		String cUrl = this.getServerImgPath(article.getWriterId() , map.get("image").toString());
-		
-//		article.setCoverImageWidth( getIntValue(map.get("img_width")) );
-//		article.setCoverImageHeight( getIntValue(map.get("img_height")) );
-		
+
 		article.setWriterPhotoURL( pUrl );
+		
+		article.setCoverImageWidth( getIntValue(map.get("width")) );
+		article.setCoverImageHeight( getIntValue(map.get("height")) );
 		article.setCoverImageURL( cUrl );
 		
 		article.setShopId( getIntValue(map.get("shop_id")) );

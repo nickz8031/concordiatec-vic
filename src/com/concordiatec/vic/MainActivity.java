@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.adapter.MainVpAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
 import com.concordiatec.vic.fragment.MainEventFragment;
 import com.concordiatec.vic.fragment.MainInfoFragment;
 import com.concordiatec.vic.fragment.MainNewsFragment;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.R;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.Window;
 import android.view.View.OnClickListener;
 
 public class MainActivity extends BaseSherlockFragmentActivity {
@@ -116,18 +113,6 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		}
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		LogUtil.show(item.getItemId()+"");
-		switch (item.getItemId()){
-		case android.R.id.home:
-				LogUtil.show("11111111");
-			break;
-	    default:  
-	        return super.onOptionsItemSelected(item);  
-	    } 
-		return true;
-	}
 	
 	private static int backFlagChangeSec = 0;
     private static int backFlagMaxSec = 2;

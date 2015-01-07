@@ -7,7 +7,10 @@ import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +32,7 @@ import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import com.concordiatec.vic.adapter.MainNewsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
+import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
@@ -52,7 +56,6 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private TextView sortCurrentSelect;
 	private MainNewsAdapter adapter;
 	private ArticleListService aService;
-	private User loginUser;
 	
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
@@ -62,15 +65,31 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		this.inflater = inflater;
 		rootView = inflater.inflate(R.layout.fragment_main_news, container, false);
 		this.initWidgets();
+		
+		//sign in/out broadcast receiver register
+		IntentFilter filter = new IntentFilter(Constant.ONLINE_BROAD_ACTION); 
+		getActivity().registerReceiver(onlineReceiver, filter);
+		
 		return rootView;
 	}
 	
+	/**
+	 * login & logout broadcast receiver
+	 */
+	BroadcastReceiver onlineReceiver = new BroadcastReceiver() { 
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			//1. refresh list
+			refreshList();
+		}
+    };
+    
 	/**
 	 * init widgets in main news fragment
 	 */
 	private void initWidgets(){
 		aService = ArticleListService.single(getActivity());
-		loginUser = new UserService(getActivity()).getLoginUser();
+		
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();
@@ -94,6 +113,8 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 
 	private void getArticles(){
 		Map<String, String> map = new HashMap<String, String>();
+
+		User loginUser = new UserService(getActivity()).getLoginUser();
 		if( loginUser != null ){
 			map.put("user_id", loginUser.usrId+"");
 		}
@@ -114,7 +135,6 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		} , map);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void setAdapterData(Object data){
 		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 		if( !isRefresh ){
@@ -152,12 +172,17 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 
 	@Override
 	public void onRefreshStarted(View view) {
-		adapter.clear();
-		this.isRefresh = true;
-		getArticles();
+		refreshList();
 	}
 	
-	@SuppressWarnings("unchecked")
+	private void refreshList(){
+		if( adapter != null ){
+			adapter.clear();
+			this.isRefresh = true;
+			getArticles();
+		}
+	}
+	
 	private void getMore(){
 		isLoadingNow = true;
 		Map<String, String> paramMap = new HashMap<String, String>();
@@ -170,9 +195,9 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 				isLoadingNow = false;
 			}
 			@Override
-			public void onError(ResData error) {}
+			public void onError(ResData error) {isLoadingNow = false;}
 			@Override
-			public void onFailure(String reason) {}
+			public void onFailure(String reason) {isLoadingNow = false;}
 		} , paramMap);
 	}
 
@@ -219,7 +244,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			switch (scrollState) {
 			case OnScrollListener.SCROLL_STATE_IDLE:
-				if (isLoadingNow  == false && view.getLastVisiblePosition() >= (view.getCount()/2)) {
+				if (isLoadingNow  == false && view.getLastVisiblePosition() >= (adapter.getCount()/2)) {
 					getMore();
 				}
 				break;
