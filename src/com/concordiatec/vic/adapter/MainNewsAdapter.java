@@ -8,11 +8,9 @@ import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.ImageViewPreload;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
@@ -291,22 +289,21 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		final View view = v;
 		final TextView t = (TextView) v;
 		final boolean isLike = (v.getTag() == null);
+		int likeCount = Integer.parseInt(t.getText().toString());
+		if( isLike ){
+			t.setText((likeCount+1) + "");
+			setLike(view);
+			view.setTag(true);
+		}else{
+			if( likeCount > 0 ){
+				t.setText((likeCount-1) + "");
+			}
+			setDislike(view);
+			view.setTag(null);
+		}
 		aService.likeArticle(uService.getLoginUser().usrId, articleId, new VicResponseListener() {
 			@Override
-			public void onSuccess(Object data) {
-				int likeCount = Integer.parseInt(t.getText().toString());
-				if( isLike ){
-					t.setText((likeCount+1) + "");
-					setLike(view);
-					view.setTag(true);
-				}else{
-					if( likeCount > 0 ){
-						t.setText((likeCount-1) + "");
-					}
-					setDislike(view);
-					view.setTag(null);
-				}
-			}
+			public void onSuccess(Object data) {}
 			@Override
 			public void onFailure(String reason) {}
 			@Override
@@ -377,11 +374,14 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	}
 	
 	private void clearAnimation(int viewPos){
+		if( viewMap == null ) return;
 		for (int i = 0; i < viewMap.size(); i++) {
 			if( i == viewPos ){
 				continue;
 			}
-			viewMap.get(i).clearAnimation();
+			if( viewMap.get(i) != null ){
+				viewMap.get(i).clearAnimation();
+			}
 		}
 	}
 	

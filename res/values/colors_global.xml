@@ -2,6 +2,7 @@
 <resources>
     <!-- font color -->
     <color name="normal_font">#231F20</color>
+    <color name="light_font">#666666</color>
     <color name="deep_light_font">#FFBBBBBB</color>
     <!-- /end -->
     
@@ -12,9 +13,9 @@
     <color name="background_color_alpha">#70EEEEEE</color>
     
     <!-- default buttons -->
-    <color name="default_btn_color">#DEDEDE</color>
-    <color name="default_btn_active_color">#CCCCCC</color>
-    <color name="default_btn_border_color">#CDCDCD</color>
+    <color name="default_btn_color">#FDFDFD</color>
+    <color name="default_btn_active_color">#CDCDCD</color>
+    <color name="default_btn_border_color">#DEDEDE</color>
     
     <color name="primary_btn_color">#2cb1e1</color>
     <color name="primary_btn_active_color">#0780ab</color>

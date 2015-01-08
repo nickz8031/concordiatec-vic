@@ -33,6 +33,8 @@ public class ArticleDetailImageService extends HttpUtil implements VicServiceInt
 		String imgURL = serverPath + map.get("name").toString();
 		aImages.setId( getIntValue(map.get("id")) );
 		aImages.setName( imgURL );
+		aImages.setWidth( getIntValue(map.get("width")) );
+		aImages.setHeight( getIntValue(map.get("height")) );
 		return aImages;
 	}
 	

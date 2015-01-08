@@ -1,6 +1,5 @@
 package com.concordiatec.vic.tools;
 
-import com.concordiatec.vic.util.LogUtil;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -30,5 +29,9 @@ public class ImageViewPreload {
 		float w = getPixelWidth(viewMargin);
 		float scale = w / imgW;
 		return imgH * scale;
+	}
+	
+	public float viewHeight( int imgW , int imgH ){
+		return viewHeight(imgW , imgH , 0);
 	}
 }

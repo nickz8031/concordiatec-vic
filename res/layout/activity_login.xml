@@ -18,40 +18,26 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_form_row_height"
             android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/login_form_element_margin">
-	        <ImageView
-	            android:layout_width="@dimen/login_form_icon_width"
-	            android:layout_height="match_parent"
-	            android:layout_gravity="center_vertical"
-	            android:layout_marginRight="@dimen/login_form_element_margin"
-	            android:src="@android:drawable/ic_lock_lock" />
-	        <TextView 
-	            android:layout_width="@dimen/login_form_label_width"
-	            android:layout_height="match_parent"
-	            android:text="@string/email"
-	            android:gravity="center_vertical"
-	            />
-
-	        <EditText
+            android:layout_marginLeft="@dimen/login_form_element_margin"
+            android:layout_marginRight="@dimen/login_form_element_margin">
+	        <AutoCompleteTextView
 	            android:id="@+id/user_account"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:layout_weight="1"
 	            android:background="@null"
 	            android:hint="@string/please_enter_email"
 	            android:textSize="@dimen/text_14"
 	            android:singleLine="true"
+	            android:completionThreshold="1"
 	            android:inputType="textEmailAddress"
 	            android:imeOptions="actionNext"
-	            >
-	        </EditText>
+	            />
 
 	        <ImageView
 	            android:id="@+id/clear_enter_email"
 	            android:layout_width="20dp"
 	            android:layout_height="20dp"
 	            android:layout_gravity="center"
-	            android:layout_marginRight="10dp"
 	            android:visibility="gone"
 	            android:clickable="true"
 	            android:src="@android:drawable/ic_menu_close_clear_cancel" />
@@ -60,39 +46,25 @@
         <TextView 
             android:background="@color/background_color"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_form_line"
-            android:layout_marginLeft="40dp"/>
+            android:layout_height="@dimen/login_form_line"/>
+        
         <LinearLayout 
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_form_row_height"
             android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/login_form_element_margin">
-	        <ImageView
-	            android:layout_width="@dimen/login_form_icon_width"
-	            android:layout_height="match_parent"
-	            android:layout_gravity="center_vertical"
-	            android:layout_marginRight="@dimen/login_form_element_margin"
-	            android:src="@android:drawable/ic_lock_lock" />
-	        <TextView 
-	            android:layout_width="@dimen/login_form_label_width"
-	            android:layout_height="match_parent"
-	            android:text="@string/password"
-	            android:gravity="center_vertical"
-	            />
-
+            android:layout_marginLeft="@dimen/login_form_element_margin"
+            android:layout_marginRight="@dimen/login_form_element_margin">
 	        <EditText
 	            android:id="@+id/user_pwd"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:layout_weight="1"
 	            android:background="@null"
 	            android:hint="@string/please_enter_pwd"
-	            android:password="true"
 	            android:singleLine="true"
 	            android:textSize="@dimen/text_14"
 	            android:inputType="textPassword"
-	            android:imeOptions="actionDone" >
-	        </EditText>
+	            android:imeOptions="actionDone" />
+	        
 	        <ImageView
 	            android:id="@+id/clear_enter_pwd"
 	            android:layout_width="20dp"

@@ -20,6 +20,7 @@ import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.service.ArticleDetailService;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.CommentService;
+import com.concordiatec.vic.tools.ImageViewPreload;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.StringUtil;
@@ -126,7 +127,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			public void onSuccess(Object data) {
 				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data );
 				
-				
 				CircleImageView imageView = (CircleImageView) contentView.findViewById(R.id.news_writer_photo);
 				TextView writerName = (TextView) contentView.findViewById(R.id.news_writer_name);
 				TextView writeTime = (TextView) contentView.findViewById(R.id.news_write_time);
@@ -160,7 +160,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				String lst = likeShareText.getText().toString();
 				
 				likeShareText.setText( String.format(lst, detail.getLikeCount() , detail.getShareCount() ) );
-				
 				
 				List<ArticleImages> imgs = detail.getImages();
 				

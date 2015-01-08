@@ -1,12 +1,17 @@
 package com.concordiatec.vic;
 
+import java.util.List;
+import com.activeandroid.query.Select;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.listener.VicResponseListener;
+import com.concordiatec.vic.model.LoginAccount;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.EncryptUtil;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
+import com.concordiatec.vic.util.ProgressUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,169 +20,159 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class LoginActivity extends SubPageSherlockActivity{
+public class LoginActivity extends SubPageSherlockActivity {
 	private Button loginButton;
 	private Button signUpButton;
 	private Button findPwdButton;
-	private EditText email;
+	private AutoCompleteTextView email;
 	private EditText pwd;
 	private ImageView clearEmail;
 	private ImageView clearPwd;
 	private UserService lService;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
 		setTitle(getString(R.string.login));
-		
 		lService = new UserService(this);
-		
-		//email edit text
-		email = (EditText) findViewById(R.id.user_account);
-		//pwd edit text
+		// email edit text
+		email = (AutoCompleteTextView) findViewById(R.id.user_account);
+		// pwd edit text
 		pwd = (EditText) findViewById(R.id.user_pwd);
-		//clear btns
+		// clear btns
 		clearEmail = (ImageView) findViewById(R.id.clear_enter_email);
 		clearPwd = (ImageView) findViewById(R.id.clear_enter_pwd);
 		
+		// create ArrayAdapter
+		
+		ArrayAdapter<String> av = new ArrayAdapter<String>(this, R.layout.auto_complete_drop_layout, LoginAccount.getAll());
+		email.setAdapter(av);
 		email.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if( hasFocus == true ){
+				if (hasFocus == true) {
 					clearEmail.setVisibility(View.VISIBLE);
-				}else{
+				} else {
 					clearEmail.setVisibility(View.GONE);
 				}
-				
 			}
 		});
+		
+		
 		
 		pwd.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if( hasFocus == true ){
+				if (hasFocus == true) {
 					clearPwd.setVisibility(View.VISIBLE);
-				}else{
+				} else {
 					clearPwd.setVisibility(View.GONE);
 				}
-				
 			}
 		});
-		
-		//login button
+		// login button
 		loginButton = (Button) findViewById(R.id.login_button);
-		loginButton.setOnClickListener( new loginClickListener() );
-		
+		loginButton.setOnClickListener(new loginClickListener());
 		clearEmail.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				email.setText(null);
 			}
 		});
-		
 		clearPwd.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				pwd.setText(null);
 			}
 		});
-		
-		
 		/**
 		 * soft input keyboard enter listener
 		 */
 		pwd.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				 if (actionId == EditorInfo.IME_ACTION_DONE) {
-					 new loginClickListener().onClick(loginButton);
-					 return true;
-	             }else{
-	            	 return false;
-	             }
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					new loginClickListener().onClick(loginButton);
+					return true;
+				} else {
+					return false;
+				}
 			}
 		});
-		
-		
-		
-		//sign up button
+		// sign up button
 		signUpButton = (Button) findViewById(R.id.sign_up_button);
 		signUpButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(LoginActivity.this , SignUpActivity.class);
+				Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
 				startActivity(intent);
 			}
 		});
-		
-		//find password button
+		// find password button
 		findPwdButton = (Button) findViewById(R.id.find_pwd_button);
 		findPwdButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(LoginActivity.this , FindPasswordActivity.class);
+				Intent intent = new Intent(LoginActivity.this, FindPasswordActivity.class);
 				startActivity(intent);
 			}
 		});
 	}
-	
-	
-	private final class loginClickListener implements OnClickListener{
+
+	private final class loginClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			String emailPattern = "[a-zA-Z0-9]?[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+.[a-z]{2,5}";
-			boolean emailFalseFlag = (!email.getText().toString().matches(emailPattern) || email.getText().length()<1);
-			boolean pwdFalseFlag = (pwd.getText().length()<1);
-			if( emailFalseFlag ){
+			boolean emailFalseFlag = (!email.getText().toString().matches(emailPattern) || email.getText().length() < 1);
+			boolean pwdFalseFlag = (pwd.getText().length() < 1);
+			if (emailFalseFlag) {
 				email.requestFocus();
 				showErrorNotify();
-			}else if( pwdFalseFlag ){
+			} else if (pwdFalseFlag) {
 				pwd.requestFocus();
 				showErrorNotify();
-			}else{
-				lService.doLogin(
-					email.getText().toString(), 
-					EncryptUtil.EncPwd(pwd.getText().toString()) , 
-					new VicResponseListener() {
-						@Override
-						public void onSuccess(Object data) {
-							User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data);
-							usr.pwd = pwd.getText().toString();
-							lService.login(usr);
-							LoginActivity.this.setResult(RESULT_OK);
-							LoginActivity.this.finish();
-						}
+			} else {
+				ProgressUtil.show(LoginActivity.this);
+				lService.doLogin(email.getText().toString(), EncryptUtil.EncPwd(pwd.getText().toString()), new VicResponseListener() {
+					@Override
+					public void onSuccess(Object data) {
+						//save email if it did not exist
+						LoginAccount.addData(email.getText().toString());
+						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data);
+						lService.login(usr);
+						LoginActivity.this.setResult(RESULT_OK);
+						LoginActivity.this.finish();
+					}
 
-						@Override
-						public void onError(ResData error) {
-							showErrorNotify();
-						}
+					@Override
+					public void onError(ResData error) {
+						showErrorNotify();
+					}
 
-						@Override
-						public void onFailure(String reason) {}
-					});
+					@Override
+					public void onFailure(String reason) {
+						LogUtil.show(reason);
+					}
+				});
 			}
 		}
 	}
-	
+
 	/**
 	 * show notify toast
+	 * 
 	 * @param int resourceId
 	 */
-	private void showErrorNotify(){
-		NotifyUtil.toastCustom(getApplicationContext(), 
-				getString(R.string.please_enter_valid_login_info) , 
-				Math.round(getResources().getDimension(R.dimen.login_toast_y)
-				)
-		);
+	private void showErrorNotify() {
+		NotifyUtil.toastCustom(getApplicationContext(), getString(R.string.please_enter_valid_login_info), Math.round(getResources().getDimension(R.dimen.login_toast_y)));
 	}
-	
 }

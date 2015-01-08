@@ -12,8 +12,8 @@
         android:gravity="center_vertical"
         android:background="@drawable/news_store_info_border"
 	    android:layout_marginLeft="16dp"
-	    android:layout_marginRight="16dp"
-        >
+	    android:layout_marginRight="16dp">
+	    
         <LinearLayout 
             android:layout_width="@dimen/mni_store_type_img"
             android:layout_height="match_parent"
@@ -31,6 +31,7 @@
 				    android:src="@drawable/demo_store_type" />
             
         </LinearLayout>
+        
         <LinearLayout
             android:layout_toRightOf="@id/list_store_type"
             android:id="@+id/detail_store_name_addr"
@@ -163,6 +164,13 @@
 		        android:layout_height="wrap_content"
 		        android:gravity="center"/>
         </com.daimajia.slider.library.SliderLayout>
+        
+        <!-- <ScrollView
+            android:id="@+id/news_content_img_slider" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" 
+            android:scrollbars="none" /> -->
         
         
     </RelativeLayout>

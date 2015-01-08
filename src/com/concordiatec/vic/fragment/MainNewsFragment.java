@@ -40,6 +40,8 @@ import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.AniUtil;
+import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
@@ -118,15 +120,17 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		if( loginUser != null ){
 			map.put("user_id", loginUser.usrId+"");
 		}
-		
+		ProgressUtil.show(getActivity());
 		aService.getArticles(new VicResponseListener() {
 			@Override
 			public void onSuccess(Object data) {
 				setAdapterData(data);
+				ProgressUtil.dismiss();
 			}
 
 			@Override
 			public void onFailure(String reason) {
+				LogUtil.show(reason);
 			}
 
 			@Override
