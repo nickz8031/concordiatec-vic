@@ -1,7 +1,5 @@
 package com.concordiatec.vic;
 
-import java.util.List;
-import com.activeandroid.query.Select;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.LoginAccount;
@@ -54,7 +52,7 @@ public class LoginActivity extends SubPageSherlockActivity {
 		
 		// create ArrayAdapter
 		
-		ArrayAdapter<String> av = new ArrayAdapter<String>(this, R.layout.auto_complete_drop_layout, LoginAccount.getAll());
+		ArrayAdapter<String> av = new ArrayAdapter<String>(this, R.layout.li_auto_complete_drop, LoginAccount.getAll());
 		email.setAdapter(av);
 		email.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override

@@ -22,7 +22,7 @@ public class SubPageSherlockActivity extends SherlockActivity {
 		actionBar.setDisplayUseLogoEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setCustomView(R.layout.subpage_custom_ab);
+		actionBar.setCustomView(R.layout.actionbar_subpage);
 		actionBar.setDisplayShowCustomEnabled(true);
 		
 		backButton = (ImageView) actionBar.getCustomView().findViewById(R.id.actionbar_back);

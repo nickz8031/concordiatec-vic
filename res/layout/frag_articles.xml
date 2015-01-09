@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_color" >
+    <uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout
+	    android:id="@+id/ptr_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/background_color"
+	    >
+	    <ListView
+	        android:id="@+id/news_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_marginLeft="@dimen/mni_layout_margin_horizontal"
+	        android:layout_marginRight="@dimen/mni_layout_margin_horizontal"
+	        android:layout_marginBottom="@dimen/mni_layout_margin_horizontal"
+	        android:divider="@color/background_color"
+	   		android:dividerHeight="@dimen/mni_layout_margin_bottom"
+	   		android:drawSelectorOnTop="true"
+	   		android:scrollbars="none" />
+	    
+	    <include
+	        android:id="@+id/sort_menu"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        layout="@layout/frag_articles_sortbar" />
+	</uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout>
+    <LinearLayout 
+	    android:id="@+id/floating_write_layout"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentRight="true"
+	    android:orientation="vertical"
+	    android:layout_marginRight="20dp"
+	    android:layout_marginBottom="20dp"
+	    android:clickable="true"
+	    android:background="@drawable/circle_create_main_button_selector">
+		<ImageView
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_gravity="center"
+		    android:src="@drawable/ic_content_create" />
+
+	</LinearLayout>
+</RelativeLayout>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="cp_surplus">잔여</string>
-    <string name="cp_tag_live">실시간상품</string>
-    <string name="cp_favorite">찜하기</string>
-    <string name="cp_event_finish">종료</string>
-</resources>

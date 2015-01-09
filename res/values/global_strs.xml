@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- strings -->
+	<string name="app_name">Vilcock</string>
+	
+	<string name="time_format_string_second"> 초 전</string>
+	<string name="time_format_string_minute"> 분 전</string>
+	<string name="time_format_string_hour"> 시간 전</string>
+	<string name="time_format_string_day"> 일 전</string>
+	<string name="time_format_string_month"> 개월 전</string>
+	<string name="time_format_string_year"> 년 전</string>
+	
+	<string name="unit_zang">장</string>
+	
+    <string name="setting">설정</string>
+    <string name="login">로그인</string>
+    <string name="signup">회원가입</string>
+    <string name="findpwd">비밀번호 찾기</string>
+    <string name="logout">로그아웃</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="return_str">돌아가기</string>
+    <string name="cancel_str">취소</string>
+    <string name="complete">완료</string>
+    <string name="choose">선택</string>
+	
+    <string name="file_name">파일명</string>
+    <string name="file_count">몇개</string>
+    
+    <!-- format -->
+    <string name="format_price_string">%1$s원</string>
+    <string name="format_end_time">%1$s 마감</string>
+    <string name="format_location_range_meter">%1$s m</string>
+    <string name="format_location_range_kilometer">%1$s km</string>
+    <string name="format_choose_count">(%1$d)장 선택 됨</string>
+    <!-- example : 45/100 -->
+    <string name="format_surplus_total_count">%1$s/%2$s</string>
+    
+    <!-- notify messages -->
+    <string name="server_connection_failed">서버와의 연결이 원활하지 않습니다.잠시후에 다시 시도 해 주세요.</string>
+    <string name="server_connection_wait">서버와 연결을 시도하는 중입니다. 잠시만 기다려 주십시오.</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+    <string name="retry">재시도</string>
+    <string name="close_soon">앱이 곧 종료됩니다.</string>
+    <string name="loading">로딩 중 입니다.</string>
+    <string name="server_no_responding">서버로부터 응답이 없습니다.</string>
+    <string name="double_back_press">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="failed_to_request_data">데이터 요청에 실패하였습니다.</string>
+    <string name="no_data">데이터가 없습니다.</string>
+    <string name="no_more_data">더 이상 데이터가 없습니다.</string>
+    <string name="are_you_sure_to_exit">앱을 종료하시겠습니까? </string>
+    <string name="show_more">더 보기</string>
+    
+    
+	<!-- demo strings -->
+	<string name="demo_store_name">디퀸즈 뉴 코멕스점(12월 오픈예정)</string>
+	<string name="demo_store_addr">서울 강남구 삼성동 159-9</string>
+	<string name="demo_writer_name">Avril Lavigne</string>
+	<string name="demo_write_time">4시간 전</string>
+	<string name="demo_news_content">Taylor looks STUNNING on the cover of ASOS Magazine this month!!! Pick up your copy to read her feature stroy.</string>
+	
+	<string name="demo_like_count">0</string>
+	<string name="demo_comment_count">0</string>
+	<string name="demo_comment_contents">MICHALE Shoulders I love that pic your my #1 singer/songwriter! +Hannah Walker I agree...</string>
+	
+	<!-- coupon demo string -->
+	<string name="demo_shop_name">스타벅스</string>
+	<string name="demo_coupon_title">아메리카노+크레마놀 세트</string>
+	
+	
+</resources>

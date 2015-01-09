@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 
 public class SplashActivity extends Activity {
-	private static final int DELAY = 1500;
+	private static final int DELAY = 100;
     private Handler mMainHandler = new Handler() {  
 	    @Override  
 	    public void handleMessage(Message msg) {  

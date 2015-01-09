@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+     >
+    <GridView
+        android:id="@+id/imageListGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:listSelector="@color/bule_overlay"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
+        android:background="@color/background_color_alpha"
+        android:numColumns="2"
+        android:layout_marginBottom="85dp" >
+    </GridView>
+    
+    <RelativeLayout
+        android:id="@+id/selectedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:alpha="0.8"
+        android:background="@drawable/choose_pic_top_border" >
+        <HorizontalScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:scrollbars="none" >
+            <LinearLayout
+                android:id="@+id/selected_image_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+    </RelativeLayout>
+</RelativeLayout>

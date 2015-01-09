@@ -122,7 +122,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (viewMap.get(position) == null) {
 			Article apData = getItem(position);
-			convertView = inflater.inflate(R.layout.main_news_list_item, parent, false);
+			convertView = inflater.inflate(R.layout.li_frag_articles, parent, false);
 			
 			NewsHolder.storeInfoLayout = (RelativeLayout) convertView.findViewById(R.id.store_info_layout);
 			NewsHolder.writerName = (TextView) convertView.findViewById(R.id.news_writer_name);
@@ -250,9 +250,9 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		public void onClick(View v) {
 			Intent intent = new Intent(context , ArticleDetailActivity.class);
 			intent.putExtra("article_id", articleId);
+			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			context.startActivity(intent);
 		}
-		
 	}
 	
 	/**

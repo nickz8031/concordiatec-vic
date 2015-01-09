@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- colors -->
+	<color name="coupon_list_price">#BDBDBD</color>
+    <color name="coupon_normal_ctrl_text">#757575</color>
+    <color name="coupon_ctrl_btn_border">#0F000000</color>
+<!-- dimenssions -->
+	<dimen name="cp_img_width">100dp</dimen>
+    <dimen name="cp_img_height">100dp</dimen>
+    <dimen name="cp_img_margin_top">6dp</dimen>
+    <dimen name="cp_img_margin_bottom">16dp</dimen>
+    <dimen name="cp_img_margin_h">16dp</dimen>
+    
+    <dimen name="cp_info_margin_h">6dp</dimen>
+    <dimen name="cp_info_margin_top">6dp</dimen>
+    
+    <!-- coupon text info -->
+    <dimen name="cp_info_price_margin">3dp</dimen>
+    
+    <dimen name="cp_ctrl_btn_layout_height">40dp</dimen>
+    <dimen name="cp_ctrl_margin_top">10dp</dimen>
+    
+<!-- strings -->
+	<string name="cp_surplus">잔여</string>
+    <string name="cp_tag_live">실시간상품</string>
+    <string name="cp_favorite">찜하기</string>
+    <string name="cp_event_finish">종료</string>
+	<!-- image desc -->
+	<string name="coupon_img">쿠폰 이미지</string>
+    <string name="coupon_surlus_icon">잔여량</string>
+    <string name="coupon_favorate">찜하기</string>
+</resources>

@@ -47,7 +47,7 @@ public class MainEventAdapter extends VicBaseAdapter {
 //		CouponHolder holder;
 		if (viewMap.get(position) == null) {
 //			Coupon apData = getItem(position);
-			convertView = inflater.inflate(R.layout.main_event_list_item, parent, false);
+			convertView = inflater.inflate(R.layout.li_frag_coupons, parent, false);
 			
 			TagView tv = (TagView) convertView.findViewById(R.id.coupon_tag);
 			TagView.Tag tag = new TagView.Tag("실시간 상품", context.getResources().getColor(R.color.theme_color) );

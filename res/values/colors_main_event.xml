@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="coupon_list_price">#BDBDBD</color>
-    <color name="coupon_normal_ctrl_text">#757575</color>
-    <color name="coupon_ctrl_btn_border">#0F000000</color>
-</resources>

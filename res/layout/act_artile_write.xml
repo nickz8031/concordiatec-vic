@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+    <ScrollView 
+        android:layout_alignParentStart="true"
+        android:id="@+id/content_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+		android:layout_marginBottom="55dp"
+        android:scrollbars="none">
+        	
+        <RelativeLayout
+			android:id="@+id/write_content_area"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@android:color/white"
+			android:padding="@dimen/ar_w_content_padding"
+			android:layout_marginTop="@dimen/ar_w_content_box_margin"
+			android:layout_marginLeft="@dimen/ar_w_content_box_margin"
+			android:layout_marginRight="@dimen/ar_w_content_box_margin">
+				<!-- 업체 선택 박스 -->
+				<LinearLayout 
+				   android:layout_alignParentStart="true"
+				   android:id="@+id/store_selector"
+				   android:layout_width="match_parent"
+				   android:layout_height="@dimen/ar_w_store_selector"
+				   android:layout_marginBottom="@dimen/ar_w_profile_store_margin"
+				   android:clickable="true"
+				   android:background="@drawable/sort_click_selector"
+				   android:orientation="horizontal">
+				   <TextView 
+				       android:layout_width="match_parent"
+				       android:layout_height="match_parent"
+				       android:drawableLeft="@drawable/ic_maps_store_black"
+				       android:drawablePadding="10dp"
+				       android:text="@string/store_select"
+				       android:gravity="center_vertical"
+				       android:paddingTop="3dp"
+				       android:textColor="@color/light_font"/>
+				</LinearLayout>
+   
+				<!-- 프로파일 레이아웃 -->
+				<RelativeLayout 
+				    android:id="@+id/profile_layout"
+				    android:layout_below="@id/store_selector"
+				    android:layout_width="match_parent"
+				    android:layout_height="@dimen/ar_w_profile_layout"
+				    android:layout_marginBottom="@dimen/ar_w_content_profile_margin"
+				    android:gravity="center_vertical">
+				    
+				    <com.concordiatec.vic.widget.CircleImageView
+				        android:id="@+id/profile_photo" 
+				        android:layout_width="@dimen/ar_w_profile_photo_width"
+				        android:layout_height="@dimen/ar_w_profile_photo_height"
+				        android:layout_marginRight="@dimen/ar_w_profile_photo_name_margin"
+				        android:layout_centerVertical="true"
+				        android:src="@drawable/demo_avatar"/>
+				    
+				    <TextView
+				        android:id="@+id/profile_name"
+				        android:layout_toRightOf="@id/profile_photo"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_centerVertical="true"
+				        android:text="@string/demo_writer_name"
+				        />
+				</RelativeLayout>
+   
+				<!-- 글 내용 쓰기 -->
+				<LinearLayout 
+					android:id="@+id/text_content_layout"
+					android:layout_below="@id/profile_layout"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="40dp"
+					android:orientation="vertical">
+
+					<EditText
+					    android:id="@+id/write_content"
+					    android:layout_width="match_parent"
+					    android:layout_height="@dimen/ar_w_write_content_height"
+					    android:layout_marginBottom="@dimen/ar_w_content_margin_bottom"
+					    android:background="@null"
+					    android:gravity="top"
+					    android:minLines="4"
+					    android:hint="@string/write_content_hint"
+					    android:inputType="textMultiLine"
+					    android:textSize="@dimen/text_14" />
+					
+					<!-- content attached photo -->
+					<HorizontalScrollView 
+					    android:id="@+id/attach_images_scroll"
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content"
+					    android:scrollbars="none">
+						<LinearLayout 
+						    android:id="@+id/attach_images_scroll_layout"
+						    android:layout_width="wrap_content"
+						    android:layout_height="wrap_content"
+						    android:orientation="horizontal"/>
+					</HorizontalScrollView>
+					
+				</LinearLayout>
+				<!-- 글 옵션 선택 -->
+				<LinearLayout
+					android:id="@+id/ar_w_option_select"
+					android:layout_alignParentBottom="true"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/ar_w_options_height" 
+					android:orientation="horizontal"
+					>
+		
+					<CheckBox
+					    android:id="@+id/article_comment_off"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:layout_marginRight="10dp"
+					    android:text="@string/share_off"
+					    android:textSize="@dimen/text_12"
+					    android:textColor="@color/light_font" />
+					<CheckBox
+					    android:id="@+id/article_share_off"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:text="@string/comment_off"
+					    android:textSize="@dimen/text_12"
+					    android:textColor="@color/light_font" />
+		
+		   		</LinearLayout>
+        	</RelativeLayout>
+    </ScrollView>
+    
+    <LinearLayout 
+        android:id="@+id/photo_gallery"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <!-- button take a photo -->
+	    <RelativeLayout 
+	        android:id="@+id/take_photo"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+		    android:layout_marginRight="10dp"
+		    android:clickable="true"
+		    android:background="@color/popup_overlay_color">
+	        <SurfaceView
+	            android:id="@+id/photo_surface"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        />
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableLeft="@drawable/ic_image_camera_alt_white"
+	            android:drawablePadding="5dp"
+	            android:gravity="center_vertical"
+	            android:layout_centerInParent="true"
+	            android:text="@string/take_photo"
+	            android:textColor="@android:color/white"
+	            android:textSize="@dimen/text_14" />
+	    </RelativeLayout>
+	    
+        <!-- button choose a photo -->
+	    <RelativeLayout 
+	        android:id="@+id/choose_photo"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+		    android:background="@color/theme_color">
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableLeft="@drawable/ic_image_camera_white"
+	            android:drawablePadding="5dp"
+	            android:layout_centerInParent="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/select_photo"
+	            android:textColor="@android:color/white"
+	            android:textSize="@dimen/text_14" />
+
+	    </RelativeLayout>
+    </LinearLayout>
+    
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- colors -->
+<!-- dimens -->
+	<!-- tab menu -->
+    <dimen name="tab_menu_layout_height">48dp</dimen>
+    <dimen name="tab_menu_height">46dp</dimen>
+    <dimen name="tab_menu_padding_top">2dp</dimen>
+    <dimen name="tab_menu_label_padding">12dp</dimen>
+    <dimen name="tab_menu_margin_left">16dp</dimen>
+    
+    <!-- sort bar -->
+    <dimen name="sort_top_row_height">60dp</dimen>
+    <dimen name="sort_display_height">60dp</dimen>
+    <dimen name="sort_bottom_row_height">50dp</dimen>
+    <dimen name="sort_item_padding_vert">12dp</dimen>
+    <dimen name="sort_item_padding_vert_thick">6dp</dimen>
+    <dimen name="sort_item_padding_hor">20dp</dimen>
+    <dimen name="sort_item_line_height">1px</dimen>
+    <dimen name="sort_item_line_margin_vert">10dp</dimen>
+    <dimen name="sort_item_drawable_padding">20dp</dimen>
+    
+<!-- strings -->
+
+	<!-- tab menu labels -->
+    <string name="tab_menu_1">소식</string>
+    <string name="tab_menu_2">쿠폰</string>
+    <string name="tab_menu_3">가게</string>    
+    
+    <!-- sort bar -->
+    <string name="sort_all">전체</string>
+    <string name="sort_search_hint">사용자 , 페이지 , 소식 검색</string>
+    <string name="sort_title_latest">최근</string>
+    <string name="sort_my_frequent">내 단골 소식</string>
+    <string name="sort_near">주변소식</string>
+    
+    <string name="sort_my_community">내 커뮤니티</string>
+    
+    <string name="sort_title_exploration">탐색</string>
+    <string name="sort_hot_issue">따끈따끈한 소식</string>
+    
+    <string name="sort_location">위치</string>
+    
+    <!-- actionbar menu -->
+    <string name="menu_refresh">새로 고침</string>
+    <string name="menu_setting">설정</string>
+    <string name="menu_suggestion">의견 보내기</string>
+    <string name="menu_help">도움말</string>
+    <string name="menu_notification">소식</string>
+    <string name="menu_cart">카트</string>
+</resources>

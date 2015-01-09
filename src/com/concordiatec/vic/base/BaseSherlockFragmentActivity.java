@@ -30,7 +30,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		actionBar.setDisplayUseLogoEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setCustomView(R.layout.main_custom_ab);
+		actionBar.setCustomView(R.layout.actionbar_main);
 		actionBar.setDisplayShowCustomEnabled(true);
 		
 		profileLayout = (LinearLayout) actionBar.getCustomView().findViewById(R.id.actionbar_profile_layout);

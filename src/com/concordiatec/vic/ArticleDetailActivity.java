@@ -237,16 +237,16 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		}, articleId);
 	}
 	
+	
 	private final class CommentBtnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
 			commentContent.requestFocus();
 			InputMethodManager imm = (InputMethodManager) commentContent.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-			
 		}
 	}
-		
+	
 	private final static int CONTEXT_COMMENT_PLUS = 1;
 	private final static int CONTEXT_COMMENT_PLUS_CANCEL = 2;
 	private final static int CONTEXT_COMMENT_REPLY = 3;
@@ -254,14 +254,13 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private final static int CONTEXT_COMMENT_REPORT = 5;
 	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 6;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 
 		menu.setHeaderTitle(R.string.comment_context_title);
 		HashMap<String, Boolean> status = (HashMap<String, Boolean>) v.getTag();
 		//+1 혹은 취소
-		if( status.containsKey("is_like") ){
+		if( status != null && status.containsKey("is_like") ){
 			menu.add(0, CONTEXT_COMMENT_PLUS_CANCEL, CONTEXT_COMMENT_PLUS_CANCEL, R.string.comment_plus_cancel);
 		}else {
 			menu.add(0, CONTEXT_COMMENT_PLUS, CONTEXT_COMMENT_PLUS, R.string.comment_plus);
@@ -273,7 +272,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		//신고
 		menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.comment_report);
 		
-		if( status.containsKey("is_show_plus") ){
+		if( status != null && status.containsKey("is_show_plus") ){
 			menu.add(0, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, R.string.comment_show_plus_member);
 		}
 		
@@ -282,9 +281,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		
 		LogUtil.show(item.getItemId() + "");
-		
 		return true;
 	}
 }

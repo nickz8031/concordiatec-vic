@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- tab menu labels -->
-    <string name="tab_menu_1">소식</string>
-    <string name="tab_menu_2">쿠폰</string>
-    <string name="tab_menu_3">가게</string>
-</resources>

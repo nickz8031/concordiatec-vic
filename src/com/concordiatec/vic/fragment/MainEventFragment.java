@@ -46,7 +46,7 @@ public class MainEventFragment extends BaseSherlockFragment implements OnRefresh
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		rootView = inflater.inflate(R.layout.fragment_main_event, container , false);
+		rootView = inflater.inflate(R.layout.frag_coupons, container , false);
 		this.initWidgets();
 		return rootView;
 	}

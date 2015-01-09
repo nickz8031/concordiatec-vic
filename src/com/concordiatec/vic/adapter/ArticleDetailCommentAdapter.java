@@ -8,6 +8,7 @@ import com.concordiatec.vic.R;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Context context;
+	@SuppressLint("UseSparseArrays")
 	public ArticleDetailCommentAdapter(Context context, List<Comment> data) {
 		super();
 		this.context = context;
@@ -47,7 +49,7 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 		if (viewMap.get(position) == null) {
 			Comment comment = (Comment) getItem(position);
 			
-			convertView = inflater.inflate(R.layout.article_detail_comment_list_item, parent, false);
+			convertView = inflater.inflate(R.layout.li_article_detail_comment, parent, false);
 			CommentHolder.commentorPhoto = (CircleImageView) convertView.findViewById(R.id.ar_d_commentor_photo);
 			CommentHolder.content = (TextView) convertView.findViewById(R.id.ar_d_comment_content);
 			CommentHolder.pastTime = (TextView) convertView.findViewById(R.id.ar_d_comment_time);
@@ -90,7 +92,6 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static class CommentHolder {
 		static CircleImageView commentorPhoto;
 		static TextView name;

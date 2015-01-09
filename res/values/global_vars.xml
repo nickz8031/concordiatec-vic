@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+	Description : global variables 
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- colors -->
+    <!-- font color -->
+    <color name="normal_font">#231F20</color>
+    <color name="light_font">#666666</color>
+    <color name="deep_light_font">#FFBBBBBB</color>
+    <!-- /end -->
+    
+    <color name="bule_overlay">#660D92DD</color>
+    <color name="theme_color">#2cb1e1</color>
+    <color name="theme_wrap_color">#0780ab</color>
+    <color name="background_color">#FFEEEEEE</color>
+    <color name="background_color_alpha">#70EEEEEE</color>
+    
+    <color name="popup_overlay_color">#88000000</color>
+    
+    
+    <!-- default buttons -->
+    <color name="default_btn_color">#FDFDFD</color>
+    <color name="default_btn_active_color">#CDCDCD</color>
+    <color name="default_btn_border_color">#DEDEDE</color>
+    
+    <color name="primary_btn_color">#2cb1e1</color>
+    <color name="primary_btn_active_color">#0780ab</color>
+    <color name="primary_btn_border_color">#0780ab</color>
+    
+    <color name="effect_color">#ef7d20</color>
+    
+    
+<!-- dimens -->
+	<!-- text size -->
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_18">18sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_24">24sp</dimen>
+    
+    <dimen name="zerofit">0dp</dimen>
+    
+    <integer name="long_anim_time">1500</integer>
+    
+    <!-- article detail page image gallery -->
+    <dimen name="default_ar_d_title_height">40dp</dimen>
+</resources>

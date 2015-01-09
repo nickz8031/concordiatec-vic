@@ -7,15 +7,19 @@ import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -27,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
@@ -43,6 +48,7 @@ import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.ArticleDetailActivity;
+import com.concordiatec.vic.ArticleWriteActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -58,6 +64,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private TextView sortCurrentSelect;
 	private MainNewsAdapter adapter;
 	private ArticleListService aService;
+	private LinearLayout writeButton;
 	
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
@@ -65,7 +72,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.inflater = inflater;
-		rootView = inflater.inflate(R.layout.fragment_main_news, container, false);
+		rootView = inflater.inflate(R.layout.frag_articles, container, false);
 		this.initWidgets();
 		
 		//sign in/out broadcast receiver register
@@ -92,10 +99,17 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private void initWidgets(){
 		aService = ArticleListService.single(getActivity());
 		
+		
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();
 		this.getArticles();
+		this.initWriteButton();
+	}
+	
+	private void initWriteButton(){
+		writeButton = (LinearLayout) rootView.findViewById(R.id.floating_write_layout);
+		writeButton.setOnClickListener(new WriteButtonClickListener());
 	}
 
 	/**
@@ -262,5 +276,14 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	
 	protected void setSortbarDrawableRight(int resId){
 		sortCurrentSelect.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(resId), null);
+	}
+	
+	private final class WriteButtonClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(getActivity() , ArticleWriteActivity.class);
+			startActivity(intent);
+		}
+		
 	}
 }
