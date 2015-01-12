@@ -59,7 +59,7 @@ public class ChooseImageListAdapter extends BaseAdapter{
 		Holder holder;
 		if (arg0 != index && arg0 > index) {
 			holder=new Holder();
-			arg1=LayoutInflater.from(context).inflate(R.layout.li_choose_image, null);
+			arg1=LayoutInflater.from(context).inflate(R.layout.li_choose_pic, null);
 			holder.photo_imgview=(ImageView) arg1.findViewById(R.id.filephoto_imgview);
 			holder.filecount_textview=(TextView) arg1.findViewById(R.id.filecount_textview);
 			holder.filename_textView=(TextView) arg1.findViewById(R.id.filename_textview);

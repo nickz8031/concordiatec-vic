@@ -121,11 +121,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	
 	private void getArticleContents(){
 		detailService.getDetail(new VicResponseListener() {
-			
-			@SuppressWarnings("unchecked")
 			@Override
-			public void onSuccess(Object data) {
-				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data );
+			public void onSuccess(ResData data) {
+				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
 				
 				CircleImageView imageView = (CircleImageView) contentView.findViewById(R.id.news_writer_photo);
 				TextView writerName = (TextView) contentView.findViewById(R.id.news_writer_name);
@@ -185,12 +183,22 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				
 				progress.setVisibility(View.GONE);
 			}
+			
+			@Override
+			public void onFailure(int httpResponseCode, String responseBody) {
+				LogUtil.show("content" + responseBody);
+			}
+			
+			@Override
+			public void onError(ResData data) {
+				LogUtil.show("content_error:" + data.getMsg());
+			}
 
 			@Override
-			public void onError(ResData error) {}
-
-			@Override
-			public void onFailure(String reason) {}
+			public void onProgress(int written, int totalSize) {
+				// TODO Auto-generated method stub
+				
+			}
 		}, articleId);
 	}
 
@@ -198,8 +206,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private void getComments(){
 		commentService.getComments(new VicResponseListener() {
 			@Override
-			public void onSuccess(Object data) {
-				List<Comment> listComments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
+			public void onSuccess(ResData data) {
+				List<Comment> listComments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
 				if( listComments != null && listComments.size() > 0 ){
 					adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments);
 					commentList.addHeaderView( contentView );
@@ -226,15 +234,26 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					});
 				}
 			}
+			
 			@Override
-			public void onError(ResData error) {
+			public void onFailure(int httpResponseCode, String responseBody) {
+				LogUtil.show("123123123" + responseBody);
+			}
+			
+			@Override
+			public void onError(ResData data) {
 				commentList.setVisibility(View.GONE);
 				contentScroll.setVisibility(View.VISIBLE);
 				contentScroll.addView(contentView);
 			}
+
 			@Override
-			public void onFailure(String reason) {}
+			public void onProgress(int written, int totalSize) {
+				// TODO Auto-generated method stub
+				
+			}
 		}, articleId);
+		
 	}
 	
 	

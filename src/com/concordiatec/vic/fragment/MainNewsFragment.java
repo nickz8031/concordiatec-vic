@@ -7,19 +7,15 @@ import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -31,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
@@ -49,6 +44,7 @@ import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.ArticleWriteActivity;
+import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -128,29 +124,28 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 
 	private void getArticles(){
-		Map<String, String> map = new HashMap<String, String>();
-
-		User loginUser = new UserService(getActivity()).getLoginUser();
-		if( loginUser != null ){
-			map.put("user_id", loginUser.usrId+"");
-		}
 		ProgressUtil.show(getActivity());
 		aService.getArticles(new VicResponseListener() {
 			@Override
-			public void onSuccess(Object data) {
-				setAdapterData(data);
+			public void onSuccess(ResData data) {
+				setAdapterData(data.getData());
 				ProgressUtil.dismiss();
 			}
-
+			
 			@Override
-			public void onFailure(String reason) {
-				LogUtil.show(reason);
+			public void onFailure(int httpResponseCode, String responseBody) {
+				LogUtil.show("Status : "+ httpResponseCode);
+				LogUtil.show("Response Body : "+ responseBody);
+			}
+			
+			@Override
+			public void onError(ResData data) {
+				LogUtil.show( data.getStatus() + "---------" + data.getMsg() );
 			}
 
 			@Override
-			public void onError(ResData error) {
-			}
-		} , map);
+			public void onProgress(int written, int totalSize) {}
+		});
 	}
 	
 	private void setAdapterData(Object data){
@@ -203,21 +198,34 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	
 	private void getMore(){
 		isLoadingNow = true;
+		
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("article_id", adapter.getLastRecordId()+"");
-		aService.getArticles(new VicResponseListener() {
+		paramMap.put("id", adapter.getLastRecordId()+"");
+		
+		aService.getArticles(paramMap , new VicResponseListener() {
 			@Override
-			public void onSuccess(Object data) {
-				List<Article> tmpData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
-				adapter.addData(tmpData);
-				isLoadingNow = false;
+			public void onSuccess(ResData data) {
+				// TODO Auto-generated method stub
 			}
+			
 			@Override
-			public void onError(ResData error) {isLoadingNow = false;}
+			public void onFailure(int httpResponseCode, String responseBody) {
+				// TODO Auto-generated method stub
+			}
+			
 			@Override
-			public void onFailure(String reason) {isLoadingNow = false;}
-		} , paramMap);
+			public void onError(ResData data) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onProgress(int written, int totalSize) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
+	
 
 	private final class SortClickListener implements OnClickListener {
 		@Override
@@ -281,8 +289,15 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private final class WriteButtonClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity() , ArticleWriteActivity.class);
-			startActivity(intent);
+			User loginUser = getLoginUser();
+			if( loginUser==null ){
+				Intent intent = new Intent(getActivity() , LoginActivity.class);
+				startActivityForResult(intent , 0);
+			}else {
+				Intent intent = new Intent(getActivity() , ArticleWriteActivity.class);
+				startActivity(intent);
+			}
+			
 		}
 		
 	}

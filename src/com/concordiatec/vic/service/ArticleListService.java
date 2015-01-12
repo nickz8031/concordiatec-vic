@@ -3,23 +3,31 @@ package com.concordiatec.vic.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import android.content.Context;
 import com.bumptech.glide.Glide;
+import com.concordiatec.vic.constant.ApiURL;
 import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.requestinf.ArticleInf;
+import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.ResponseUtil;
 import com.google.gson.internal.LinkedTreeMap;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
 
 @SuppressWarnings("unused")
 public class ArticleListService extends HttpUtil implements VicServiceInterface{
@@ -32,34 +40,29 @@ public class ArticleListService extends HttpUtil implements VicServiceInterface{
 	/**
 	 * get article list
 	 * @param listener
+	 * @param params post parameters
 	 */
-	public void getArticles(VicResponseListener listener) {
-		getArticles(listener, null); 
+	public void getArticles(Map<String, String> p , VicResponseListener listener) {
+		RequestParams params = new RequestParams();
+		User loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			params.put("user", loginUser.usrId);
+		}
+		if( p != null && p.size() > 0 ){
+			for (Map.Entry<String, String> entry : p.entrySet()) {
+				params.put(entry.getKey(), entry.getValue());
+			}
+		}
+		post(ApiURL.ARTICLE_LIST, params, new VicResponseHandler(listener));
 	}
+	
 	/**
 	 * get article list
 	 * @param listener
 	 * @param params post parameters
 	 */
-	public void getArticles(VicResponseListener listener ,Map<String, String> params) {
-		final VicResponseListener lis = listener;
-		ArticleInf ai = restAdapter.create(ArticleInf.class);
-		Map<String, String> postParams = getAuthMap();
-		if( params != null && params.size() > 0 ){
-			for (Map.Entry<String, String> entry : params.entrySet()) {
-				postParams.put(entry.getKey(), entry.getValue());
-			}
-		}
-		ai.getArticles(postParams, new Callback<ResData>() {
-			@Override
-			public void success(ResData data, Response arg1) {
-				ResponseUtil.processResp(data, lis);
-			}
-			@Override
-			public void failure(RetrofitError err) {
-				lis.onFailure(err.getMessage());
-			}
-		});
+	public void getArticles(VicResponseListener listener) {
+		getArticles(null, listener);
 	}
 	
 	
@@ -81,8 +84,8 @@ public class ArticleListService extends HttpUtil implements VicServiceInterface{
 		article.setWriterId( getIntValue(map.get("writer_id")) );
 		article.setWriterName( map.get("writer_name").toString() );
 		
-		String pUrl = this.getServerImgPath(article.getWriterId() , map.get("writer_photo").toString());
-		String cUrl = this.getServerImgPath(article.getWriterId() , map.get("image").toString());
+		String pUrl = getServerImgPath(article.getWriterId() , map.get("writer_photo").toString());
+		String cUrl = getServerImgPath(article.getWriterId() , map.get("image").toString());
 
 		article.setWriterPhotoURL( pUrl );
 		

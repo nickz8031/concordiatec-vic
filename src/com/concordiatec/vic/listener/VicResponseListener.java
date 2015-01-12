@@ -3,9 +3,11 @@ package com.concordiatec.vic.listener;
 import com.concordiatec.vic.model.ResData;
 
 public interface VicResponseListener {
-	public void onFailure(String reason);
+	public void onFailure(int httpResponseCode , String responseBody);
 
-	public void onSuccess(Object data);
+	public void onSuccess(ResData data);
 
-	public void onError(ResData error);
+	public void onError(ResData data);
+	
+	public void onProgress( int written , int totalSize );
 }

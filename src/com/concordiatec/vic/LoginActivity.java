@@ -142,23 +142,29 @@ public class LoginActivity extends SubPageSherlockActivity {
 				ProgressUtil.show(LoginActivity.this);
 				lService.doLogin(email.getText().toString(), EncryptUtil.EncPwd(pwd.getText().toString()), new VicResponseListener() {
 					@Override
-					public void onSuccess(Object data) {
+					public void onSuccess(ResData data) {
 						//save email if it did not exist
 						LoginAccount.addData(email.getText().toString());
-						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data);
+						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 						lService.login(usr);
 						LoginActivity.this.setResult(RESULT_OK);
 						LoginActivity.this.finish();
 					}
-
+					
 					@Override
-					public void onError(ResData error) {
+					public void onFailure(int httpResponseCode, String responseBody) {
+						LogUtil.show(responseBody);
+					}
+					
+					@Override
+					public void onError(ResData data) {
 						showErrorNotify();
 					}
 
 					@Override
-					public void onFailure(String reason) {
-						LogUtil.show(reason);
+					public void onProgress(int written, int totalSize) {
+						// TODO Auto-generated method stub
+						
 					}
 				});
 			}

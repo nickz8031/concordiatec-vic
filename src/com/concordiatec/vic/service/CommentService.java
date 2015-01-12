@@ -2,20 +2,17 @@ package com.concordiatec.vic.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import android.content.Context;
+import com.concordiatec.vic.constant.ApiURL;
 import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Comment;
-import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.requestinf.CommentInf;
+import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
-import com.concordiatec.vic.util.ResponseUtil;
 import com.google.gson.internal.LinkedTreeMap;
+import com.loopj.android.http.RequestParams;
 
 public class CommentService extends HttpUtil implements VicServiceInterface {
 	public static CommentService cs;
@@ -26,27 +23,27 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 	}
 	
 	public void getComments(VicResponseListener listener , int articleId) {
-		final VicResponseListener lis = listener;
-		CommentInf commentInf = restAdapter.create(CommentInf.class);
-		Map<String, String> postParams = getAuthMap();
+		getComments(listener, articleId , 0);
+	}
+	
+	public void getComments(VicResponseListener listener , int articleId , int lastCommentId) {
+		RequestParams params = new RequestParams();
 		if( articleId > 0 ){
-			postParams.put("article_id", articleId+"");
+			params.put("article_id", articleId);
 		}else{
 			LogUtil.show("error request[ no detail article id.]");
 			return;
 		}
-		commentInf.getComments(postParams, new Callback<ResData>() {
-			@Override
-			public void success(ResData data, Response arg1) {
-				ResponseUtil.processResp(data, lis);
-			}
-			
-			@Override
-			public void failure(RetrofitError err) {
-				lis.onFailure(err.getMessage());
-			}
-		});
+		if( lastCommentId > 0 ){
+			params.put("comment_id", lastCommentId);
+		}
 		
+		User loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			params.put("user_id", loginUser.usrId);
+		}
+		
+		post(ApiURL.COMMENT_LIST, params, new VicResponseHandler(listener));
 	}
 	
 

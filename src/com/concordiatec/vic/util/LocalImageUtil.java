@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.crypto.Cipher;
 import com.concordiatec.vic.inf.ChooseImageCallback;
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +20,14 @@ import android.widget.ImageView;
 
 public class LocalImageUtil {
 	private Context context;
+	private List<String> exceptFiles;
 
 	public LocalImageUtil(Context context) {
+		this.context = context;
+	}
+	
+	public LocalImageUtil(Context context , List<String> exceptFiles) {
+		this.exceptFiles = exceptFiles;
 		this.context = context;
 	}
 
@@ -34,14 +41,13 @@ public class LocalImageUtil {
 		Uri uri = intent.getData();
 		ArrayList<String> list = new ArrayList<String>();
 		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);// managedQuery(uri,
-																						// proj,
-																						// null,
-																						// null,
-																						// null);
+		Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
 		while (cursor.moveToNext()) {
-			String path = cursor.getString(0);
-			list.add(new File(path).getAbsolutePath());
+			String path = new File( cursor.getString(0) ).getAbsolutePath();
+			if( exceptFiles.contains(path) ){
+				continue;
+			}
+			list.add( path );
 		}
 		return list;
 	}

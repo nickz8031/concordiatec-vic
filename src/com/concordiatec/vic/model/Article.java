@@ -4,7 +4,6 @@
 package com.concordiatec.vic.model;
 
 import java.util.List;
-import com.google.gson.annotations.SerializedName;
 
 public class Article extends VicModel {
 	/**
@@ -18,7 +17,6 @@ public class Article extends VicModel {
 	/**
 	 * article link type if it is not normal type
 	 */
-	@SerializedName("effected_id")
 	private int effectId;
 	/**
 	 * article contents
@@ -27,82 +25,77 @@ public class Article extends VicModel {
 	/**
 	 * past time from write article
 	 */
-	@SerializedName("pasttime")
 	private int pastTime;
 	/**
 	 * writer id
 	 */
-	@SerializedName("writer_id")
 	private int writerId;
 	/**
 	 * writer name
 	 */
-	@SerializedName("writer_name")
 	private String writerName;
 	/**
 	 * writer photo
 	 */
-	@SerializedName("writer_photo")
 	private String writerPhotoURL;
 	/**
 	 * cover image
 	 */
-	@SerializedName("image")
 	private String coverImageURL;
 	/**
 	 * cover image width
 	 */
-	@SerializedName("image_width")
 	private int coverImageWidth;
 	/**
 	 * cover image height
 	 */
-	@SerializedName("image_height")
 	private int coverImageHeight;
 	
-	@SerializedName("images")
 	private List<ArticleImages> images;
 	/**
 	 * appoint shop id
 	 */
-	@SerializedName("shop_id")
 	private int shopId;
 	/**
 	 * appoint shop name
 	 */
-	@SerializedName("shop_name")
 	private String shopName;
 	/**
 	 * appoint shop address
 	 */
-	@SerializedName("shop_addr")
 	private String shopAddr;
 	/**
 	 * appoint shop group id
 	 */
-	@SerializedName("shop_group")
 	private int shopGroupId;
 	/**
 	 * be liked count
 	 */
-	@SerializedName("like_count")
 	private int likeCount;
 	
-	@SerializedName("share_count")
 	private int shareCount;
 	/**
 	 * comment count of article
 	 */
-	@SerializedName("comment_count")
 	private int commentCount;
 	/**
 	 * latest comment objects of article
 	 */
-	@SerializedName("lastest_comments")
 	private List<LastestComment> latestComments;
 	
 	private boolean isLike;
 	
+	/**
+	 * allow comment for article
+	 */
+	private boolean allowComment;
+	
+	public boolean isAllowComment() {
+		return allowComment;
+	}
+	public void setIsAllowComment(boolean allowComment) {
+		this.allowComment = allowComment;
+	}
 	public int getId() {
 		return id;
 	}
@@ -226,7 +219,7 @@ public class Article extends VicModel {
 		this.images = images;
 	}
 	public int getShareCount() {
-		return 0;
+		return shareCount;
 	}
 	public void setShareCount(int shareCount) {
 		this.shareCount = shareCount;

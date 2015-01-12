@@ -2,21 +2,18 @@ package com.concordiatec.vic.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import android.content.Context;
+import com.concordiatec.vic.constant.ApiURL;
 import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
-import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.requestinf.ArticleInf;
+import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
-import com.concordiatec.vic.util.ResponseUtil;
 import com.google.gson.internal.LinkedTreeMap;
+import com.loopj.android.http.RequestParams;
 
 public class ArticleDetailService extends HttpUtil implements VicServiceInterface {
 
@@ -29,7 +26,6 @@ public class ArticleDetailService extends HttpUtil implements VicServiceInterfac
 	
 	@Override
 	public List<Article> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -50,7 +46,7 @@ public class ArticleDetailService extends HttpUtil implements VicServiceInterfac
 		article.setWriterId( getIntValue(map.get("writer_id")) );
 		article.setWriterName( map.get("writer_name").toString() );
 		
-		String serverPath = this.getServerImgPath(article.getWriterId());
+		String serverPath = getServerImgPath(article.getWriterId());
 		String pUrl = serverPath + map.get("writer_photo").toString();
 		article.setWriterPhotoURL( pUrl );
 		
@@ -80,26 +76,19 @@ public class ArticleDetailService extends HttpUtil implements VicServiceInterfac
 	 * @param articleId article id
 	 */
 	public void getDetail(VicResponseListener listener ,int articleId){
-		final VicResponseListener lis = listener;
-		ArticleInf ai = restAdapter.create(ArticleInf.class);
-		Map<String, String> postParams = getAuthMap();
+		RequestParams params = new RequestParams();
 		if( articleId > 0 ){
-			postParams.put("article_id", articleId+"");
+			params.put("id", articleId);
 		}else{
 			LogUtil.show("error request[ no detail article id.]");
 			return;
 		}
-		ai.getDetail(postParams, new Callback<ResData>() {
-
-			@Override
-			public void failure(RetrofitError err) {
-				lis.onFailure(err.getMessage());
-			}
-			@Override
-			public void success(ResData data, Response arg1) {
-				ResponseUtil.processResp(data, lis);
-			}
-		});
+		User loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			params.put("user", loginUser.usrId);
+		}
+		post(ApiURL.ARTICLE_DETAIL, params, new VicResponseHandler(listener));
+		
 	}
 	
 	/**

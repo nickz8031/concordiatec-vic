@@ -19,14 +19,19 @@ public class ChoosePicActivity extends SubPageSherlockActivity implements OnItem
 	private LocalImageUtil util;
 	private List<FileTraversal> localList;
 	private ChooseImageListAdapter listAdapter;
+	private ArrayList<String> selectedPics;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.choose_pic);
+		setContentView(R.layout.activity_choose_pic);
 		setTitle(getString(R.string.choose_pic));
+		
+		selectedPics = getIntent().getStringArrayListExtra("selected_pics");
+		
 		listView = (ListView) findViewById(R.id.folder_lsit);
-		util = new LocalImageUtil(this);
+		util = new LocalImageUtil(this , selectedPics);
 		localList = util.LocalImgFileList();
 		List<HashMap<String, String>> listdata = new ArrayList<HashMap<String, String>>();
 		if (localList != null) {

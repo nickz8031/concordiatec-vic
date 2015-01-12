@@ -5,52 +5,33 @@ import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.adapter.ChooseImageAdapter;
 import com.concordiatec.vic.adapter.ChooseImageAdapter.OnItemClickClass;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
-import com.concordiatec.vic.inf.ChooseImageCallback;
 import com.concordiatec.vic.util.FileTraversal;
-import com.concordiatec.vic.util.LocalImageUtil;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 
 public class ChoosePicListActivity extends SubPageSherlockActivity {
 	private Bundle bundle;
 	private FileTraversal fileTraversal;
 	private GridView imgGridView;
-	private LinearLayout selectedLayout;
-	private LocalImageUtil util;
-	private RelativeLayout selectedGroup;
-	private HashMap<Integer, ImageView> hashImage;
 	private ArrayList<String> fileList;
 	private ChooseImageAdapter imgsAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.act_choose_pic_list);
+		setContentView(R.layout.activity_choose_pic_list);
 		imgGridView = (GridView) findViewById(R.id.imageListGrid);
 		bundle = getIntent().getExtras();
-		fileTraversal = bundle.getParcelable("data");
+		fileTraversal = bundle.getParcelable("data");		
 		imgsAdapter = new ChooseImageAdapter(this, fileTraversal.fileContent, onItemClickClass);
 		imgGridView.setAdapter(imgsAdapter);
-		selectedLayout = (LinearLayout) findViewById(R.id.selected_image_layout);
-		selectedGroup = (RelativeLayout) findViewById(R.id.selectedLayout);
-		hashImage = new HashMap<Integer, ImageView>();
 		fileList = new ArrayList<String>();
-		util = new LocalImageUtil(this);
 	}
 	
 	@Override
@@ -67,35 +48,6 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 		return true;
 	}
 
-	class BottomImgIcon implements OnItemClickListener {
-		int index;
-
-		public BottomImgIcon(int index) {
-			this.index = index;
-		}
-
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		}
-	}
-
-	@SuppressLint("NewApi")
-	public ImageView iconImage(String filepath, int index, CheckBox checkBox) throws FileNotFoundException {
-		LinearLayout.LayoutParams params = new LayoutParams(selectedGroup.getMeasuredHeight() - 10, selectedGroup.getMeasuredHeight() - 10);
-		ImageView imageView = new ImageView(this);
-		imageView.setLayoutParams(params);
-		float alpha = 100;
-		imageView.setAlpha(alpha);
-		util.imgExcute(imageView, imgCallBack, filepath);
-		imageView.setOnClickListener(new ImgOnclick(filepath, checkBox));
-		return imageView;
-	}
-	ChooseImageCallback imgCallBack = new ChooseImageCallback() {
-		@Override
-		public void resultImgCall(ImageView imageView, Bitmap bitmap) {
-			imageView.setImageBitmap(bitmap);
-		}
-	};
 
 	class ImgOnclick implements OnClickListener {
 		String filepath;
@@ -109,33 +61,31 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 		@Override
 		public void onClick(View arg0) {
 			checkBox.setChecked(false);
-			selectedLayout.removeView(arg0);
 			fileList.remove(filepath);
 		}
 	}
+	
 	ChooseImageAdapter.OnItemClickClass onItemClickClass = new OnItemClickClass() {
 		@Override
 		public void OnItemClick(View v, int Position, CheckBox checkBox) {
-			String filapath = fileTraversal.fileContent.get(Position);
+			String filePath = fileTraversal.fileContent.get(Position);
 			if (checkBox.isChecked()) {
 				checkBox.setChecked(false);
-				selectedLayout.removeView(hashImage.get(Position));
-				fileList.remove(filapath);
+				fileList.remove(filePath);
 			} else {
-				try {
+				if( fileExist(filePath) ){
 					checkBox.setChecked(true);
-					ImageView imageView = iconImage(filapath, Position, checkBox);
-					if (imageView != null) {
-						hashImage.put(Position, imageView);
-						fileList.add(filapath);
-						selectedLayout.addView(imageView);
-					}
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+					fileList.add(filePath);
 				}
+				
 			}
 		}
 	};
+	
+	private boolean fileExist(String path){
+		File f = new File(path);
+		return f.exists();
+	}
 
 	public void tobreak(View view) {
 		finish();

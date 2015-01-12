@@ -30,5 +30,10 @@
 	<string name="take_photo">사진찍기</string>
 	<string name="select_photo">사진선택</string>
 	<string name="choose_pic">사진선택</string>
+	<string name="write_article_succed">글이 성공적으로 등록되었습니다.</string>
+	<string name="write_article_failed">등록과정에 오류가 발생하였습니다.</string>
+	<string name="select_image_least_one">하나 혹은 이상의 사진을 등록 해 주세요.</string>
+	<string name="sure_to_quit">이 글을 삭제하시겠습니까?</string>
+	
 	
 </resources>

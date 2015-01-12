@@ -20,7 +20,7 @@
         android:icon="@drawable/ic_launcher"
         android:name=".VicApplication"
         android:label="@string/app_name"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:configChanges="orientation|screenSize">
         
         <!-- activities -->
@@ -35,11 +35,13 @@
         
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme"/>
         <activity 
             android:name=".ArticleWriteActivity" 
             android:theme="@style/SubTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize" />
         
         <activity 
             android:name=".ChoosePicActivity" 

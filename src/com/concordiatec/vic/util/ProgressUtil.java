@@ -1,15 +1,25 @@
 package com.concordiatec.vic.util;
 import com.concordiatec.vic.widget.CustomProgressDialog;
 import android.app.Activity;
+import android.content.Context;
 
 public class ProgressUtil {
 	public static CustomProgressDialog dialog;
 	
 	public static void show(Activity context , String msg){
-		if( dialog == null ){
-			dialog = new CustomProgressDialog(context, msg);
-		}
+		dialog = new CustomProgressDialog(context, msg);
 		dialog.show();
+	}
+	public static void show(Context context , String msg){
+		dialog = new CustomProgressDialog(context, msg);
+		dialog.show();
+	}
+	
+	public static void setText(CharSequence text){
+		if( dialog != null ){
+			dialog.setText(text);
+		}
+		
 	}
 	
 	public static void show( Activity context ){
@@ -18,5 +28,6 @@ public class ProgressUtil {
 	
 	public static void dismiss(){
 		dialog.dismiss();
+		dialog = null;
 	}
 }

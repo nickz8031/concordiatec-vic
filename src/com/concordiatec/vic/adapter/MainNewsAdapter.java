@@ -4,10 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.bumptech.glide.Glide;
-import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.LastestComment;
-import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.ImageViewPreload;
@@ -301,14 +299,9 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			setDislike(view);
 			view.setTag(null);
 		}
-		aService.likeArticle(uService.getLoginUser().usrId, articleId, new VicResponseListener() {
-			@Override
-			public void onSuccess(Object data) {}
-			@Override
-			public void onFailure(String reason) {}
-			@Override
-			public void onError(ResData error) {}
-		});
+		aService.likeArticle(articleId);
+		
+		
 	}
 	
 	private void setLike(View v){

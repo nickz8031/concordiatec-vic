@@ -16,14 +16,15 @@
         android:layout_height="60dp"
         android:layout_centerInParent="true"
         widget:borderWidth="8dp"/>
+    
     <TextView 
         android:id="@+id/loadingImageText"
         android:layout_below="@id/loadingImageView"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center"
-        android:textColor="@color/normal_font"
-        android:textSize="@dimen/text_14"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_16"
         />
 
 </RelativeLayout>
