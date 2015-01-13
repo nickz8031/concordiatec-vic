@@ -1,5 +1,6 @@
 package com.concordiatec.vic;
 
+import com.activeandroid.ActiveAndroid;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.LoginAccount;
@@ -143,6 +144,7 @@ public class LoginActivity extends SubPageSherlockActivity {
 				lService.doLogin(email.getText().toString(), EncryptUtil.EncPwd(pwd.getText().toString()), new VicResponseListener() {
 					@Override
 					public void onSuccess(ResData data) {
+						LogUtil.show( data.getData().toString() );
 						//save email if it did not exist
 						LoginAccount.addData(email.getText().toString());
 						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());

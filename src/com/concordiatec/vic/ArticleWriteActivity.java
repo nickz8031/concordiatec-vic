@@ -3,62 +3,82 @@ package com.concordiatec.vic;
 import java.io.File;
 import java.util.ArrayList;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.bumptech.glide.Glide;
+import com.concordiatec.vic.adapter.PhotoShowGridAdapter;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
-import com.concordiatec.vic.filter.ArticleContentFilter;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
+import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleService;
+import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.Route;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.util.TimeUtil;
+import com.concordiatec.vic.widget.CircleImageView;
 
 public class ArticleWriteActivity extends SubPageSherlockActivity{
 	private final static int REQUEST_TAKE_PHOTO = 1;
 	private final static int REQUEST_CHOOSE_PHOTO = 2;
+	private final static int REQUEST_TAKE_SURE = 3;
 	
-	private ArrayList<String> picsList;
+	private ArrayList<File> picsList;
 	
+	private TextView articleStore;
 	private View takePhotoBtn;
 	private View choosePhotoBtn;
-	private LinearLayout attachLayout;
+	private GridView attachList;
 	private EditText writeContent;
 	private CheckBox commentOff;
 	private CheckBox shareOff;
 	
 	private String currentPhotoPath;
+	private PhotoShowGridAdapter adapter;
+	private User loginUser;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		loginUser = new UserService(this).getLoginUser();
+		if( loginUser == null ){
+			Route.moveTo(this, LoginActivity.class);
+			return;
+		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_artile_write);
-
 		setTitle(getString(R.string.write_articles));
 		
-		attachLayout = (LinearLayout) findViewById(R.id.attach_images_scroll_layout);
-		
+		picsList = new ArrayList<File>();
+		attachList = (GridView) findViewById(R.id.attach_images_scroll);
 		writeContent = (EditText) findViewById(R.id.write_content);
-		picsList = new ArrayList<String>();
+		articleStore = (TextView) findViewById(R.id.article_store);
+		
+		CircleImageView profilePhoto = (CircleImageView) findViewById(R.id.profile_photo);
+		Glide.with(this).load(loginUser.photo).into(profilePhoto);
+		TextView userName = (TextView) findViewById(R.id.profile_name);
+		userName.setText(loginUser.name);
+		if( loginUser.isShop ){
+			articleStore.setText(loginUser.name);
+			articleStore.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.demo_store_type), null, null, null);
+		}
+		
 		takePhotoBtn = findViewById(R.id.take_photo);
 		choosePhotoBtn = findViewById(R.id.choose_photo);
 		commentOff = (CheckBox) findViewById(R.id.article_comment_off);
@@ -79,11 +99,17 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 			public void onClick(View v) {
 				// show gallery
 				Intent intent = new Intent(ArticleWriteActivity.this , ChoosePicActivity.class);
-				intent.putStringArrayListExtra("selected_pics", picsList);
+				ArrayList<String> selectedFiles = new ArrayList<String>();
+				for( File f : picsList ){
+					selectedFiles.add( f.getAbsolutePath() );
+				}
+				intent.putStringArrayListExtra("selected_pics", selectedFiles);
 				startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
 				
 			}
 		});
+		adapter = new PhotoShowGridAdapter(this);
+		attachList.setAdapter( adapter );
 		
 	}
 	
@@ -107,13 +133,21 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 	                	if (bundle.getStringArrayList("files")!=null) {
 	                		ArrayList<String> uriList= bundle.getStringArrayList("files");
 	        				for( String filePath : uriList ){
-	        					picsList.add(filePath);
-	        					ImageView iView = new ImageView(this);
-	        					Glide.with(this).load(filePath).into(iView);
-	        	                iView.setLayoutParams( getLP() );
-	        	                iView.setScaleType(ScaleType.CENTER_CROP);
-	    	                    attachLayout.addView(iView);
+	        					File f = new File(filePath);
+	        					if( f.exists() ){
+	        						picsList.add(f);
+	        						adapter.addData(filePath);
+	        					}
 	        				}
+	        				
+	        				if( picsList.size() > attachList.getNumColumns() ){
+    							LayoutParams params = (LayoutParams) attachList.getLayoutParams();
+    							params.height = Tools.getIntValue( (
+    									getResources().getDimension(R.dimen.ar_w_choosed_photo_size) +
+    									getResources().getDimension(R.dimen.ar_w_choosed_photo_grid_horspace)
+    									) * 2 );
+    							attachList.setLayoutParams(params);
+    						}
 	        			}
 	                } catch (Exception e) { 
 	                    e.printStackTrace();
@@ -121,29 +155,26 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 	            }
 			break;
 		case REQUEST_TAKE_PHOTO:
-				File f = new File(this.currentPhotoPath);
+			Intent intent = new Intent(this , CameraShowActivity.class);
+			intent.putExtra("photo", this.currentPhotoPath);
+			startActivityForResult(intent, REQUEST_TAKE_SURE);			
+			break;
+			
+		case REQUEST_TAKE_SURE:
+			if( getIntent().hasExtra("take_photo") ){
+				String pPath = getIntent().getStringExtra("take_photo");
+				File f = new File(pPath);
 				if( f.exists() ){
-					f = null;
-					picsList.add(this.currentPhotoPath);
-					ImageView iView = new ImageView(this);
-					Glide.with(this).load(this.currentPhotoPath).into(iView);
-		            iView.setLayoutParams( getLP() );
-		            iView.setScaleType(ScaleType.CENTER_CROP);
-		            attachLayout.addView(iView);
+					picsList.add(f);
+					adapter.addData(pPath);
 				}
+			}
 			break;
 		default:
 			break;
 		}
         super.onActivityResult(requestCode, resultCode, data);
-    }
-	
-	private LinearLayout.LayoutParams getLP(){
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, 0, 30 , 0);
-		return params;
-	}
-	
+    }	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.write_article, menu);
@@ -167,9 +198,6 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 			article.setContent( content );
 			article.setIsAllowComment(isAllowComment);
 			
-			//simple filter
-			article = ArticleContentFilter.single(this).filterWrite(article, picsList);
-			
 			articleService.writeArticle(article, picsList, new VicResponseListener() {
 				@Override
 				public void onSuccess(ResData data) {
@@ -178,7 +206,7 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 					finish();
 				}
 				@Override
-				public void onFailure(int httpResponseCode, String responseBody) {
+				public void onFailure(int httpResponseCode, String ErrorMessage) {
 					ProgressUtil.dismiss();
 					NotifyUtil.toast(ArticleWriteActivity.this, getString(R.string.write_article_failed));
 				}

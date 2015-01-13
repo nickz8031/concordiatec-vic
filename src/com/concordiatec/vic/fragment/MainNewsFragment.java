@@ -39,6 +39,7 @@ import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.ProgressUtil;
@@ -144,7 +145,10 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			}
 
 			@Override
-			public void onProgress(int written, int totalSize) {}
+			public void onProgress(int written, int totalSize) {
+				double percent = (totalSize > 0) ? (written * 1.0 / totalSize) * 100 : -1;
+				ProgressUtil.setText( Tools.getIntValue(percent) + " %" );
+			}
 		});
 	}
 	

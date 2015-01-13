@@ -2,18 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="@android:color/background_dark"
+    android:padding="10dp">
     <GridView
         android:id="@+id/imageListGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:listSelector="@color/bule_overlay"
-        android:horizontalSpacing="1dp"
-        android:verticalSpacing="1dp"
-        android:background="@color/background_color_alpha"
-        android:numColumns="2"
-        android:layout_marginBottom="85dp" >
+        android:horizontalSpacing="3dp"
+        android:verticalSpacing="3dp"
+        android:numColumns="4">
     </GridView>
 </RelativeLayout>

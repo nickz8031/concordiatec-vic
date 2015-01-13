@@ -25,7 +25,7 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_choose_pic_list);
+		setContentView(R.layout.activity_choose_pic_grid);
 		imgGridView = (GridView) findViewById(R.id.imageListGrid);
 		bundle = getIntent().getExtras();
 		fileTraversal = bundle.getParcelable("data");		

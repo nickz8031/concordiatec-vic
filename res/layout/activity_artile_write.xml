@@ -30,16 +30,27 @@
 				   android:layout_marginBottom="@dimen/ar_w_profile_store_margin"
 				   android:clickable="true"
 				   android:background="@drawable/sort_click_selector"
-				   android:orientation="horizontal">
+				   android:orientation="vertical">
 				   <TextView 
+				       android:id="@+id/article_store"
 				       android:layout_width="match_parent"
-				       android:layout_height="match_parent"
+				       android:layout_height="0dp"
+				       android:layout_weight="1"
 				       android:drawableLeft="@drawable/ic_maps_store_black"
 				       android:drawablePadding="10dp"
 				       android:text="@string/store_select"
 				       android:gravity="center_vertical"
 				       android:paddingTop="3dp"
 				       android:textColor="@color/light_font"/>
+				   <TextView
+				       android:layout_width="match_parent"
+				       android:layout_height="0dp" 
+				       android:layout_weight="1"
+				       android:gravity="center_vertical"
+				       android:text="서울특별시 송파구 신천동 7-20"
+				       android:textSize="@dimen/text_14"
+				       android:textColor="@color/light_font"
+				       />
 				</LinearLayout>
    
 				<!-- 프로파일 레이아웃 -->
@@ -70,40 +81,40 @@
 				</RelativeLayout>
    
 				<!-- 글 내용 쓰기 -->
-				<LinearLayout 
-					android:id="@+id/text_content_layout"
-					android:layout_below="@id/profile_layout"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="40dp"
-					android:orientation="vertical">
 
-					<EditText
-					    android:id="@+id/write_content"
-					    android:layout_width="match_parent"
-					    android:layout_height="wrap_content"
-					    android:layout_marginBottom="@dimen/ar_w_content_margin_bottom"
-					    android:background="@null"
-					    android:gravity="top"
-					    android:minLines="4"
-					    android:hint="@string/write_content_hint"
-					    android:inputType="textMultiLine"
-					    android:textSize="@dimen/text_14" />
-					
-					<!-- content attached photo -->
-					<HorizontalScrollView 
-					    android:id="@+id/attach_images_scroll"
-					    android:layout_width="match_parent"
-					    android:layout_height="wrap_content"
-					    android:scrollbars="none">
-						<LinearLayout 
-						    android:id="@+id/attach_images_scroll_layout"
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:orientation="horizontal"/>
-					</HorizontalScrollView>
-					
+				<LinearLayout
+				    android:id="@+id/text_content_layout"
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/profile_layout"
+				    android:orientation="vertical"
+				    android:paddingBottom="40dp" >
+
+				    <EditText
+				        android:id="@+id/write_content"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:layout_marginBottom="@dimen/ar_w_content_margin_bottom"
+				        android:background="@null"
+				        android:gravity="top"
+				        android:hint="@string/write_content_hint"
+				        android:inputType="textMultiLine"
+				        android:minLines="4"
+				        android:textSize="@dimen/text_14" />
+
+				    <!-- content attached photo -->
+
+				    <GridView
+				        android:id="@+id/attach_images_scroll"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:gravity="center|top"
+				        android:horizontalSpacing="@dimen/ar_w_choosed_photo_grid_horspace"
+				        android:numColumns="4"
+				        android:scrollbars="none"
+				        android:verticalSpacing="5dp" />
 				</LinearLayout>
+
 				<!-- 글 옵션 선택 -->
 				<LinearLayout
 					android:id="@+id/ar_w_option_select"

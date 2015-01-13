@@ -1,15 +1,12 @@
 package com.concordiatec.vic.listener;
 
-import java.io.IOException;
-import java.net.URI;
+
 import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import android.os.Message;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.tools.Tools;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.ResponseUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.ResponseHandlerInterface;
 
 public class VicResponseHandler extends AsyncHttpResponseHandler {
 	private VicResponseListener lis;
@@ -19,7 +16,7 @@ public class VicResponseHandler extends AsyncHttpResponseHandler {
 	@Override
 	public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable throwable) {
 		if( lis != null ){
-			lis.onFailure(statusCode , new String(responseBody) );
+			lis.onFailure(statusCode , throwable.getMessage() );
 		}
 		
 	}

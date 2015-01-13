@@ -10,6 +10,7 @@ import com.concordiatec.vic.inf.VicServiceInterface;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -66,6 +67,24 @@ public class UserService extends HttpUtil implements VicServiceInterface {
 		user.photo = getServerImgPath(getIntValue(map.get("id"))) + map.get("photo").toString();
 		user.email = map.get("email").toString();
 		user.usrId = getIntValue(map.get("id").toString());
+		user.isShop = getIntValue(map.get("is_shop")) == 1 ? true:false;
+		if(user.isShop){
+			user.shopId = Tools.getIntValue(map.get("shop_id"));
+			user.shopGroupId = Tools.getIntValue(map.get("group_id"));
+			user.areaId = Tools.getIntValue(map.get("area_id"));
+			user.shopFee = Tools.getIntValue(map.get("shop_fee"));
+			user.shopPhone = map.get("shop_phone").toString();
+			user.shopIntro = map.get("shop_intro").toString();
+			user.shopAddr1 = map.get("shop_addr1").toString();
+			user.shopAddr2 = map.get("shop_addr2").toString();
+			user.shopLng = Tools.getDoubleValue( map.get("shop_lng") );
+			user.shopLat = Tools.getDoubleValue( map.get("shop_lat") );
+			user.shopScores = Tools.getIntValue( map.get("shop_scores") );
+			user.shopLikeCount = Tools.getIntValue( map.get("shop_likes") );
+			user.shopShareCount = Tools.getIntValue( map.get("shop_shares") );
+			user.shopStatus = Tools.getIntValue( map.get("shop_status") );
+			user.shopCreated = map.get("shop_created").toString();
+		}
 		return user;
 	}
 	

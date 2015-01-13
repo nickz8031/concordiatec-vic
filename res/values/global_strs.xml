@@ -23,6 +23,7 @@
     <string name="cancel_str">취소</string>
     <string name="complete">완료</string>
     <string name="choose">선택</string>
+    <string name="confirm">확인</string>
 	
     <string name="file_name">파일명</string>
     <string name="file_count">몇개</string>
@@ -37,6 +38,7 @@
     <string name="format_surplus_total_count">%1$s/%2$s</string>
     
     <!-- notify messages -->
+    <string name="error_with_show_image">파일이 손상되었거나 존재하지 않습니다.</string>
     <string name="server_connection_failed">서버와의 연결이 원활하지 않습니다.잠시후에 다시 시도 해 주세요.</string>
     <string name="server_connection_wait">서버와 연결을 시도하는 중입니다. 잠시만 기다려 주십시오.</string>
     <string name="yes">예</string>

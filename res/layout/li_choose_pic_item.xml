@@ -5,23 +5,24 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_margin="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:layout_centerInParent="true"
-        android:src="@drawable/choose_image_back"
+        android:src="@drawable/demo_content_img"
         />
 
     <CheckBox
         android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignRight="@id/imageView1"
+        android:layout_alignTop="@id/imageView1"
+        android:background="@drawable/checkbox_white"
+        android:button="@null"
         android:checked="false"
-        android:focusable="false"
         android:clickable="false"
-        />
+        android:focusable="false" />
 
 </RelativeLayout>

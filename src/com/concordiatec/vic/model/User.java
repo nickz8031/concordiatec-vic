@@ -18,15 +18,41 @@ public class User extends Model {
 	public String name;
 	@Column(name="photo")
 	public String photo;
+	@Column(name="isShop")
+	public boolean isShop;
+	@Column(name="shopId")
+	public int shopId;
+	@Column(name="shopGroupId")
+	public int shopGroupId;
+	@Column(name="areaId")
+	public int areaId;
+	@Column(name="shopFee")
+	public int shopFee;
+	@Column(name="shopPhone")
+	public String shopPhone;
+	@Column(name="shopIntro")
+	public String shopIntro;
+	@Column(name="shopAddr1")
+	public String shopAddr1;
+	@Column(name="shopAddr2")
+	public String shopAddr2;
+	@Column(name="shopLng")
+	public double shopLng;
+	@Column(name="shopLat")
+	public double shopLat;
+	@Column(name="shopScores")
+	public int shopScores;
+	@Column(name="shopLikeCount")
+	public int shopLikeCount;
+	@Column(name="shopShareCount")
+	public int shopShareCount;
+	@Column(name="shopStatus")
+	public int shopStatus;
+	@Column(name="shopCreated")
+	public String shopCreated;
+	
 	public User() {
 		super();
-	}
-	public User(String email, String pwd, String name, String photo) {
-		super();
-		this.email = email;
-		this.pwd = pwd;
-		this.name = name;
-		this.photo = photo;
 	}
 	
 }

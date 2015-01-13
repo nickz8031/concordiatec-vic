@@ -8,6 +8,7 @@
         android:id="@+id/filephoto_imgview"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/choose_image_back" 
         android:layout_marginLeft="10dp"
         />

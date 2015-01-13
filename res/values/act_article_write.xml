@@ -4,7 +4,7 @@
 
 <!-- dimens -->
 	<dimen name="ar_w_content_box_margin">5dp</dimen>
-    <dimen name="ar_w_store_selector">40dp</dimen>
+    <dimen name="ar_w_store_selector">50dp</dimen>
     <dimen name="ar_w_profile_store_margin">10dp</dimen>
     <dimen name="ar_w_profile_layout">40dp</dimen>
     <dimen name="ar_w_content_profile_margin">15dp</dimen>
@@ -21,6 +21,10 @@
     <dimen name="ar_w_content_margin_bottom">45dp</dimen>
     
     <dimen name="ar_w_options_height">30dp</dimen>
+    
+    <dimen name="ar_w_choosed_photo_size">80dp</dimen>
+    <dimen name="ar_w_choosed_photo_grid_horspace">3dp</dimen>
+    
 <!-- strings -->
 	<string name="write_articles">글쓰기</string>
 	<string name="store_select">업체 선택하기</string>    

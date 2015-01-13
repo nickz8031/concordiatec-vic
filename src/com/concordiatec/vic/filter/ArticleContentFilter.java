@@ -1,10 +1,7 @@
 package com.concordiatec.vic.filter;
 
-import java.util.List;
 import android.content.Context;
-import com.concordiatec.vic.R;
 import com.concordiatec.vic.model.Article;
-import com.concordiatec.vic.util.NotifyUtil;
 
 public class ArticleContentFilter {
 	private static ArticleContentFilter articleWriteFilter;
@@ -13,10 +10,7 @@ public class ArticleContentFilter {
 		this.context = context;
 	}
 	
-	public Article filterWrite( Article article , List<String> picList ){
-		if( picList.size() == 0 ){ //사진은 적어도 한개
-			NotifyUtil.toast(context, context.getResources().getString(R.string.select_image_least_one));
-		}
+	public Article filterWrite( Article article ){
 		//filter content
 		article.setContent( filterContent(article.getContent()) );
 		return article;

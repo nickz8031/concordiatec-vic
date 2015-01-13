@@ -24,9 +24,7 @@ public class ArticleService extends HttpUtil {
 		this.context = context;
 		uService = new UserService(context);
 	}
-	public void writeArticle( Article article , List<String> filesPath , VicResponseListener listener ){
-		
-		LogUtil.show(filesPath.toString());
+	public void writeArticle( Article article , List<File> files , VicResponseListener listener ){
 		
 		User loginUser = uService.getLoginUser();
 		if( loginUser != null ){
@@ -36,23 +34,18 @@ public class ArticleService extends HttpUtil {
 			params.put("comment", ( article.isAllowComment() ? 1 : 0 ));
 			params.put("shop", article.getShopId());
 			params.put("content", article.getContent());
-			
-			int d = 0 ;
-			if( filesPath != null && filesPath.size() > 0 ){
-				
-				for (int i = 0; i < filesPath.size(); i++) {
-					File f = new File(filesPath.get(i));
-					if( f.exists() ){
-						try {
-							params.put(d+"", f);
-							d++;
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
+			if( files != null && files.size() > 0 ){
+				for (int i = 0; i < files.size(); i++) {
+					try {
+						params.put(i+"", files.get(i));
+					} catch (FileNotFoundException e) {}
 				}
-			}			
+			}else{
+				return;
+			}
+			
 			post(ApiURL.ARTICLE_WRITE, params, new VicResponseHandler(listener));
+			
 		}
 	}
 
