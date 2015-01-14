@@ -4,6 +4,7 @@ import java.io.IOException;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 
 
@@ -92,4 +93,5 @@ public class Tools {
 	    }
 	    return returnBm;
 	}
+	
 }

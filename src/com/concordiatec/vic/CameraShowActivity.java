@@ -1,6 +1,7 @@
 package com.concordiatec.vic;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,11 +13,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.tools.Tools;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 
 public class CameraShowActivity extends SubPageSherlockActivity {
 	public final static int SURE_TO_USE = 1;
 	private String photoPath;
+	private Bitmap bm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class CameraShowActivity extends SubPageSherlockActivity {
 		if (photoPath != null) {
 			int angel = Tools.getBitmapDegree(photoPath);
 			if (angel > 0) {
-				Bitmap bm = BitmapFactory.decodeFile(photoPath);
+				bm = BitmapFactory.decodeFile(photoPath);
 				bm = Tools.rotateBitmapByDegree(bm, angel);
 				mImageView.setImageBitmap(bm);
 			}
@@ -68,10 +71,19 @@ public class CameraShowActivity extends SubPageSherlockActivity {
 		return true;
 	}
 
-	private void sureToUse() {
+	private void sureToUse() {		
 		Intent intent = new Intent(this , ArticleWriteActivity.class);
 		intent.putExtra("take_photo", photoPath);
-		setResult(SURE_TO_USE , intent);
+		setResult(Activity.RESULT_OK , intent);
 		finish();
+	}
+	@Override
+	protected void onDestroy() {
+		if( bm != null ){
+			bm.recycle();
+			bm = null;
+		}
+		
+		super.onDestroy();
 	}
 }

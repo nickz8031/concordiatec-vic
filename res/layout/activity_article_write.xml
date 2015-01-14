@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+    <ScrollView 
+        android:layout_alignParentStart="true"
+        android:id="@+id/content_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:scrollbars="none">
+        	
+        <RelativeLayout
+			android:id="@+id/write_content_area"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/ar_write_layer_wrpper"
+			android:layout_marginTop="@dimen/ar_w_content_box_margin"
+			android:layout_marginLeft="@dimen/ar_w_content_box_margin"
+			android:layout_marginRight="@dimen/ar_w_content_box_margin"
+			android:paddingBottom="5dp">
+				<!-- 업체 선택 박스 -->
+				<RelativeLayout 
+					android:id="@+id/store_selector"
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_marginBottom="@dimen/ar_w_profile_store_margin"
+				    android:paddingTop="@dimen/ar_w_profile_store_margin"
+				    android:paddingBottom="@dimen/ar_w_profile_store_margin"
+				    android:layout_marginTop="1dp"
+				    android:layout_marginRight="1dp"
+				    android:layout_marginLeft="1dp"
+				    android:paddingLeft="@dimen/ar_w_content_padding"
+				    android:paddingRight="@dimen/ar_w_content_padding"
+				    android:background="@drawable/ar_write_store_selector_bg"
+					android:clickable="true">
+				    <com.concordiatec.vic.widget.CircleImageView 
+					    android:id="@+id/article_store_img"
+					    android:layout_width="@dimen/ar_w_profile_photo_width"
+					    android:layout_height="@dimen/ar_w_profile_photo_height"
+					    android:layout_alignParentStart="true"
+					    android:contentDescription="@string/desc_store_type"
+					    android:src="@drawable/ic_maps_store_black"
+					     />
+				    <LinearLayout 
+					   android:layout_toRightOf="@id/article_store_img"
+					   android:id="@+id/article_store_text"
+					   android:layout_width="wrap_content"
+					   android:layout_height="wrap_content"
+					   android:orientation="vertical"
+					   android:layout_marginLeft="10dp"
+					   android:layout_marginRight="10dp"
+					   android:layout_marginBottom="10dp">
+					   <TextView 
+					       android:id="@+id/article_store"
+					       android:layout_width="match_parent"
+					       android:layout_height="0dp"
+					       android:layout_weight="1"
+					       android:text="@string/store_select"
+					       android:gravity="center_vertical"
+					       android:paddingTop="3dp"
+					       android:textSize="@dimen/text_16"
+					       android:layout_marginBottom="3dp"/>
+					   <TextView
+					       android:id="@+id/article_store_addr"
+					       android:layout_width="255dp"
+					       android:layout_height="0dp" 
+					       android:layout_weight="1"
+					       android:gravity="center_vertical"
+					       android:textSize="@dimen/text_12"
+					       android:visibility="gone"
+					       android:textColor="@color/deep_light_font"
+					       />
+					</LinearLayout>
+					<ImageView 
+					    android:id="@+id/article_store_type_img"
+					    android:layout_toRightOf="@id/article_store_text"
+					    android:layout_width="@dimen/mni_store_type_img_width"
+					    android:layout_height="@dimen/mni_store_type_img_height"
+					    android:contentDescription="@string/desc_store_type"
+					    android:src="@drawable/demo_store_type"
+					    android:visibility="gone" />
+				</RelativeLayout>
+				
+   
+				<!-- 프로파일 레이아웃 -->
+				<RelativeLayout 
+				    android:id="@+id/profile_layout"
+				    android:layout_below="@id/store_selector"
+				    android:layout_width="match_parent"
+				    android:layout_height="@dimen/ar_w_profile_layout"
+				    android:layout_marginBottom="@dimen/ar_w_content_profile_margin"
+				    android:layout_marginLeft="@dimen/ar_w_content_padding"
+				    android:layout_marginRight="@dimen/ar_w_content_padding"
+				    android:gravity="center_vertical">
+				    
+				    <com.concordiatec.vic.widget.CircleImageView
+				        android:id="@+id/profile_photo" 
+				        android:layout_width="@dimen/ar_w_profile_photo_width"
+				        android:layout_height="@dimen/ar_w_profile_photo_height"
+				        android:layout_marginRight="@dimen/ar_w_profile_photo_name_margin"
+				        android:layout_centerVertical="true"
+				        android:src="@drawable/ic_default_avatar"/>
+				    
+				    <TextView
+				        android:id="@+id/profile_name"
+				        android:layout_toRightOf="@id/profile_photo"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_centerVertical="true"
+				        android:text="@string/app_name"
+				        />
+				</RelativeLayout>
+   
+				<!-- 글 내용 쓰기 -->
+
+				<LinearLayout
+				    android:id="@+id/text_content_layout"
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/profile_layout"
+				    android:orientation="vertical"
+				    android:layout_marginLeft="@dimen/ar_w_content_padding"
+				    android:layout_marginRight="@dimen/ar_w_content_padding"
+				    android:paddingBottom="10dp"
+				    android:focusable="true"
+				    android:focusableInTouchMode="true" >
+
+				    <EditText
+				        android:id="@+id/write_content"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:layout_marginBottom="@dimen/ar_w_content_margin_bottom"
+				        android:background="@null"
+				        android:gravity="top"
+				        android:hint="@string/write_content_hint"
+				        android:inputType="textMultiLine"
+				        android:minLines="4"
+				        android:maxLines="8"
+				        android:textSize="@dimen/text_14" />
+
+				    <!-- content attached photo -->
+
+				    <GridView
+				        android:id="@+id/attach_images_scroll"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:gravity="center|top"
+				        android:horizontalSpacing="@dimen/ar_w_choosed_photo_grid_horspace"
+				        android:numColumns="4"
+				        android:scrollbars="none"
+				        android:verticalSpacing="5dp" />
+				</LinearLayout>
+			    <!-- 글 옵션 선택 -->
+				<LinearLayout
+				    android:layout_below="@id/text_content_layout"
+					android:id="@+id/ar_w_option_select"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/ar_w_options_height" 
+			        android:layout_marginTop="@dimen/ar_w_choose_btn_margin_top"
+					android:gravity="right|center_vertical">
+					<CheckBox
+					    android:id="@+id/article_comment_off"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:text="@string/comment_off"
+					    android:textSize="@dimen/text_12"
+					    android:textColor="@color/light_font"
+					    android:layout_marginRight="10dp" />
+			  	</LinearLayout>
+        	</RelativeLayout>
+    </ScrollView>
+    
+    <LinearLayout 
+        android:layout_below="@id/content_scroll"
+        android:id="@+id/take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ar_w_choose_btn_height"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/ar_w_choose_btn_padding_left"
+        android:layout_marginTop="@dimen/ar_w_choose_btn_margin_top"
+        android:layout_marginLeft="@dimen/ar_w_content_box_margin"
+        android:layout_marginRight="@dimen/ar_w_content_box_margin"
+        android:background="@drawable/ar_write_choose_btn_selector">
+        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:drawableLeft="@drawable/ic_image_camera_alt_black"
+	            android:drawablePadding="@dimen/ar_w_choose_btn_drawable_padding"
+	            android:gravity="center_vertical"
+	            android:layout_gravity="center_vertical"
+	            android:text="@string/take_photo"
+	            android:textColor="@color/normal_font"
+	            android:textSize="@dimen/text_16" />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_below="@id/take_photo"
+        android:id="@+id/choose_photo"
+        android:layout_marginTop="@dimen/ar_w_choose_btn_margin_top"
+        android:layout_marginLeft="@dimen/ar_w_content_box_margin"
+        android:layout_marginRight="@dimen/ar_w_content_box_margin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ar_w_choose_btn_height"
+        android:paddingLeft="@dimen/ar_w_choose_btn_padding_left"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:background="@drawable/ar_write_choose_btn_selector">
+        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:drawableLeft="@drawable/ic_image_camera_dark"
+	            android:drawablePadding="@dimen/ar_w_choose_btn_drawable_padding"
+	            android:gravity="center_vertical"
+	            android:layout_gravity="center_vertical"
+	            android:text="@string/choose_pic"
+	            android:textColor="@color/normal_font"
+	            android:textSize="@dimen/text_16" />
+    </LinearLayout>
+    
+</RelativeLayout>

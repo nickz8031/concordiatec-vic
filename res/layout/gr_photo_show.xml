@@ -10,4 +10,20 @@
         android:src="@drawable/choose_image_back"
         android:scaleType="centerCrop"/>
     
+    <LinearLayout 
+        android:id="@+id/grid_image_remove"
+        android:layout_alignTop="@id/grid_image_view"
+        android:layout_alignRight="@id/grid_image_view"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+	    android:clickable="true"
+	    android:padding="3dp">
+        <ImageView 
+	        android:layout_width="18dp"
+	        android:layout_height="18dp"
+	        android:src="@drawable/ic_item_delete"
+	        />
+    </LinearLayout>
+    
+    
 </RelativeLayout>

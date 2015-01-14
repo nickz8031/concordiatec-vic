@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-import com.concordiatec.vic.adapter.ChooseImageListAdapter;
+import com.concordiatec.vic.adapter.ChoosePicFolderListAdapter;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.util.FileTraversal;
 import com.concordiatec.vic.util.LocalImageUtil;
@@ -18,7 +18,7 @@ public class ChoosePicActivity extends SubPageSherlockActivity implements OnItem
 	private ListView listView;
 	private LocalImageUtil util;
 	private List<FileTraversal> localList;
-	private ChooseImageListAdapter listAdapter;
+	private ChoosePicFolderListAdapter listAdapter;
 	private ArrayList<String> selectedPics;
 
 	@Override
@@ -43,7 +43,7 @@ public class ChoosePicActivity extends SubPageSherlockActivity implements OnItem
 				listdata.add(map);
 			}
 		}
-		listAdapter = new ChooseImageListAdapter(this, listdata);
+		listAdapter = new ChoosePicFolderListAdapter(this, listdata);
 		listView.setAdapter(listAdapter);
 		listView.setOnItemClickListener(this);
 	}

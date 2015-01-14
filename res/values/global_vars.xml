@@ -15,6 +15,7 @@
     <color name="alpha_3_theme_color">#332cb1e1</color>
     <color name="theme_wrap_color">#0780ab</color>
     <color name="background_color">#FFEEEEEE</color>
+    <color name="background_color_wrapper">#FFDDDDDD</color>
     <color name="background_color_alpha">#70EEEEEE</color>
     
     <color name="popup_overlay_color">#88000000</color>

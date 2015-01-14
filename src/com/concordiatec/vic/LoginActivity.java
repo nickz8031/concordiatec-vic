@@ -1,6 +1,5 @@
 package com.concordiatec.vic;
 
-import com.activeandroid.ActiveAndroid;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.LoginAccount;
@@ -36,7 +35,14 @@ public class LoginActivity extends SubPageSherlockActivity {
 	private ImageView clearEmail;
 	private ImageView clearPwd;
 	private UserService lService;
-
+	@Override
+	public void onBackPressed() {
+		if( ProgressUtil.isShowing() ){
+			return;
+		}
+		super.onBackPressed();
+		
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

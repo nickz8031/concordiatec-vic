@@ -2,10 +2,12 @@ package com.concordiatec.vic;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.concordiatec.vic.adapter.ChooseImageAdapter;
-import com.concordiatec.vic.adapter.ChooseImageAdapter.OnItemClickClass;
+import com.concordiatec.vic.adapter.ChoosePicGridAdapter;
+import com.concordiatec.vic.adapter.ChoosePicGridAdapter.OnItemClickClass;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.util.FileTraversal;
+import com.concordiatec.vic.util.NotifyUtil;
 import java.io.File;
 import java.util.ArrayList;
 import android.content.Intent;
@@ -20,18 +22,30 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 	private FileTraversal fileTraversal;
 	private GridView imgGridView;
 	private ArrayList<String> fileList;
-	private ChooseImageAdapter imgsAdapter;
+	private ChoosePicGridAdapter imgsAdapter;
+	
+	private int initSurplusCount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_pic_grid);
+		
 		imgGridView = (GridView) findViewById(R.id.imageListGrid);
 		bundle = getIntent().getExtras();
-		fileTraversal = bundle.getParcelable("data");		
-		imgsAdapter = new ChooseImageAdapter(this, fileTraversal.fileContent, onItemClickClass);
+		fileTraversal = bundle.getParcelable("data");
+		initSurplusCount = Constant.SURPLUS_UPLOAD_COUNTS;
+		setSelectedTitle(0);
+		imgsAdapter = new ChoosePicGridAdapter(this, fileTraversal.fileContent, onItemClickClass);
 		imgGridView.setAdapter(imgsAdapter);
 		fileList = new ArrayList<String>();
+	}
+	private void setSelectedTitle( int selected ){
+		int total = ( fileTraversal.fileContent != null ? fileTraversal.fileContent.size() : 0 );
+		if( total > initSurplusCount ){
+			total = initSurplusCount;
+		}
+		setTitle( String.format( getString(R.string.format_surplus_total_count) , ""+selected , ""+total) );
 	}
 	
 	@Override
@@ -65,7 +79,7 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 		}
 	}
 	
-	ChooseImageAdapter.OnItemClickClass onItemClickClass = new OnItemClickClass() {
+	ChoosePicGridAdapter.OnItemClickClass onItemClickClass = new OnItemClickClass() {
 		@Override
 		public void OnItemClick(View v, int Position, CheckBox checkBox) {
 			String filePath = fileTraversal.fileContent.get(Position);
@@ -73,9 +87,14 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 				checkBox.setChecked(false);
 				fileList.remove(filePath);
 			} else {
+				if( fileList.size() >= initSurplusCount ){
+					NotifyUtil.toast(ChoosePicListActivity.this, getString(R.string.outnumbering_allowed_count));
+					return;
+				}
 				if( fileExist(filePath) ){
 					checkBox.setChecked(true);
 					fileList.add(filePath);
+					setSelectedTitle( fileList.size() );
 				}
 				
 			}

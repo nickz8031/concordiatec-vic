@@ -16,7 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
-public class ChooseImageAdapter extends BaseAdapter {
+public class ChoosePicGridAdapter extends BaseAdapter {
 	Context context;
 	List<String> data;
 	public Bitmap bitmaps[];
@@ -25,7 +25,7 @@ public class ChooseImageAdapter extends BaseAdapter {
 	private int index = -1;
 	List<View> holderlist;
 
-	public ChooseImageAdapter(Context context, List<String> data, OnItemClickClass onItemClickClass) {
+	public ChoosePicGridAdapter(Context context, List<String> data, OnItemClickClass onItemClickClass) {
 		this.context = context;
 		this.data = data;
 		this.onItemClickClass = onItemClickClass;
@@ -59,7 +59,7 @@ public class ChooseImageAdapter extends BaseAdapter {
 		Holder holder;
 		if (arg0 != index && arg0 > index) {
 			index = arg0;
-			arg1 = LayoutInflater.from(context).inflate(R.layout.li_choose_pic_item, null);
+			arg1 = LayoutInflater.from(context).inflate(R.layout.gr_choose_pic_item, null);
 			holder = new Holder();
 			holder.imageView = (ImageView) arg1.findViewById(R.id.imageView1);
 			holder.checkBox = (CheckBox) arg1.findViewById(R.id.checkBox1);

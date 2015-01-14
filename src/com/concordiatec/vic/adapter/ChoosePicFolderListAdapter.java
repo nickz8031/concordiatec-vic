@@ -16,7 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ChooseImageListAdapter extends BaseAdapter {
+public class ChoosePicFolderListAdapter extends BaseAdapter {
 	private Context context;
 	private String filecount = "filecount";
 	private String filename = "filename";
@@ -27,7 +27,7 @@ public class ChooseImageListAdapter extends BaseAdapter {
 	private int index = -1;
 	private List<View> holderlist;
 
-	public ChooseImageListAdapter(Context context, List<HashMap<String, String>> listdata) {
+	public ChoosePicFolderListAdapter(Context context, List<HashMap<String, String>> listdata) {
 		this.context = context;
 		this.listdata = listdata;
 		bitmaps = new Bitmap[listdata.size()];
@@ -56,7 +56,7 @@ public class ChooseImageListAdapter extends BaseAdapter {
 		Holder holder;
 		if (arg0 != index && arg0 > index) {
 			holder = new Holder();
-			arg1 = LayoutInflater.from(context).inflate(R.layout.li_choose_pic, null);
+			arg1 = LayoutInflater.from(context).inflate(R.layout.li_choose_folder, null);
 			holder.photo_imgview = (ImageView) arg1.findViewById(R.id.filephoto_imgview);
 			holder.filecount_textview = (TextView) arg1.findViewById(R.id.filecount_textview);
 			holder.filename_textView = (TextView) arg1.findViewById(R.id.filename_textview);

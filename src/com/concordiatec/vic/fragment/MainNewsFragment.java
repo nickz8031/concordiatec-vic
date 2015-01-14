@@ -33,6 +33,7 @@ import android.widget.AbsListView.OnScrollListener;
 import com.concordiatec.vic.adapter.MainNewsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
@@ -126,28 +127,16 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 
 	private void getArticles(){
 		ProgressUtil.show(getActivity());
-		aService.getArticles(new VicResponseListener() {
+		aService.getArticles(new SimpleVicResponseListener() {
 			@Override
 			public void onSuccess(ResData data) {
 				setAdapterData(data.getData());
 				ProgressUtil.dismiss();
 			}
-			
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				LogUtil.show("Status : "+ httpResponseCode);
 				LogUtil.show("Response Body : "+ responseBody);
-			}
-			
-			@Override
-			public void onError(ResData data) {
-				LogUtil.show( data.getStatus() + "---------" + data.getMsg() );
-			}
-
-			@Override
-			public void onProgress(int written, int totalSize) {
-				double percent = (totalSize > 0) ? (written * 1.0 / totalSize) * 100 : -1;
-				ProgressUtil.setText( Tools.getIntValue(percent) + " %" );
 			}
 		});
 	}
@@ -206,27 +195,15 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("id", adapter.getLastRecordId()+"");
 		
-		aService.getArticles(paramMap , new VicResponseListener() {
-			@Override
-			public void onSuccess(ResData data) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void onFailure(int httpResponseCode, String responseBody) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void onError(ResData data) {
-				// TODO Auto-generated method stub
-			}
+		aService.getArticles(paramMap , new SimpleVicResponseListener(){
 
 			@Override
-			public void onProgress(int written, int totalSize) {
-				// TODO Auto-generated method stub
-				
+			public void onSuccess(ResData data) {
+				List<Article> tmpData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data.getData() );
+				adapter.addData(tmpData);
+				isLoadingNow = false;
 			}
+			
 		});
 	}
 	

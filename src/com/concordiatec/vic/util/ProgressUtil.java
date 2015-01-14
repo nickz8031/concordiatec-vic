@@ -15,6 +15,15 @@ public class ProgressUtil {
 		dialog.show();
 	}
 	
+	public static boolean isShowing(){
+		if( dialog != null ){
+			return dialog.isShowing();
+		}else{
+			return false;
+		}
+		
+	}
+	
 	public static void setText(CharSequence text){
 		if( dialog != null ){
 			dialog.setText(text);

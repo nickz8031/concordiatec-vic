@@ -5,6 +5,7 @@ import org.apache.http.Header;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ResponseUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -18,7 +19,6 @@ public class VicResponseHandler extends AsyncHttpResponseHandler {
 		if( lis != null ){
 			lis.onFailure(statusCode , throwable.getMessage() );
 		}
-		
 	}
 
 	@Override
