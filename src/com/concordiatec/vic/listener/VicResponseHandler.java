@@ -28,10 +28,17 @@ public class VicResponseHandler extends AsyncHttpResponseHandler {
 			if( data == null ){
 				lis.onFailure(statusCode, new String(responseBody));
 			}else{
-				if( Tools.getIntValue(data.getStatus()) > 0 ){
-					lis.onError(data);
-				}else{
-					lis.onSuccess(data);
+				int status = Tools.getIntValue(data.getStatus());
+				switch (status) {
+					case 0:
+						lis.onSuccess(data);
+						break;
+					case 1:
+						lis.onEmptyResponse();
+						break;
+					default:
+						lis.onFailure(status , data.getData().toString());
+						break;
 				}
 			}
 		}

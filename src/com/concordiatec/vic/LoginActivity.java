@@ -1,6 +1,7 @@
 package com.concordiatec.vic;
 
 import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.LoginAccount;
 import com.concordiatec.vic.model.ResData;
@@ -147,11 +148,11 @@ public class LoginActivity extends SubPageSherlockActivity {
 				showErrorNotify();
 			} else {
 				ProgressUtil.show(LoginActivity.this);
-				lService.doLogin(email.getText().toString(), EncryptUtil.EncPwd(pwd.getText().toString()), new VicResponseListener() {
+				lService.doLogin(email.getText().toString(), EncryptUtil.EncPwd(pwd.getText().toString()), new SimpleVicResponseListener() {
 					@Override
 					public void onSuccess(ResData data) {
 						LogUtil.show( data.getData().toString() );
-						//save email if it did not exist
+						//save email if it did not exist in local database
 						LoginAccount.addData(email.getText().toString());
 						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 						lService.login(usr);
@@ -161,18 +162,11 @@ public class LoginActivity extends SubPageSherlockActivity {
 					
 					@Override
 					public void onFailure(int httpResponseCode, String responseBody) {
-						LogUtil.show(responseBody);
-					}
-					
-					@Override
-					public void onError(ResData data) {
 						showErrorNotify();
 					}
-
 					@Override
-					public void onProgress(int written, int totalSize) {
-						// TODO Auto-generated method stub
-						
+					public void onEmptyResponse() {
+						showErrorNotify();
 					}
 				});
 			}

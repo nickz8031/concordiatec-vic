@@ -1,5 +1,8 @@
 package com.concordiatec.vic;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Intent;
@@ -71,11 +74,21 @@ public class CameraShowActivity extends SubPageSherlockActivity {
 		return true;
 	}
 
-	private void sureToUse() {		
-		Intent intent = new Intent(this , ArticleWriteActivity.class);
-		intent.putExtra("take_photo", photoPath);
-		setResult(Activity.RESULT_OK , intent);
-		finish();
+	private void sureToUse() {
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream( photoPath );
+			bm.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+			fos.flush();
+			fos.close();
+			Intent intent = new Intent(this , ChoosePicListActivity.class);
+			intent.putExtra("take_photo", photoPath);
+			setResult(Activity.RESULT_OK , intent);
+			finish();
+		} catch (Exception e) {
+			LogUtil.show(e.getMessage());
+		}
+		
 	}
 	@Override
 	protected void onDestroy() {

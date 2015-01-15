@@ -25,7 +25,7 @@
     <dimen name="ar_w_choosed_photo_size">80dp</dimen>
     <dimen name="ar_w_choosed_photo_grid_horspace">3dp</dimen>
     
-    <dimen name="ar_w_choose_btn_height">50dp</dimen>
+    <dimen name="ar_w_choose_btn_height">45dp</dimen>
     <dimen name="ar_w_choose_btn_drawable_padding">10dp</dimen>
     <dimen name="ar_w_choose_btn_padding_left">10dp</dimen>
     <dimen name="ar_w_choose_btn_margin_top">5dp</dimen>
@@ -38,9 +38,10 @@
 	<string name="comment_off">댓글 차단</string>
 	<string name="take_photo">사진찍기</string>
 	<string name="select_photo">사진선택</string>
-	<string name="choose_pic">사진선택</string>
+	<string name="add_photo">사진추가</string>
 	<string name="write_article_succed">글이 성공적으로 등록되었습니다.</string>
 	<string name="write_article_failed">등록과정에 오류가 발생하였습니다.</string>
+	<string name="content_cannot_be_null">내용을 적어주세요.</string>
 	<string name="select_image_least_one">하나 혹은 이상의 사진을 등록 해 주세요.</string>
 	<string name="sure_to_quit">이 글을 삭제하시겠습니까?</string>
 	

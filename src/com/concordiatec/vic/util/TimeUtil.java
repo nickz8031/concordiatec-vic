@@ -29,7 +29,9 @@ public class TimeUtil {
 	public static String getTimePast( Context context, int pastSeconds ){
 		String dateString = "";
 		int minutues = pastSeconds / MINUTE_SECONDS;
-		if( minutues >= 60 && minutues < 1440 ){
+		if( minutues > 0 && minutues < 60 ){
+			dateString = minutues + context.getResources().getString(R.string.time_format_string_minute);
+		}else if( minutues >= 60 && minutues < 1440 ){
 			int days = pastSeconds / 3600;
 			dateString = days + context.getResources().getString(R.string.time_format_string_hour);
 		}else if( minutues >= 1440 && minutues < 10080 ){
@@ -39,6 +41,9 @@ public class TimeUtil {
 			long startTime = System.currentTimeMillis() - ( pastSeconds * 1000 );
 			SimpleDateFormat sdf = new SimpleDateFormat( "yyyy.MM.dd" , Locale.KOREA );
 			dateString = sdf.format(startTime);
+		}else{
+			//min < 0
+			dateString = pastSeconds + context.getResources().getString(R.string.time_format_string_second); 
 		}
 		
 		return dateString;

@@ -9,11 +9,17 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.concordiatec.vic.R;
+import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.NotifyUtil;
 
 public class SubPageSherlockActivity extends SherlockActivity {
 	protected ImageView backButton;
 	private TextView customTitle;
+	
+	protected final static int REQUEST_TAKE_PHOTO = 30001;
+	protected final static int REQUEST_CHOOSE_PHOTO = 30002;
+	protected final static int REQUEST_TAKE_SURE = 30003;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

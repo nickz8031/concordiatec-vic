@@ -75,7 +75,7 @@ public class ArticleDetailService extends HttpUtil implements VicServiceInterfac
 	 * @param listener
 	 * @param articleId article id
 	 */
-	public void getDetail(VicResponseListener listener ,int articleId){
+	public void getDetail(int articleId ,VicResponseListener listener){
 		RequestParams params = new RequestParams();
 		if( articleId > 0 ){
 			params.put("id", articleId);
@@ -89,20 +89,7 @@ public class ArticleDetailService extends HttpUtil implements VicServiceInterfac
 		}
 		post(ApiURL.ARTICLE_DETAIL, params, new VicResponseHandler(listener));
 		
-	}
-	
-	/**
-	 * get singleton
-	 * @param context
-	 * @return
-	 */
-	public static ArticleDetailService single( Context context ) {
-		if (ads == null) {
-			ads = new ArticleDetailService(context);
-		}
-		return ads;
-	}
-	
+	}	
 }
 
 

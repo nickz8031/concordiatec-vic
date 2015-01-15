@@ -43,6 +43,7 @@ import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.ArticleWriteActivity;
@@ -135,6 +136,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			}
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
+				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
 				LogUtil.show("Status : "+ httpResponseCode);
 				LogUtil.show("Response Body : "+ responseBody);
 			}
@@ -142,6 +144,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 	
 	private void setAdapterData(Object data){
+		LogUtil.show(data.toString());
 		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 		if( !isRefresh ){
 			adapter = new MainNewsAdapter(getActivity(), listData);
@@ -184,9 +187,9 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private void refreshList(){
 		if( adapter != null ){
 			adapter.clear();
-			this.isRefresh = true;
-			getArticles();
 		}
+		this.isRefresh = true;
+		getArticles();
 	}
 	
 	private void getMore(){
@@ -196,14 +199,16 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		paramMap.put("id", adapter.getLastRecordId()+"");
 		
 		aService.getArticles(paramMap , new SimpleVicResponseListener(){
-
 			@Override
 			public void onSuccess(ResData data) {
 				List<Article> tmpData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data.getData() );
 				adapter.addData(tmpData);
 				isLoadingNow = false;
 			}
-			
+			@Override
+			public void onFailure(int httpResponseCode, String responseBody) {
+				NotifyUtil.toast(getActivity(), getString(R.string.no_more_data));
+			}
 		});
 	}
 	

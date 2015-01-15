@@ -224,4 +224,5 @@ public class Article extends VicModel {
 	public void setShareCount(int shareCount) {
 		this.shareCount = shareCount;
 	}
+	
 }

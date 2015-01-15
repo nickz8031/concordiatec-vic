@@ -2,8 +2,8 @@ package com.concordiatec.vic.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.bumptech.glide.Glide;
 import com.concordiatec.vic.R;
-import com.concordiatec.vic.inf.ChooseImageCallback;
 import com.concordiatec.vic.util.LocalImageUtil;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -70,7 +70,7 @@ public class ChoosePicGridAdapter extends BaseAdapter {
 			arg1 = holderlist.get(arg0);
 		}
 		if (bitmaps[arg0] == null) {
-			util.imgExcute(holder.imageView, new ImgClallBackLisner(arg0), data.get(arg0));
+			Glide.with(context).load(data.get(arg0)).into(holder.imageView);
 		} else {
 			holder.imageView.setImageBitmap(bitmaps[arg0]);
 		}
@@ -83,19 +83,6 @@ public class ChoosePicGridAdapter extends BaseAdapter {
 		CheckBox checkBox;
 	}
 
-	public class ImgClallBackLisner implements ChooseImageCallback {
-		int num;
-
-		public ImgClallBackLisner(int num) {
-			this.num = num;
-		}
-
-		@Override
-		public void resultImgCall(ImageView imageView, Bitmap bitmap) {
-			bitmaps[num] = bitmap;
-			imageView.setImageBitmap(bitmap);
-		}
-	}
 
 	public interface OnItemClickClass {
 		public void OnItemClick(View v, int Position, CheckBox checkBox);
@@ -104,12 +91,10 @@ public class ChoosePicGridAdapter extends BaseAdapter {
 	class OnPhotoClick implements OnClickListener {
 		int position;
 		CheckBox checkBox;
-
 		public OnPhotoClick(int position, CheckBox checkBox) {
 			this.position = position;
 			this.checkBox = checkBox;
 		}
-
 		@Override
 		public void onClick(View v) {
 			if (data != null && onItemClickClass != null) {

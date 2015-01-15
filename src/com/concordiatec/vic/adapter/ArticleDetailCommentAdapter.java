@@ -6,6 +6,7 @@ import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.model.Comment;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import android.annotation.SuppressLint;
@@ -57,7 +58,7 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 			
 			Glide.with(context).load(comment.getWriterPhotoURL()).crossFade().into(CommentHolder.commentorPhoto);
 			
-			CommentHolder.content.setText( comment.getContent() );
+			CommentHolder.content.setText( comment.getContent().trim() );
 			CommentHolder.pastTime.setText( TimeUtil.getTimePast( context, comment.getPastTime() ) );
 			CommentHolder.name.setText( comment.getWriterName() );
 			

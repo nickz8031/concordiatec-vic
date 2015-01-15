@@ -200,7 +200,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 
 					setCmtPhotoBorder( cpl , 0 );
 					
-					SpannableString span = new SpannableString(c.getUserName() + " " + c.getCommentText());
+					SpannableString span = new SpannableString(c.getUserName() + " " + c.getCommentText().trim());
 					span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, c.getUserName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 					TextView tvContent = new TextView(context);
 					tvContent.setText( span );

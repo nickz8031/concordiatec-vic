@@ -5,33 +5,24 @@ import java.util.HashMap;
 import java.util.List;
 import com.actionbarsherlock.view.Menu;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.ViewTarget;
 import com.concordiatec.vic.adapter.ArticleDetailCommentAdapter;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
-import com.concordiatec.vic.listener.VicResponseListener;
+import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.service.ArticleDetailService;
-import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.CommentService;
-import com.concordiatec.vic.tools.ImageViewPreload;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
+import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.google.gson.internal.LinkedTreeMap;
-import android.R.menu;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,14 +39,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-@SuppressLint("InflateParams")
-@SuppressWarnings("unused")
 public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private List<Comment> comments;
 	private ArticleDetailCommentAdapter adapter;
@@ -65,7 +53,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private ArticleDetailService detailService;
 	private CommentService commentService;
 	private int articleId;
-	private LinearLayout progress;
 	private ScrollView contentScroll;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +62,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		
 		contentScroll = (ScrollView) findViewById(R.id.ar_d_content_scroll);
 		
-		progress = (LinearLayout) findViewById(R.id.detail_loading);
-		
 		contentView = LayoutInflater.from(this).inflate(R.layout.article_detail_header, null);
 		
 		commentList = (ListView)findViewById(R.id.ar_d_comment_list);
@@ -85,8 +70,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		Intent intent = getIntent();
 		articleId = intent.getIntExtra("article_id", 0);
 
-		detailService = ArticleDetailService.single(this);
-		commentService = CommentService.single(this);
+		detailService = new ArticleDetailService(this);
+		commentService = new CommentService(this);
 		initListView();
 	}
 	
@@ -120,11 +105,12 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	}
 	
 	private void getArticleContents(){
-		detailService.getDetail(new VicResponseListener() {
+		ProgressUtil.show(this);
+		detailService.getDetail(articleId , new SimpleVicResponseListener() {
 			@Override
+			@SuppressWarnings("unchecked")
 			public void onSuccess(ResData data) {
 				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
-				
 				CircleImageView imageView = (CircleImageView) contentView.findViewById(R.id.news_writer_photo);
 				TextView writerName = (TextView) contentView.findViewById(R.id.news_writer_name);
 				TextView writeTime = (TextView) contentView.findViewById(R.id.news_write_time);
@@ -150,9 +136,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				
 				Glide.with(ArticleDetailActivity.this).load(detail.getWriterPhotoURL()).crossFade().into(imageView);
 				
-				writerName.setText(detail.getWriterName());
+				writerName.setText(detail.getWriterName());				
 				writeTime.setText( TimeUtil.getTimePast( ArticleDetailActivity.this, detail.getPastTime() ) );
-				content.setText( detail.getContent() );
+				content.setText( detail.getContent().trim() );
 				likeCount.setText( detail.getLikeCount()+"" );
 				commentCount.setText( detail.getCommentCount()+"" );
 				String lst = likeShareText.getText().toString();
@@ -177,49 +163,30 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					Glide.with(ArticleDetailActivity.this).load(imgs.get(0).getName()).crossFade().into(contentImg);
 					contentImg.setVisibility(View.VISIBLE);
 				}
-				
 				commentCount.setOnClickListener(new CommentBtnClickListener());
-				
-				
-				progress.setVisibility(View.GONE);
+				ProgressUtil.dismiss();
 			}
-			
-			@Override
-			public void onFailure(int httpResponseCode, String responseBody) {
-				LogUtil.show("content" + responseBody);
-			}
-			
-			@Override
-			public void onError(ResData data) {
-				LogUtil.show("content_error:" + data.getMsg());
-			}
-
-			@Override
-			public void onProgress(int written, int totalSize) {
-				// TODO Auto-generated method stub
-				
-			}
-		}, articleId);
+		});
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private void getComments(){
-		commentService.getComments(new VicResponseListener() {
+		commentService.getComments(articleId , new SimpleVicResponseListener() {
 			@Override
+			@SuppressWarnings("unchecked")
 			public void onSuccess(ResData data) {
-				List<Comment> listComments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
-				if( listComments != null && listComments.size() > 0 ){
-					adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this , listComments);
+				comments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
+				if( comments != null && comments.size() > 0 ){
+					adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this , comments);
 					commentList.addHeaderView( contentView );
 					commentList.setAdapter( adapter );
 					commentList.setOnItemClickListener(new OnItemClickListener() {
-
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 							
 							HashMap<String, Boolean> dataStatus = new HashMap<String, Boolean>();
 							
-							Comment cmt = adapter.getItem((int) id);
+							Comment cmt = adapter.getItem(position-1);
 							
 							if( cmt.isPlus() ){
 								dataStatus.put("is_like", true);
@@ -234,25 +201,17 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					});
 				}
 			}
-			
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
-				LogUtil.show("123123123" + responseBody);
+				NotifyUtil.toast(getApplicationContext(), getString(R.string.failed_to_request_data));
 			}
-			
 			@Override
-			public void onError(ResData data) {
+			public void onEmptyResponse() {
 				commentList.setVisibility(View.GONE);
 				contentScroll.setVisibility(View.VISIBLE);
 				contentScroll.addView(contentView);
 			}
-
-			@Override
-			public void onProgress(int written, int totalSize) {
-				// TODO Auto-generated method stub
-				
-			}
-		}, articleId);
+		});
 		
 	}
 	

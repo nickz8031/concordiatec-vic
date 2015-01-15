@@ -43,7 +43,19 @@ public class ArticleService extends HttpUtil {
 			}else{
 				return;
 			}
-			
+//			post(ApiURL.ARTICLE_WRITE, params, new AsyncHttpResponseHandler() {
+//				@Override
+//				public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+//					// TODO Auto-generated method stub
+//					LogUtil.show("success : " +new String(arg2));
+//				}
+//				
+//				@Override
+//				public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+//					// TODO Auto-generated method stub
+//					LogUtil.show("failure : " + arg3.getMessage());
+//				}
+//			});
 			post(ApiURL.ARTICLE_WRITE, params, new VicResponseHandler(listener));
 			
 		}

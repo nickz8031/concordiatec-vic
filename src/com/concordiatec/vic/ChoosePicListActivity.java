@@ -6,46 +6,112 @@ import com.concordiatec.vic.adapter.ChoosePicGridAdapter;
 import com.concordiatec.vic.adapter.ChoosePicGridAdapter.OnItemClickClass;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.constant.Constant;
-import com.concordiatec.vic.util.FileTraversal;
+import com.concordiatec.vic.util.EncryptUtil;
+import com.concordiatec.vic.util.LocalImageUtil;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
+import com.concordiatec.vic.util.TimeUtil;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 public class ChoosePicListActivity extends SubPageSherlockActivity {
-	private Bundle bundle;
-	private FileTraversal fileTraversal;
 	private GridView imgGridView;
-	private ArrayList<String> fileList;
+	private ArrayList<String> selectedFiles;
 	private ChoosePicGridAdapter imgsAdapter;
+	private ArrayList<String> selectedPics;
+	private List<String> filePathList;
+	private LinearLayout takePhotoBtn;
 	
 	private int initSurplusCount;
-
+	private String currentPhotoPath;
+	
+	@Override
+	protected void onDestroy() {
+		imgGridView = null;
+		selectedFiles = null;
+		selectedPics = null;
+		imgsAdapter = null;
+		filePathList = null;
+		currentPhotoPath = null;
+		super.onDestroy();
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_pic_grid);
 		
 		imgGridView = (GridView) findViewById(R.id.imageListGrid);
-		bundle = getIntent().getExtras();
-		fileTraversal = bundle.getParcelable("data");
+		takePhotoBtn = (LinearLayout) findViewById(R.id.take_photo);
 		initSurplusCount = Constant.SURPLUS_UPLOAD_COUNTS;
 		setSelectedTitle(0);
-		imgsAdapter = new ChoosePicGridAdapter(this, fileTraversal.fileContent, onItemClickClass);
+		
+		selectedPics = getIntent().getStringArrayListExtra("selected_pics");
+		filePathList = new LocalImageUtil(this , selectedPics).listAlldir();
+		
+		imgsAdapter = new ChoosePicGridAdapter(this, filePathList, onItemClickClass);
 		imgGridView.setAdapter(imgsAdapter);
-		fileList = new ArrayList<String>();
+		selectedFiles = new ArrayList<String>();
+		
+		takePhotoBtn.setOnClickListener(new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+				if( isExceed() ) return;
+				// start camera
+				Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				intentCamera.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, getPhotoUri());
+	            startActivityForResult(intentCamera, REQUEST_TAKE_PHOTO);
+			}
+		});
+		
 	}
-	private void setSelectedTitle( int selected ){
-		int total = ( fileTraversal.fileContent != null ? fileTraversal.fileContent.size() : 0 );
-		if( total > initSurplusCount ){
-			total = initSurplusCount;
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case REQUEST_TAKE_PHOTO:
+				if( resultCode == Activity.RESULT_OK ){
+					Intent intent = new Intent(this , CameraShowActivity.class);
+					intent.putExtra("photo", this.currentPhotoPath);
+					startActivityForResult(intent, REQUEST_TAKE_SURE);
+				}
+				break;
+			case REQUEST_TAKE_SURE:
+				if( resultCode == Activity.RESULT_OK ){
+					Intent intent = new Intent(this , ArticleWriteActivity.class);
+					intent.putExtras(data.getExtras());
+					setResult(REQUEST_TAKE_SURE , intent);
+					finish();
+				}
+				break;
+			default:
+				break;
 		}
-		setTitle( String.format( getString(R.string.format_surplus_total_count) , ""+selected , ""+total) );
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private boolean isExceed(){
+		if( Constant.SURPLUS_UPLOAD_COUNTS == 0 ){
+			NotifyUtil.toast(this, getString(R.string.outnumbering_allowed_count));
+			return true;
+		}
+		return false;
+	}
+	
+	private void setSelectedTitle( int selected ){
+		setTitle( String.format( getString(R.string.format_surplus_total_count) , ""+selected , ""+ initSurplusCount) );
 	}
 	
 	@Override
@@ -61,8 +127,6 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 		}
 		return true;
 	}
-
-
 	class ImgOnclick implements OnClickListener {
 		String filepath;
 		CheckBox checkBox;
@@ -75,50 +139,57 @@ public class ChoosePicListActivity extends SubPageSherlockActivity {
 		@Override
 		public void onClick(View arg0) {
 			checkBox.setChecked(false);
-			fileList.remove(filepath);
+			selectedFiles.remove(filepath);
 		}
 	}
 	
 	ChoosePicGridAdapter.OnItemClickClass onItemClickClass = new OnItemClickClass() {
 		@Override
 		public void OnItemClick(View v, int Position, CheckBox checkBox) {
-			String filePath = fileTraversal.fileContent.get(Position);
+			String filePath = filePathList.get(Position);
 			if (checkBox.isChecked()) {
 				checkBox.setChecked(false);
-				fileList.remove(filePath);
+				selectedFiles.remove(filePath);
+				setSelectedTitle( selectedFiles.size() );
 			} else {
-				if( fileList.size() >= initSurplusCount ){
+				if( selectedFiles.size() >= initSurplusCount ){
 					NotifyUtil.toast(ChoosePicListActivity.this, getString(R.string.outnumbering_allowed_count));
 					return;
 				}
 				if( fileExist(filePath) ){
 					checkBox.setChecked(true);
-					fileList.add(filePath);
-					setSelectedTitle( fileList.size() );
+					selectedFiles.add(filePath);
+					setSelectedTitle( selectedFiles.size() );
 				}
 				
 			}
 		}
 	};
 	
+	
+	private Uri getPhotoUri(){
+		String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ "/"+ getResources().getString(R.string.app_name) 
+				+ "/"+ EncryptUtil.MD5(TimeUtil.getUnixTimestampMills()) 
+				+ ".jpg" ;
+		this.currentPhotoPath = imageFilePath;
+		File imageFile = new File(imageFilePath); 
+		return Uri.fromFile(imageFile);
+	}
+	
 	private boolean fileExist(String path){
 		File f = new File(path);
 		return f.exists();
 	}
 
-	public void tobreak(View view) {
-		finish();
-	}
-
 	/**
-	 * FIXME 亲只需要在这个方法把选中的文档目录已list的形式传过去即可
-	 * 
+	 * send data
 	 * @param view
 	 */
 	public void sendfiles() {
-		Intent intent = new Intent(this, ChoosePicActivity.class);
+		Intent intent = new Intent(this, ArticleWriteActivity.class);
 		Bundle bundle = new Bundle();
-		bundle.putStringArrayList("files", fileList);
+		bundle.putStringArrayList("files", selectedFiles);
 		intent.putExtras(bundle);
 		setResult(RESULT_OK, intent);
 		finish();

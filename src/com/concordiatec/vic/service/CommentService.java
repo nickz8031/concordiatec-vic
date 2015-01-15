@@ -22,25 +22,25 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 		this.context = context;
 	}
 	
-	public void getComments(VicResponseListener listener , int articleId) {
-		getComments(listener, articleId , 0);
+	public void getComments(int articleId , VicResponseListener listener) {
+		getComments(articleId , 0 , listener);
 	}
 	
-	public void getComments(VicResponseListener listener , int articleId , int lastCommentId) {
+	public void getComments(int articleId , int lastCommentId , VicResponseListener listener) {
 		RequestParams params = new RequestParams();
 		if( articleId > 0 ){
-			params.put("article_id", articleId);
+			params.put("article", articleId);
 		}else{
 			LogUtil.show("error request[ no detail article id.]");
 			return;
 		}
 		if( lastCommentId > 0 ){
-			params.put("comment_id", lastCommentId);
+			params.put("comment", lastCommentId);
 		}
 		
 		User loginUser = new UserService(context).getLoginUser();
 		if( loginUser != null ){
-			params.put("user_id", loginUser.usrId);
+			params.put("user", loginUser.usrId);
 		}
 		
 		post(ApiURL.COMMENT_LIST, params, new VicResponseHandler(listener));
@@ -63,16 +63,17 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 	@Override
 	public Comment mapToModel(LinkedTreeMap<String, Object> map) {
 		Comment cmt = new Comment();
-		
 		cmt.setId( getIntValue(map.get("id")) );
 		cmt.setWriterId( getIntValue(map.get("user_id")) );
 		cmt.setWriterName( map.get("name").toString() );
 		cmt.setWriterPhotoURL( getServerImgPath( getIntValue(map.get("user_id")) , map.get("photo").toString()) );
 		cmt.setContent( map.get("comment").toString() );
 		cmt.setPastTime( getIntValue(map.get("pastime")) );
-		cmt.setReplyId(getIntValue(map.get("reply_id")));
-		cmt.setReplyWhose(getIntValue(map.get("reply_whose")));
-		cmt.setReplyWhoseName(map.get("reply_whose_name").toString());
+		
+		cmt.setReplyId(getIntValue(map.get("replied_comment")));
+		cmt.setReplyWhose(getIntValue(map.get("replied_user")));
+		cmt.setReplyWhoseName(map.get("replied_username").toString());
+		
 		cmt.setPlusCount(getIntValue(map.get("plus_count")));
 		
 		boolean isPlus = false;
@@ -82,17 +83,5 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 		cmt.setPlus(isPlus);
 		
 		return cmt;
-	}
-	
-	/**
-	 * singleton
-	 * @param context
-	 * @return
-	 */
-	public static CommentService single(Context context){
-		if( cs == null ){
-			cs = new CommentService(context);
-		}
-		return cs;
 	}
 }
