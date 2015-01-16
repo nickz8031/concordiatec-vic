@@ -8,6 +8,12 @@ public class Comment extends VicModel {
 	 * 댓글 아이디
 	 */
 	private int id;
+	
+	/**
+	 * 댓글 소속 원글 아이디
+	 */
+	private int articleId;
+	
 	/**
 	 * 댓글 작성자 아이디;
 	 */
@@ -113,6 +119,12 @@ public class Comment extends VicModel {
 	}
 	public void setReplyWhoseName(String replyWhoseName) {
 		this.replyWhoseName = replyWhoseName;
+	}
+	public int getArticleId() {
+		return articleId;
+	}
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
 	}
 	
 }

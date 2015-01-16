@@ -136,21 +136,24 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			}
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
-				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
 				LogUtil.show("Status : "+ httpResponseCode);
 				LogUtil.show("Response Body : "+ responseBody);
+				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
+				ProgressUtil.dismiss();
+				ptrLayout.setRefreshComplete();
 			}
 		});
 	}
 	
 	private void setAdapterData(Object data){
-		LogUtil.show(data.toString());
 		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
-		if( !isRefresh ){
+		if( !isRefresh || adapter == null ){
 			adapter = new MainNewsAdapter(getActivity(), listData);
 			newsListView.setAdapter(adapter);
 		}else{
 			adapter.setData(listData);
+		}
+		if( ptrLayout.isRefreshing() ){
 			ptrLayout.setRefreshComplete();
 		}
 	}

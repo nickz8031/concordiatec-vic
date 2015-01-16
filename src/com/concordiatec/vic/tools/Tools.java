@@ -4,10 +4,15 @@ import java.io.IOException;
 import com.concordiatec.vic.util.LogUtil;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
+import android.view.View.MeasureSpec;
 import android.webkit.MimeTypeMap;
 
 public class Tools {
@@ -17,6 +22,23 @@ public class Tools {
 
 	public static double getDoubleValue(Object object) {
 		return Double.valueOf(object.toString());
+	}
+
+	public static Bitmap convertViewToBitmap(View view) {
+		MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+		view.buildDrawingCache();
+		Bitmap bitmap = view.getDrawingCache();
+		return bitmap;
+	}
+
+	public static Bitmap drawableToBitmap(Drawable drawable) {
+		Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+		Canvas canvas = new Canvas(bitmap);
+		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+		drawable.draw(canvas);
+		return bitmap;
 	}
 
 	/**
@@ -103,7 +125,9 @@ public class Tools {
 					if (info.getState() == NetworkInfo.State.CONNECTED) { return true; }
 				}
 			}
-		} catch (Exception e) { LogUtil.show( e.getMessage() );}
+		} catch (Exception e) {
+			LogUtil.show(e.getMessage());
+		}
 		return false;
 	}
 }

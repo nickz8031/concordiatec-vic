@@ -16,6 +16,8 @@ public class NotifyUtil {
 	private static void alert(Context context, String message, String btn) {
 		new AlertDialog.Builder(context).setMessage(message).setPositiveButton(btn, null).show();	
 	}
+	
+	
 	/*
 	 * Toast
 	 */

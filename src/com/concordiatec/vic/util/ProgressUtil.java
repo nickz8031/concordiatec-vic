@@ -36,7 +36,9 @@ public class ProgressUtil {
 	}
 	
 	public static void dismiss(){
-		dialog.dismiss();
-		dialog = null;
+		if( dialog!=null ){
+			dialog.dismiss();
+			dialog = null;
+		}
 	}
 }

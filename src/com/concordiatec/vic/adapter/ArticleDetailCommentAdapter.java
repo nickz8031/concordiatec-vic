@@ -71,6 +71,7 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 	}
 	public void clear(){
 		this.data.clear();
+		viewMap.clear();
 	}
 	
 	public void setData( List<Comment> data ){

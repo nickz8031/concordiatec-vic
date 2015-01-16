@@ -16,6 +16,7 @@
 package com.concordiatec.vic.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -69,8 +70,26 @@ public class TagView extends TextView {
         } else {
         	tagPaddingHor = tagPaddingVert = dipToPixels(DEFAULT_PADDING);
             tagCornerRadius = dipToPixels(DEFAULT_CORNER_RADIUS);
+            
         }
     }
+    
+    @Override
+    public void setTextSize(float size) {
+    	super.setTextSize(size);
+    }
+    
+    @Override
+    public void setTextColor(ColorStateList colors) {
+    	// TODO Auto-generated method stub
+    	super.setTextColor(colors);
+    }
+    @Override
+    public void setTextColor(int color) {
+    	// TODO Auto-generated method stub
+    	super.setTextColor(color);
+    }
+    
 
     private int dipToPixels(float dipValue) {
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();

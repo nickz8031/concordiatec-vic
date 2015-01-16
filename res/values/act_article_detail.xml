@@ -12,13 +12,19 @@
     <string name="menu_report">신고하기</string>
     
     <!-- Context menu -->
-    <string name="comment_context_title">댓글 옵션</string>
+    
+    <string name="comment_context_title">옵션</string>
     <string name="comment_plus">공감하기</string>
     <string name="comment_plus_cancel">공감 취소하기</string>
-    <string name="comment_reply">댓글 답장하기</string>
-    <string name="comment_copy">댓글내용 복사하기</string>
-    <string name="comment_report">댓글 신고하기</string>
+    <string name="comment_reply">답장하기</string>
+    <string name="comment_copy">내용 복사하기</string>
+    <string name="comment_report">신고하기</string>
+    <string name="comment_edit">수정하기</string>
+    <string name="comment_delete">삭제하기</string>
     <string name="comment_show_plus_member">공감한 사람 보기</string>
+    
+    <string name="comment_cannot_be_null">댓글 내용을 적어주세요.</string>
+    <string name="comment_succed">댓글이 등록되었습니다.</string>
     
     <!-- format -->
     <string name="format_detail_like_share">%1$d명이 이 소식을 좋아함. %2$d명이 다시 공유함</string>

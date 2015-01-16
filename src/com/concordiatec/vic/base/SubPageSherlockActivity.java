@@ -1,6 +1,8 @@
 package com.concordiatec.vic.base;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,7 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.concordiatec.vic.ArticleDetailActivity;
+import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
+import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.NotifyUtil;
 
@@ -62,5 +68,16 @@ public class SubPageSherlockActivity extends SherlockActivity {
 				}
 			}
 		}).start();
+	}
+	
+	protected User checkLogin( Activity activity ) {
+		User loginUser = new UserService(activity).getLoginUser();
+		if( loginUser == null ){
+			Intent intent = new Intent(activity , LoginActivity.class);
+			startActivityForResult(intent , 0);
+			return null;
+		}else{
+			return loginUser;
+		}
 	}
 }
