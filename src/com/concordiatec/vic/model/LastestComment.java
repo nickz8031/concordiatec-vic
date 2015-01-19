@@ -1,19 +1,18 @@
 package com.concordiatec.vic.model;
 
-import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class LastestComment extends VicModel{
+@SuppressWarnings("serial")
+public class LastestComment extends VicModel implements Serializable{
 	
-	@SerializedName("comment_id")
 	private int commentId;
-	@SerializedName("user_id")
 	private int userId;
-	@SerializedName("user_name")
 	private String userName;
-	@SerializedName("user_photo")
 	private String userPhoto;
-	@SerializedName("comment_text")
 	private String commentText;
+	private int replyWhose;
+	private String replyWhoseName; 
+	private int plusCount;
 	
 	public int getCommentId() {
 		return commentId;
@@ -44,6 +43,24 @@ public class LastestComment extends VicModel{
 	}
 	public void setCommentText(String commentText) {
 		this.commentText = commentText;
+	}
+	public int getReplyWhose() {
+		return replyWhose;
+	}
+	public void setReplyWhose(int replyWhose) {
+		this.replyWhose = replyWhose;
+	}
+	public String getReplyWhoseName() {
+		return replyWhoseName;
+	}
+	public void setReplyWhoseName(String replyWhoseName) {
+		this.replyWhoseName = replyWhoseName;
+	}
+	public int getPlusCount() {
+		return plusCount;
+	}
+	public void setPlusCount(int plusCount) {
+		this.plusCount = plusCount;
 	}
 	
 }

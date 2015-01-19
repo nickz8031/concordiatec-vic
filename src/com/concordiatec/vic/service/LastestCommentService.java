@@ -22,8 +22,7 @@ public class LastestCommentService extends HttpUtil implements IVicService {
 		}
 		List<LastestComment> cList = new ArrayList<LastestComment>();
 		for( LinkedTreeMap<String, Object> map : list ){
-			LastestComment cmt = mapToModel( map );
-			cList.add(cmt);
+			cList.add( mapToModel( map ) );
 		}
 		return cList;
 	}
@@ -38,6 +37,13 @@ public class LastestCommentService extends HttpUtil implements IVicService {
 		String pUrl = getServerImgPath(cmt.getUserId()) + map.get("user_photo").toString();
 		cmt.setUserPhoto( pUrl );
 		cmt.setCommentText( map.get("comment_text").toString() );
+		cmt.setPlusCount( getIntValue(map.get("plus_count")) );
+		int replyWhose = getIntValue( map.get("replied_user") );
+		if( replyWhose > 0 ){
+			cmt.setReplyWhose( replyWhose );
+			cmt.setReplyWhoseName( map.get("replied_username").toString().trim() );
+		}
+		
 		
 		return cmt;
 	}

@@ -13,14 +13,14 @@ public class HttpUtil {
 	public static final String API_URL = "http://demo1.remyjell.com";
 	public static final String API_IMG_URL = "http://image.remyjell.com";
 	
-	public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		AsyncHttpClient httpClient = new AsyncHttpClient();
 		params.put("sign", getEncodedAuthKey());
 		params.put("token", getToken());
 		httpClient.get(getAbsoluteUrl(url), params, responseHandler);
 	}
 
-	public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+	public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		AsyncHttpClient httpClient = new AsyncHttpClient();
 		httpClient.addHeader("User-Agent", "android");
 		params.put("sign", getEncodedAuthKey());
@@ -28,31 +28,31 @@ public class HttpUtil {
 		httpClient.post(getAbsoluteUrl(url), params, responseHandler);
 	}
 
-	private static String getAbsoluteUrl(String relativeUrl) {
+	public String getAbsoluteUrl(String relativeUrl) {
 		return API_URL + relativeUrl;
 	}
 	
-	public static String getEncodedAuthKey(){
+	public String getEncodedAuthKey(){
 		return EncryptUtil.SHA1(API_SIGN + getToken());
 	}
 	
-	public static String getToken(){
+	public String getToken(){
 		return TimeUtil.getUnixTimestamp();
 	}
 	
-	public static Map<String, String> getAuthMap(){
+	public Map<String, String> getAuthMap(){
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sign", getEncodedAuthKey());
 		params.put("token", getToken());
 		return params;
 	}
-	public static String getServerImgPath( int writerId , String fileName ){
+	public String getServerImgPath( int writerId , String fileName ){
 		return API_IMG_URL + "/" + writerId + "/" + fileName;
 	}
-	public static String getServerImgPath( int writerId ){
+	public String getServerImgPath( int writerId ){
 		return getServerImgPath(writerId , "");
 	}
-	public static int getIntValue( Object object ){
+	public int getIntValue( Object object ){
 		return Tools.getIntValue(object);
 	}
 }

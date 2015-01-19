@@ -87,7 +87,7 @@
                 android:id="@+id/news_writer_photo"
                 android:layout_width="@dimen/mni_writer_photo_width"
                 android:layout_height="@dimen/mni_writer_photo_height"
-                android:src="@drawable/demo_avatar" />
+                android:src="@drawable/ic_default_avatar" />
         </LinearLayout>
 
         <LinearLayout
@@ -153,18 +153,6 @@
             android:visibility="gone"
             android:adjustViewBounds="true"/>
         
-        <com.daimajia.slider.library.SliderLayout
-	        android:id="@+id/news_content_img_slider"
-	        android:layout_width="match_parent"
-	        android:layout_height="200dp"
-	        android:visibility="gone">
-            <com.daimajia.slider.library.Indicators.PagerIndicator
-		        android:id="@+id/custom_indicator"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="center"/>
-        </com.daimajia.slider.library.SliderLayout>
-        
         <!-- <ScrollView
             android:id="@+id/news_content_img_slider" 
             android:layout_width="match_parent"
@@ -181,10 +169,6 @@
         android:layout_below="@id/news_content_image_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_ctrl_layout_height"
-	    android:layout_marginLeft="16dp"
-	    android:layout_marginRight="16dp"
-        android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
-        android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
         android:gravity="center_vertical">
         
         <!-- left -->
@@ -194,6 +178,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/mni_ctrl_btn_margin"
+            
+		    android:layout_marginLeft="16dp"
+	        android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
+	        android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
+	        
             android:drawableLeft="@drawable/ic_action_thumb_up"
             android:drawablePadding="@dimen/mni_ctrl_btn_drawable_padding"
             android:textSize="@dimen/text_16"
@@ -214,6 +203,8 @@
             android:src="@drawable/ic_share_24dp"
             android:contentDescription="@string/desc_comment_button"
             android:clickable="true"
+	        android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
+	        android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
             android:background="@drawable/news_ctrl_btn_selector" />
@@ -230,6 +221,9 @@
             android:textStyle="bold"
             android:textColor="@color/mni_ctrl_btn_text"
             android:gravity="center_vertical"
+	        android:layout_marginTop="@dimen/mni_ctrl_layout_padding"
+	        android:layout_marginBottom="@dimen/mni_ctrl_layout_padding"
+	        android:layout_marginRight="16dp"
             android:paddingLeft="@dimen/mni_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/mni_ctrl_btn_padding_horizontal"
             android:text="@string/demo_comment_count"
@@ -250,6 +244,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
-            android:text="@string/format_detail_like_share"/>
+            android:text="@string/demo_detail_like_share"/>
     </LinearLayout>
 </RelativeLayout>

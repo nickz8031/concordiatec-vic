@@ -3,9 +3,11 @@
  */
 package com.concordiatec.vic.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Article extends VicModel {
+@SuppressWarnings("serial")
+public class Article extends VicModel implements Serializable {
 	/**
 	 * article id
 	 */

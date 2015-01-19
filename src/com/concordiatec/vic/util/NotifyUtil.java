@@ -26,7 +26,7 @@ public class NotifyUtil {
 	 * @param m
 	 */
 	public static Builder dialog( Context context , String title){
-		return new AlertDialog.Builder(context).setTitle(context.getString(R.string.comment_cancel));
+		return new AlertDialog.Builder(context).setTitle(title);
 	}
 	
 	public static void showDialogWithPositive( Context context , String title , OnClickListener positiveListener ){

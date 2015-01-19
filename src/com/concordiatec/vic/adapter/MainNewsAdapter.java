@@ -24,8 +24,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,7 +174,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			List<LastestComment> lastestComments = apData.getLatestComments();
 			//if has comments
 			if( lastestComments != null && lastestComments.size() > 0 ){
-				
 				NewsHolder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
 				NewsHolder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
 				NewsHolder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
@@ -200,11 +197,45 @@ public class MainNewsAdapter extends VicBaseAdapter {
 
 					setCmtPhotoBorder( cpl , 0 );
 					
-					SpannableString span = new SpannableString(c.getUserName() + " " + c.getCommentText().trim());
-					span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, c.getUserName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					String content = c.getCommentText().trim();
+					if( c.getPlusCount() > 0 ){
+						content = content + " +" + c.getPlusCount();
+						
+					}			
+					if( c.getReplyWhose() > 0 ){
+						content = "@"+c.getReplyWhoseName() + " " + content;
+					}
+					
+					content = c.getUserName() + " " + content;
+					SpannableString span = new SpannableString(content);
+					StringUtil.setBoldText(span, 0, c.getUserName().length());
+					
+					if( c.getReplyWhose() > 0 ){
+						int start = c.getUserName().length() + 1;
+						int end = start + c.getReplyWhoseName().length()+1;
+						StringUtil.setTextColor(span, Color.BLUE, start, end);
+					}
+					if( c.getPlusCount() > 0 ){
+						String tmpPlusCount = "+"+c.getPlusCount();
+						int startPos = content.length() - tmpPlusCount.length();
+						int endPos = content.length();
+						StringUtil.setTextColor(span, context.getResources().getColor(R.color.theme_wrap_color), startPos, endPos);
+						StringUtil.setBoldText(span, startPos, endPos);
+					}
+					
+					
 					TextView tvContent = new TextView(context);
 					tvContent.setText( span );
 					tvContent.setGravity(Gravity.CENTER_VERTICAL);
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					NewsHolder.commentFlip.addView(tvContent);
 					NewsHolder.commentFlip.setOnFlipListener(new OnFlipListener() {
 						@Override
@@ -300,8 +331,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			view.setTag(null);
 		}
 		aService.likeArticle(articleId);
-		
-		
 	}
 	
 	private void setLike(View v){

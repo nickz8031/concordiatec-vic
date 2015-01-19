@@ -6,11 +6,14 @@ import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.UserActivity;
+import com.concordiatec.vic.inf.IVicClickableSpan;
 import com.concordiatec.vic.model.Comment;
+import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -51,6 +54,10 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 		return data.get(position).getId();
 	}
 	
+	public void deleteData( int position ){
+		updateData(null , position);
+	}
+	
 	public void updateData( Comment comment , int position ){
 		if( comment != null ){
 			data.set(position, comment);
@@ -71,16 +78,16 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
-	public void addData( Comment data ){
-		if(data != null){
-			this.data.add(data);
+	public void addData( Comment cmt ){
+		if(cmt != null){
+			this.data.add(cmt);
 		}
 	}
 	
-	public void addData( List<Comment> data ){
-		if(data != null && data.size()>0 ){
-			for (int i = 0; i < data.size(); i++) {
-				addData( data.get(i) );
+	public void addData( List<Comment> lcmt ){
+		if(lcmt != null && lcmt.size()>0 ){
+			for (int i = 0; i < lcmt.size(); i++) {
+				addData( lcmt.get(i) );
 			}
 			notifyDataSetChanged();
 		}
@@ -111,47 +118,33 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 				
 			}			
 			if( comment.getReplyId() > 0 ){
-				content = comment.getReplyWhoseName() + " " + content;
+				content = "@"+comment.getReplyWhoseName() + " " + content;
 			}
 			SpannableString span = new SpannableString(content);
 			if( comment.getReplyId() > 0 ){
 				final int replyTarget = comment.getReplyWhose();
-				span.setSpan(new ClickableSpan() {
+				StringUtil.setClickableText(span, 0, comment.getReplyWhoseName().length()+1, new IVicClickableSpan() {
 					@Override
-					public void onClick(View widget) {
+					public void onClick() {
 						Intent intent = new Intent(context , UserActivity.class);
 						intent.putExtra("user_id", replyTarget);
 						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						context.startActivity(intent);
 					}
-					@Override
-					public void updateDrawState(TextPaint ds) {
-						ds.setUnderlineText(false);
-						ds.setColor(context.getResources().getColor(R.color.theme_wrap_color));
-					}
-				}, 0, comment.getReplyWhoseName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				});
 			}
 			if( comment.getPlusCount() > 0 ){
 				String tmpPlusCount = "+"+comment.getPlusCount();
 				int startPos = content.length() - tmpPlusCount.length();
-				span.setSpan( 
-						new ForegroundColorSpan(context.getResources().getColor(R.color.theme_wrap_color)) , 
-						startPos, 
-						content.length() , 
-						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
-				span.setSpan(
-						new StyleSpan(android.graphics.Typeface.BOLD), 
-						startPos, 
-						content.length() , 
-						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-						);	
+				StringUtil.setTextColor(span, context.getResources().getColor(R.color.theme_wrap_color), startPos, content.length());
+				StringUtil.setBoldText(span, startPos, content.length());
 			}
 			CommentHolder.content.setText( span );
-			if( comment.getReplyId() > 0 ) CommentHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
-			
+			if( comment.getReplyId() > 0 ){
+				CommentHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
+				CommentHolder.content.setFocusable(false);
+			}			
 			Glide.with(context).load(comment.getWriterPhotoURL()).crossFade().into(CommentHolder.commentorPhoto);
-			
-			
 			CommentHolder.pastTime.setText( TimeUtil.getTimePast( context, comment.getPastTime() ) );
 			CommentHolder.name.setText( comment.getWriterName() );
 			

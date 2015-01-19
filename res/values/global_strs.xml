@@ -56,19 +56,21 @@
     <string name="show_more">더 보기</string>
     <string name="copy_content_succed">클립보드로 복사되었습니다.</string>
     <string name="sure_to_delete">삭제하시겠습니까?</string>
+    <string name="delete_succed">삭제되었습니다.</string>
+    <string name="delete_failed">삭제 실패하였습니다.</string>
     
     
 	<!-- demo strings -->
-	<string name="demo_store_name">디퀸즈 뉴 코멕스점(12월 오픈예정)</string>
-	<string name="demo_store_addr">서울 강남구 삼성동 159-9</string>
-	<string name="demo_writer_name">Avril Lavigne</string>
-	<string name="demo_write_time">4시간 전</string>
-	<string name="demo_news_content">Taylor looks STUNNING on the cover of ASOS Magazine this month!!! Pick up your copy to read her feature stroy.</string>
+	<string name="demo_store_name">Store name</string>
+	<string name="demo_store_addr">Address</string>
+	<string name="demo_writer_name">Writer</string>
+	<string name="demo_write_time">Time</string>
+	<string name="demo_news_content">Content</string>
 	
 	<string name="demo_like_count">0</string>
 	<string name="demo_comment_count">0</string>
-	<string name="demo_comment_contents">MICHALE Shoulders I love that pic your my #1 singer/songwriter! +Hannah Walker I agree...</string>
-	
+	<string name="demo_comment_contents">Comment</string>
+	<string name="demo_detail_like_share">0명이 이 소식을 좋아함. 0명이 다시 공유함</string>
 	<!-- coupon demo string -->
 	<string name="demo_shop_name">스타벅스</string>
 	<string name="demo_coupon_title">아메리카노+크레마놀 세트</string>

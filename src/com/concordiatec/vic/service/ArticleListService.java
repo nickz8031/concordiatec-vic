@@ -34,7 +34,7 @@ public class ArticleListService extends HttpUtil implements IVicService{
 	public static ArticleListService ars;
 	private Context context;
 	
-	private ArticleListService( Context context ){
+	public ArticleListService( Context context ){
 		this.context = context;
 	}
 	/**

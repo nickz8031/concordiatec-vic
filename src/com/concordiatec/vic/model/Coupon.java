@@ -3,8 +3,10 @@
  */
 package com.concordiatec.vic.model;
 
+import java.io.Serializable;
 
-public class Coupon extends VicModel {
+@SuppressWarnings("serial")
+public class Coupon extends VicModel implements Serializable {
 	/**
 	 * 쿠폰 아이디
 	 */

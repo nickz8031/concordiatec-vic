@@ -50,19 +50,20 @@
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize" />
-        
         <activity 
-            android:name=".ChoosePicActivity" 
-            android:theme="@style/SubTheme"/>
+            android:name=".ArticleDetailActivity" 
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/SubTheme" />
+        <activity 
+            android:name=".ArticleCommentEditActivity" 
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/SubTheme" />
         
         <activity 
             android:name=".ChoosePicListActivity" 
             android:theme="@style/SubTheme"/>
         
-        <activity 
-            android:name=".ArticleDetailActivity" 
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/SubTheme" />
+        
         <activity 
             android:name=".LoginActivity" 
             android:windowSoftInputMode="adjustResize"

@@ -3,11 +3,10 @@
  */
 package com.concordiatec.vic.model;
 
-public class Comment extends VicModel {
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", articleId=" + articleId + ", writerId=" + writerId + ", writerName=" + writerName + ", writerPhotoURL=" + writerPhotoURL + ", content=" + content + ", pastTime=" + pastTime + ", plusCount=" + plusCount + ", replyId=" + replyId + ", replyWhose=" + replyWhose + ", replyWhoseName=" + replyWhoseName + ", isPlus=" + isPlus + "]";
-	}
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Comment extends VicModel implements Serializable {
 	/**
 	 * 댓글 아이디
 	 */

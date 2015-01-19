@@ -13,6 +13,7 @@ import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleDetailService;
+import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.CommentService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.Tools;
@@ -23,14 +24,14 @@ import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.widget.TagView;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.google.gson.internal.LinkedTreeMap;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -45,6 +46,9 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -57,13 +61,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ArticleDetailActivity extends SubPageSherlockActivity{
+	private final static int CONTEXT_COMMENT_PLUS = 1;
+	private final static int CONTEXT_COMMENT_PLUS_CANCEL = 2;
+	private final static int CONTEXT_COMMENT_REPLY = 3;
+	private final static int CONTEXT_COMMENT_CONTENT_COPY = 4;
+	private final static int CONTEXT_COMMENT_REPORT = 5;
+	private final static int CONTEXT_COMMENT_EDIT = 6;
+	private final static int CONTEXT_COMMENT_DELETE = 7;
+	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 8;
+	
 	private List<Comment> comments;
 	private ArticleDetailCommentAdapter adapter;
 	private ListView commentList;
 	private EditText commentContent;
 	private View contentView;
-	private ArticleDetailService detailService;
-	private CommentService commentService;
+	private ArticleDetailService detailService = new ArticleDetailService(this);
+	private CommentService commentService = new CommentService(this);
+	private ArticleService aService = new ArticleService(this);
+	
 	private int articleId;
 	private ScrollView contentScroll;
 	private View sendCommentBtn;
@@ -71,8 +86,12 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private Comment clickedComment;
 	private int replyTargetId;
 	private boolean isRefresh;
-	protected TextView content;
+	private TextView content;
 	protected int clickedPosition;
+	protected TextView commentCount;
+	protected Article detail;
+	protected int currentCommentCount = 0;
+	protected TextView likeShareText;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,13 +103,14 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		contentView = LayoutInflater.from(this).inflate(R.layout.article_detail_header, null);
 		
 		commentList = (ListView)findViewById(R.id.ar_d_comment_list);
+		
 		commentContent = (EditText)findViewById(R.id.ar_d_comment_input);
 		
 		sendCommentBtn = findViewById(R.id.send_comment);
 		articleId = getIntent().getIntExtra("article_id", 0);
 
-		detailService = new ArticleDetailService(this);
-		commentService = new CommentService(this);
+		
+		
 		initListView();
 		
 		sendCommentBtn.setOnClickListener(new OnClickListener() {
@@ -123,6 +143,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 						adapter.addData(cmts);
 						commentContent.clearFocus();
 						commentContent.setText(null);
+						currentCommentCount++;
+						commentCount.setText( currentCommentCount+"" );
 						ProgressUtil.dismiss();
 						NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.comment_succed));
 					}
@@ -134,6 +156,18 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.article_detail, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.ar_d_menu_refresh:
+				recreate();
+				break;
+			default:
+				break;
+		}
 		return true;
 	}
 	
@@ -168,17 +202,18 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			@Override
 			@SuppressWarnings("unchecked")
 			public void onSuccess(ResData data) {
+								
 				content = (TextView) contentView.findViewById(R.id.news_content);
-				Article detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
+				commentCount = (TextView) contentView.findViewById(R.id.news_comment_btn);
+				likeShareText = (TextView) contentView.findViewById(R.id.ar_d_like_share_text);
+				
 				CircleImageView imageView = (CircleImageView) contentView.findViewById(R.id.news_writer_photo);
 				TextView writerName = (TextView) contentView.findViewById(R.id.news_writer_name);
 				TextView writeTime = (TextView) contentView.findViewById(R.id.news_write_time);
 				TextView likeCount = (TextView) contentView.findViewById(R.id.news_like_btn);
-				TextView commentCount = (TextView) contentView.findViewById(R.id.news_comment_btn);
-				TextView likeShareText = (TextView) contentView.findViewById(R.id.ar_d_like_share_text);
-				
-				SliderLayout sliderLayout = (SliderLayout) contentView.findViewById(R.id.news_content_img_slider);
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
+				
+				detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
 				
 				if( !StringUtil.isEmpty(detail.getShopName()) ){
 					TextView storeName = (TextView) contentView.findViewById(R.id.news_store_name);
@@ -191,37 +226,27 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					storeInfoLayout.setVisibility(View.GONE);
 				}
 				
-				
+				currentCommentCount = detail.getCommentCount();
 				Glide.with(ArticleDetailActivity.this).load(detail.getWriterPhotoURL()).crossFade().into(imageView);
 				
 				writerName.setText(detail.getWriterName());				
 				writeTime.setText( TimeUtil.getTimePast( ArticleDetailActivity.this, detail.getPastTime() ) );
 				content.setText( detail.getContent().trim() );
 				likeCount.setText( detail.getLikeCount()+"" );
-				commentCount.setText( detail.getCommentCount()+"" );
-				String lst = likeShareText.getText().toString();
+				if( detail.isLike() ){
+					setLike(likeCount);
+					likeCount.setTag(true);
+				}
 				
-				likeShareText.setText( String.format(lst, detail.getLikeCount() , detail.getShareCount() ) );
+				commentCount.setText( detail.getCommentCount()+"" );
+				setLikeShareCount();
 				
 				List<ArticleImages> imgs = detail.getImages();
-				
-				if( imgs.size() > 1 ){
-					//make viewPager
-					for (int i = 0; i < imgs.size(); i++) {
-						DefaultSliderView dSliderView = new DefaultSliderView(ArticleDetailActivity.this);
-						dSliderView.image(imgs.get(i).getName());
-						sliderLayout.addSlider(dSliderView);
-					}
-					sliderLayout.setPresetTransformer(SliderLayout.Transformer.Default);
-					sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-					sliderLayout.stopAutoCycle();
-					sliderLayout.setVisibility(View.VISIBLE);
-				}else{
-					//show image
-					Glide.with(ArticleDetailActivity.this).load(imgs.get(0).getName()).crossFade().into(contentImg);
-					contentImg.setVisibility(View.VISIBLE);
-				}
+				//show image
+				Glide.with(ArticleDetailActivity.this).load(imgs.get(0).getName()).crossFade().into(contentImg);
+				contentImg.setVisibility(View.VISIBLE);
 				commentCount.setOnClickListener(new CommentBtnClickListener());
+				likeCount.setOnClickListener(new LikeButtonClickListener());
 				ProgressUtil.dismiss();
 			}
 		});
@@ -274,20 +299,114 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private final class CommentBtnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			commentContent.requestFocus();
-			InputMethodManager imm = (InputMethodManager) commentContent.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+			focusCommContent();
 		}
 	}
 	
-	private final static int CONTEXT_COMMENT_PLUS = 1;
-	private final static int CONTEXT_COMMENT_PLUS_CANCEL = 2;
-	private final static int CONTEXT_COMMENT_REPLY = 3;
-	private final static int CONTEXT_COMMENT_CONTENT_COPY = 4;
-	private final static int CONTEXT_COMMENT_REPORT = 5;
-	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 8;
-	private final static int CONTEXT_COMMENT_EDIT = 6;
-	private final static int CONTEXT_COMMENT_DELETE = 7;
+	private void focusCommContent(){
+		commentContent.requestFocus();
+		commentContent.requestFocusFromTouch();
+		InputMethodManager imm = (InputMethodManager) commentContent.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+	}
+	
+	private final class LikeButtonClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			if( v.getTag() == null ){
+				activeLikeAnimation(v);
+			}
+			likeArticle(v, articleId);
+		}
+	}
+	
+	/**
+	 * like action
+	 * @param v
+	 */
+	private void likeArticle( View v , int articleId ){
+		final TextView t = (TextView) v;
+		final boolean isLike = (v.getTag() == null);
+		int likeCount = Integer.parseInt(t.getText().toString());
+		if( isLike ){
+			t.setText((likeCount+1) + "");
+			setLike(t);
+			t.setTag(true);
+		}else{
+			if( likeCount > 0 ){
+				t.setText((likeCount-1) + "");
+			}
+			setDislike(t);
+			t.setTag(null);
+		}
+		aService.likeArticle(articleId , new SimpleVicResponseListener(){
+			@Override
+			public void onSuccess(ResData data) {
+				if( isLike ){
+					detail.setLikeCount( detail.getLikeCount()+1 );
+				}else{
+					if( detail.getLikeCount() > 0 ){
+						detail.setLikeCount( detail.getLikeCount()-1 );
+					}
+				}
+				setLikeShareCount();
+			}
+		});
+	}
+	
+	private void setLikeShareCount(){
+		likeShareText.setText( 
+				String.format(getResources().getString(R.string.format_detail_like_share), 
+				detail.getLikeCount() , 
+				detail.getShareCount() ) 
+				);
+	}
+	
+	private void setLike(View v){
+		TextView t = (TextView) v;
+		t.setTextColor(Color.WHITE);
+		t.setBackgroundResource(R.drawable.news_ctrl_btn_active);
+		Drawable drawable = getResources().getDrawable(R.drawable.ic_action_thumb_up_white);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+		t.setCompoundDrawables(drawable, null, null, null);
+	}
+	
+	private void setDislike( View v ){
+		TextView t = (TextView) v;
+		t.setTextColor( getResources().getColor(R.color.mni_ctrl_btn_text) );
+		t.setBackgroundResource(R.drawable.news_ctrl_btn_selector);
+		Drawable drawable = getResources().getDrawable(R.drawable.ic_action_thumb_up);
+		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+		t.setCompoundDrawables(drawable, null, null, null);
+	}
+	
+	/**
+	 * start animation with like action
+	 * @param v
+	 */
+	private void activeLikeAnimation( View v ){
+		final View target = v;
+		final Animation toBig = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.big_scale);
+		final Animation toNormal = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.small_scale);
+		target.setAnimation(toBig);
+		toBig.start();
+		toBig.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				target.clearAnimation();
+				target.setAnimation(toNormal);
+				toNormal.start();
+			}
+		});
+	}
+	
+	
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -321,7 +440,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	}
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		User loginUser = checkLogin(ArticleDetailActivity.this);
+		final User loginUser = checkLogin(ArticleDetailActivity.this);
 		final int ctrlId = item.getItemId(); 
 		switch (ctrlId) {
 			case CONTEXT_COMMENT_PLUS:
@@ -370,42 +489,46 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				NotifyUtil.showDialogWithPositive(this, getString(R.string.sure_to_delete), new DialogInterface.OnClickListener() {  
 			        @Override  
 			        public void onClick(DialogInterface dialog, int which) {
-			        	
+			        	commentService.deleteComment(clickedComment.getId(), loginUser.usrId, new SimpleVicResponseListener(){
+			        		@Override
+			        		public void onSuccess(ResData data) {
+			        			adapter.deleteData(clickedPosition);
+			        			if( currentCommentCount > 1 ){
+			        				currentCommentCount--;
+			        				commentCount.setText( currentCommentCount+"" );
+			        			}
+			    				NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.delete_succed));
+			        		}
+			        					        		
+			        		@Override
+			        		public void onFailure(int httpResponseCode, String responseBody) {
+			        			NotifyUtil.toast(ArticleDetailActivity.this , getString(R.string.failed_to_request_data));
+			        		}
+			        	});
 			        }  
 			    });
 				break;
 			case CONTEXT_COMMENT_EDIT:
 				//수정
+				Intent intent = new Intent( this , ArticleCommentEditActivity.class );
+				intent.putExtra("comment", clickedComment);
+				startActivity(intent);
 				break;
 			default:
 				break;
 		}
 		return true;
 	}
+	
 	private void setReplyTarget(){
 		replyTargetId = clickedComment.getId();
 		commentContent.setText(null);
     	//답글
-		TagView tagView = new TagView(ArticleDetailActivity.this);
-		TagView.Tag tag = new TagView.Tag(clickedComment.getWriterName(), getResources().getColor(R.color.background_color_alpha) );
-		tagView.setTextColor(getResources().getColor(R.color.light_font));
-		tagView.setTextSize(14);
-		tagView.setTagCornerRadius(2);
-		tagView.setTagPaddingHor(20);
-		tagView.setTagPaddingVert(10);
-		tagView.setSingleTag(tag);
-		Bitmap bm = Tools.convertViewToBitmap(tagView);
-		
-		Drawable drawable = new BitmapDrawable(getResources(), bm);
-		drawable.setBounds(0 , 10 , drawable.getIntrinsicWidth()+10, drawable.getIntrinsicHeight()+10);
-		
+		Drawable drawable = StringUtil.getCommentNameTagDrawable(this, clickedComment.getWriterName());
 		SpannableString spanString = new SpannableString(clickedComment.getWriterName());
-		
-		spanString.setSpan(new ImageSpan(drawable,ImageSpan.ALIGN_BASELINE), 0 , spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		Editable aEditable = commentContent.getEditableText();
-		aEditable.insert(0, spanString);						
-		commentContent.requestFocus();
-		commentContent.requestFocusFromTouch();
+		StringUtil.setImageSpan(spanString, drawable, 0, spanString.length());
+		commentContent.getEditableText().insert(0, spanString);						
+		focusCommContent();
 	}
 	
 }

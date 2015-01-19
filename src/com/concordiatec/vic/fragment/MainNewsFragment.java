@@ -34,13 +34,10 @@ import com.concordiatec.vic.adapter.MainNewsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
-import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.ArticleListService;
-import com.concordiatec.vic.service.UserService;
-import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
@@ -96,9 +93,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	 * init widgets in main news fragment
 	 */
 	private void initWidgets(){
-		aService = ArticleListService.single(getActivity());
-		
-		
+		aService = new ArticleListService(getActivity());
 		this.initListView();
 		this.initPtrLayout();
 		this.initSortBar();

@@ -1,6 +1,9 @@
 package com.concordiatec.vic.model;
 
-public class ArticleImages extends VicModel {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class ArticleImages extends VicModel implements Serializable {
 	private int id;
 	private String name;
 	private int width;

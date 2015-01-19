@@ -2,7 +2,7 @@
 <resources>
 <!-- dimens -->
 	<dimen name="detail_comment_input">48dp</dimen>
-    <dimen name="detail_ctrl_layout_height">32dp</dimen>
+    <dimen name="detail_ctrl_layout_height">48dp</dimen>
 <!-- strings -->
 	<string name="article_detail_comment_hint">댓글 입력</string>
 	
@@ -25,6 +25,7 @@
     
     <string name="comment_cannot_be_null">댓글 내용을 적어주세요.</string>
     <string name="comment_succed">댓글이 등록되었습니다.</string>
+    <string name="comment_edit_succed">댓글이 수정되었습니다.</string>
     <string name="comment_cancel">내용 작성을 취소하시겠습니까?</string>
     
     
