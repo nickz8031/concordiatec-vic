@@ -10,6 +10,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
+import com.concordiatec.vic.UserActivity;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.UserService;
@@ -38,12 +39,13 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		userName = (TextView) profileLayout.findViewById(R.id.main_actionbar_custom_title);
 		
 		lService = new UserService(this);
-		User usr = lService.getLoginUser();
+		final User usr = lService.getLoginUser();
 		
 		if( usr != null && usr.getId() > 0 ){
 			setIcon(usr.photo);
 			setTitle(usr.name);
-			profileLayout.setOnClickListener( new Logout() );
+			
+			profileLayout.setOnClickListener(new ActionbarAvatarClick() );
 		}else{
 			profileLayout.setOnClickListener( new GoLogin() );
 		}
@@ -70,12 +72,24 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		userName.setText(title);
 	}
 	
+	private void sendOnlineBroad( boolean isOnline ){
+		Intent intent = new Intent(Constant.ONLINE_BROAD_ACTION);
+		intent.putExtra(Constant.ONLINE_BROAD_INTENT_KEY, isOnline);
+		sendBroadcast(intent);
+	}
+	
+	protected void logout(){
+		lService.logout();
+		restoreActionbar();
+		sendOnlineBroad(false);
+	}
+	
 	private void restoreActionbar(){
 		User usr = lService.getLoginUser();
 		if( usr != null && usr.getId() > 0 ){
 			setIcon(usr.photo);
 			setTitle(usr.name);
-			profileLayout.setOnClickListener( new Logout() );
+			profileLayout.setOnClickListener( new ActionbarAvatarClick() );
 		}else{
 			setIcon(R.drawable.ic_default_avatar);
 			setTitle(R.string.login);
@@ -93,21 +107,16 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 	}
 	
 	
-	protected final class Logout implements OnClickListener{
+	protected final class ActionbarAvatarClick implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			lService.logout();
-			restoreActionbar();
-			sendOnlineBroad(false);
+			User usr = lService.getLoginUser();
+			Intent intent = new Intent( getApplicationContext() , UserActivity.class );
+			intent.putExtra("user_id", usr.usrId);
+			startActivity(intent);
 		}
 		
-	}
+	} 
 	
-	 
-	private void sendOnlineBroad( boolean isOnline ){
-		Intent intent = new Intent(Constant.ONLINE_BROAD_ACTION);
-		intent.putExtra(Constant.ONLINE_BROAD_INTENT_KEY, isOnline);
-		sendBroadcast(intent);
-	}
 	
 }

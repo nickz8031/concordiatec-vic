@@ -25,6 +25,8 @@
     
     <string name="comment_cannot_be_null">댓글 내용을 적어주세요.</string>
     <string name="comment_succed">댓글이 등록되었습니다.</string>
+    <string name="comment_cancel">내용 작성을 취소하시겠습니까?</string>
+    
     
     <!-- format -->
     <string name="format_detail_like_share">%1$d명이 이 소식을 좋아함. %2$d명이 다시 공유함</string>

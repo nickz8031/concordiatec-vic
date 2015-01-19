@@ -6,7 +6,7 @@ import android.content.Context;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.User;
@@ -18,7 +18,7 @@ import com.concordiatec.vic.util.StringUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
 
-public class UserService extends HttpUtil implements VicServiceInterface {
+public class UserService extends HttpUtil implements IVicService {
 	private Context context;
 	
 	public UserService( Context context ){

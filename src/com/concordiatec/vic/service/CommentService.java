@@ -6,7 +6,7 @@ import org.apache.http.Header;
 import android.content.Context;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Comment;
@@ -17,7 +17,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class CommentService extends HttpUtil implements VicServiceInterface {
+public class CommentService extends HttpUtil implements IVicService {
 	public static CommentService cs;
 	private Context context;
 	
@@ -30,7 +30,7 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 	 * @param comment
 	 * @param listener
 	 */
-	public void writeComment( Comment comment , VicResponseListener listener ){
+	public void writeComment( Comment comment , int lastCommentId , VicResponseListener listener ){
 		if( comment != null && comment.getArticleId() > 0 ){
 			RequestParams params = new RequestParams();
 			
@@ -38,6 +38,7 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 			params.put("user", comment.getWriterId());
 			params.put("comment", comment.getContent());
 			params.put("reply", comment.getReplyId());
+			params.put("id", lastCommentId);
 			
 			post(ApiURL.COMMENT_WRITE, params, new VicResponseHandler(listener));
 			
@@ -52,6 +53,17 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 			params.put("id", commentId);
 			params.put("user", usrId);
 			post(ApiURL.COMMENT_LIKE, params, new VicResponseHandler(listener));
+		}else{
+			listener.onFailure(0, context.getString(R.string.err_request_data_invalidate));
+		}
+	}
+	
+	public void deleteComment(int commentId , int usrId , VicResponseListener listener){
+		if( usrId > 0 && commentId > 0 ){
+			RequestParams params = new RequestParams();
+			params.put("id", commentId);
+			params.put("user", usrId);
+			post(ApiURL.COMMENT_DELETE, params, new VicResponseHandler(listener));
 		}else{
 			listener.onFailure(0, context.getString(R.string.err_request_data_invalidate));
 		}
@@ -122,7 +134,7 @@ public class CommentService extends HttpUtil implements VicServiceInterface {
 		cmt.setPlusCount(getIntValue(map.get("plus_count")));
 		
 		boolean isPlus = false;
-		if( getIntValue(map.get("is_plus")) == 1 ){
+		if( map.containsKey("is_plus") && getIntValue(map.get("is_plus")) == 1 ){
 			isPlus = true;
 		}
 		cmt.setPlus(isPlus);

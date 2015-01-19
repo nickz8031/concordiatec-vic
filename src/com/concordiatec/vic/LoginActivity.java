@@ -2,7 +2,6 @@ package com.concordiatec.vic;
 
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
-import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.LoginAccount;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.User;

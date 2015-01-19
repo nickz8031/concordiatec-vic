@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.internal.LinkedTreeMap;
 
-public interface VicServiceInterface {
+public interface IVicService {
 	/**
 	 * parse LinkedTreeMap list data to Custom JavaBean model which from Retrofit request transform
 	 * @param list

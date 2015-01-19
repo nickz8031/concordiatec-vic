@@ -26,7 +26,8 @@ import com.concordiatec.vic.widget.TagView;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.google.gson.internal.LinkedTreeMap;
-import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -36,9 +37,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -71,8 +69,10 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private View sendCommentBtn;
 	
 	private Comment clickedComment;
+	private int replyTargetId;
 	private boolean isRefresh;
 	protected TextView content;
+	protected int clickedPosition;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,7 +96,11 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		sendCommentBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if( commentContent.getText().length() == 0 ){
+				String writedContent = commentContent.getText().toString().trim();
+				
+				if( replyTargetId > 0 ) writedContent = writedContent.substring(clickedComment.getWriterName().length()).trim();
+				
+				if( writedContent.length() == 0 ){
 					NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.comment_cannot_be_null));
 					return;
 				}
@@ -104,23 +108,27 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				ProgressUtil.show(ArticleDetailActivity.this);
 				
 				Comment comment = new Comment();
-				comment.setArticleId(articleId);
-				comment.setWriterId(loginUser.usrId);
-				comment.setContent( commentContent.getText().toString().trim() );
-				comment.setReplyId(clickedComment.getId());
-				commentService.writeComment(comment, new SimpleVicResponseListener(){
+				if( replyTargetId > 0 ) comment.setReplyId( replyTargetId );
+				comment.setArticleId( articleId );
+				comment.setWriterId( loginUser.usrId );
+				comment.setContent( writedContent );
+				int lastId = 0;
+				if( adapter != null ){
+					lastId = adapter.getLastRecordId();
+				}
+				commentService.writeComment(comment , lastId, new SimpleVicResponseListener(){
 					@Override
 					public void onSuccess(ResData data) {
+						List<Comment> cmts = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
+						adapter.addData(cmts);
 						commentContent.clearFocus();
 						commentContent.setText(null);
-						refreshComments();
 						ProgressUtil.dismiss();
 						NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.comment_succed));
 					}
 				});
 			}
 		});
-		
 	}
 	
 	@Override
@@ -254,7 +262,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			commentList.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					clickedComment = adapter.getItem(position-1);
+					clickedPosition = position-1;
+					clickedComment = adapter.getItem(clickedPosition);
 					ArticleDetailActivity.this.openContextMenu( parent );
 				}
 				
@@ -313,71 +322,42 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		User loginUser = checkLogin(ArticleDetailActivity.this);
-		switch (item.getItemId()) {
+		final int ctrlId = item.getItemId(); 
+		switch (ctrlId) {
 			case CONTEXT_COMMENT_PLUS:
-				//공감 +1
-				commentService.likeComment(clickedComment.getId(), loginUser.usrId, new SimpleVicResponseListener(){
-					@Override
-					public void onSuccess(ResData data) {
-						LogUtil.show(data.getData().toString());
-					}
-					@Override
-					public void onFailure(int httpResponseCode, String responseBody) {
-						super.onFailure(httpResponseCode, responseBody);
-					}
-				});
-				break;
 			case CONTEXT_COMMENT_PLUS_CANCEL:
-				//공감 취소
+				//공감 +1/ 취소
 				commentService.likeComment(clickedComment.getId(), loginUser.usrId, new SimpleVicResponseListener(){
 					@Override
 					public void onSuccess(ResData data) {
-						LogUtil.show(data.getData().toString());
-					}
-					@Override
-					public void onFailure(int httpResponseCode, String responseBody) {
-						super.onFailure(httpResponseCode, responseBody);
+						if( ctrlId == CONTEXT_COMMENT_PLUS ){
+							clickedComment.setPlus(true);
+							clickedComment.setPlusCount( clickedComment.getPlusCount()+1 );
+						}else{
+							clickedComment.setPlus(false);
+							clickedComment.setPlusCount( clickedComment.getPlusCount()-1 );
+						}
+						adapter.updateData(clickedComment, clickedPosition);
 					}
 				});
 				break;
 			case CONTEXT_COMMENT_REPLY:
-				new AlertDialog.Builder(this).setTitle("确认退出吗？")  
-			    .setIcon(android.R.drawable.ic_dialog_info)  
-			    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {  
-			        @Override  
-			        public void onClick(DialogInterface dialog, int which) {  
-			        	commentContent.setText(null);
-			        	//답글
-						TagView tagView = new TagView(ArticleDetailActivity.this);
-						TagView.Tag tag = new TagView.Tag(clickedComment.getWriterName(), getResources().getColor(R.color.background_color_alpha) );
-						tagView.setTextColor(getResources().getColor(R.color.light_font));
-						tagView.setTextSize(14);
-						tagView.setTagCornerRadius(2);
-						tagView.setTagPaddingHor(20);
-						tagView.setTagPaddingVert(10);
-						tagView.setSingleTag(tag);
-						Bitmap bm = Tools.convertViewToBitmap(tagView);
-						
-						Drawable drawable = new BitmapDrawable(getResources(), bm);
-						drawable.setBounds(0 , 10 , drawable.getIntrinsicWidth()+10, drawable.getIntrinsicHeight()+10);
-						
-						SpannableString spanString = new SpannableString(clickedComment.getWriterName());
-						
-						spanString.setSpan(new ImageSpan(drawable,ImageSpan.ALIGN_BASELINE), 0 , spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-						Editable aEditable = commentContent.getEditableText();
-						aEditable.insert(0, spanString);						
-						commentContent.requestFocus();
-						commentContent.requestFocusFromTouch();
-			        }  
-			    })  
-			    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {  
-			        @Override  
-			        public void onClick(DialogInterface dialog, int which) {  
-			        }  
-			    }).show();
+				if( commentContent.getText().toString().trim().length() > 0 ){
+					NotifyUtil.showDialogWithPositive(this, getString(R.string.comment_cancel), new DialogInterface.OnClickListener() {  
+				        @Override  
+				        public void onClick(DialogInterface dialog, int which) {
+				        	setReplyTarget();
+				        }  
+				    });
+				}else{
+					setReplyTarget();
+				}
 				break;
 			case CONTEXT_COMMENT_CONTENT_COPY:
 				//내용 복사
+				ClipboardManager cmb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+				cmb.setPrimaryClip(ClipData.newPlainText(null, clickedComment.getContent().trim()));  
+				NotifyUtil.toast(this, getString(R.string.copy_content_succed));
 				break;
 			case CONTEXT_COMMENT_REPORT:
 				//신고
@@ -387,6 +367,12 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				break;
 			case CONTEXT_COMMENT_DELETE:
 				//삭제
+				NotifyUtil.showDialogWithPositive(this, getString(R.string.sure_to_delete), new DialogInterface.OnClickListener() {  
+			        @Override  
+			        public void onClick(DialogInterface dialog, int which) {
+			        	
+			        }  
+			    });
 				break;
 			case CONTEXT_COMMENT_EDIT:
 				//수정
@@ -396,5 +382,31 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		}
 		return true;
 	}
+	private void setReplyTarget(){
+		replyTargetId = clickedComment.getId();
+		commentContent.setText(null);
+    	//답글
+		TagView tagView = new TagView(ArticleDetailActivity.this);
+		TagView.Tag tag = new TagView.Tag(clickedComment.getWriterName(), getResources().getColor(R.color.background_color_alpha) );
+		tagView.setTextColor(getResources().getColor(R.color.light_font));
+		tagView.setTextSize(14);
+		tagView.setTagCornerRadius(2);
+		tagView.setTagPaddingHor(20);
+		tagView.setTagPaddingVert(10);
+		tagView.setSingleTag(tag);
+		Bitmap bm = Tools.convertViewToBitmap(tagView);
+		
+		Drawable drawable = new BitmapDrawable(getResources(), bm);
+		drawable.setBounds(0 , 10 , drawable.getIntrinsicWidth()+10, drawable.getIntrinsicHeight()+10);
+		
+		SpannableString spanString = new SpannableString(clickedComment.getWriterName());
+		
+		spanString.setSpan(new ImageSpan(drawable,ImageSpan.ALIGN_BASELINE), 0 , spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		Editable aEditable = commentContent.getEditableText();
+		aEditable.insert(0, spanString);						
+		commentContent.requestFocus();
+		commentContent.requestFocusFromTouch();
+	}
+	
 }
 	

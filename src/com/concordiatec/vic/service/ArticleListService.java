@@ -10,7 +10,7 @@ import org.apache.http.ParseException;
 import android.content.Context;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
@@ -30,7 +30,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 
 @SuppressWarnings("unused")
-public class ArticleListService extends HttpUtil implements VicServiceInterface{
+public class ArticleListService extends HttpUtil implements IVicService{
 	public static ArticleListService ars;
 	private Context context;
 	

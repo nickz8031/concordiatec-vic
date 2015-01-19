@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.VicServiceInterface;
+import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
@@ -15,7 +15,7 @@ import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
 
-public class ArticleDetailService extends HttpUtil implements VicServiceInterface {
+public class ArticleDetailService extends HttpUtil implements IVicService {
 
 	private static ArticleDetailService ads;
 	private Context context;

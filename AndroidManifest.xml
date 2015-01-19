@@ -67,6 +67,10 @@
             android:name=".LoginActivity" 
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/SubTheme" />
+        <activity 
+            android:name=".UserActivity" 
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/SubTheme" />
         
         <!-- ActiveAndroid -->
         <meta-data

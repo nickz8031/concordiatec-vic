@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.adapter.MainVpAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
 import com.concordiatec.vic.fragment.MainEventFragment;
@@ -61,6 +62,18 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.logout:
+			logout();
+			break;
+		default:
+			break;
+		}
 		return true;
 	}
 

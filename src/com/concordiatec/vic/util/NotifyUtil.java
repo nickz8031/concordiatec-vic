@@ -1,13 +1,16 @@
 package com.concordiatec.vic.util;
 
+import com.concordiatec.vic.R;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface.OnClickListener;
 import android.view.Gravity;
 import android.widget.Toast;
 
 public class NotifyUtil {
 	/*
-	 * AlertDialog
+	 * AlertDialog one button
 	 */
 	public static void alert(Context context, String message) {
 		alert(context,message,"CLOSE");
@@ -17,6 +20,21 @@ public class NotifyUtil {
 		new AlertDialog.Builder(context).setMessage(message).setPositiveButton(btn, null).show();	
 	}
 	
+	/**
+	 * alert dialog confirm
+	 * @param context
+	 * @param m
+	 */
+	public static Builder dialog( Context context , String title){
+		return new AlertDialog.Builder(context).setTitle(context.getString(R.string.comment_cancel));
+	}
+	
+	public static void showDialogWithPositive( Context context , String title , OnClickListener positiveListener ){
+		dialog(context , title)
+		.setPositiveButton(context.getString(R.string.yes), positiveListener)
+		.setNegativeButton(context.getString(R.string.no), null)
+		.show();
+	}
 	
 	/*
 	 * Toast

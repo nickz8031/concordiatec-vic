@@ -5,7 +5,6 @@ import java.util.List;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.constant.Constant;
-import com.concordiatec.vic.util.LogUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
