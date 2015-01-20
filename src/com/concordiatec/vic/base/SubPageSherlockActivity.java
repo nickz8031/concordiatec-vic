@@ -16,6 +16,7 @@ import com.concordiatec.vic.R;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.Tools;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 
 public class SubPageSherlockActivity extends SherlockActivity {

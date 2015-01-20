@@ -5,15 +5,16 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 <!-- colors -->
     <!-- font color -->
-    <color name="normal_font">#231F20</color>
+    <color name="normal_font">#333333</color>
     <color name="light_font">#666666</color>
     <color name="deep_light_font">#FFBBBBBB</color>
     <!-- /end -->
     
     <color name="bule_overlay">#660D92DD</color>
-    <color name="theme_color">#2cb1e1</color>
-    <color name="alpha_3_theme_color">#332cb1e1</color>
-    <color name="theme_wrap_color">#0780ab</color>
+    <!-- <color name="theme_color">#2cb1e1</color>-->
+    <color name="theme_color">#dd4b39</color>
+    <color name="alpha_3_theme_color">#33dd4b39</color>
+    <color name="theme_wrap_color">#f44336</color>
     <color name="background_color">#FFEEEEEE</color>
     <color name="background_color_wrapper">#FFDDDDDD</color>
     <color name="background_color_alpha">#70EEEEEE</color>
@@ -26,11 +27,11 @@
     <color name="default_btn_active_color">#CDCDCD</color>
     <color name="default_btn_border_color">#DEDEDE</color>
     
-    <color name="primary_btn_color">#2cb1e1</color>
-    <color name="primary_btn_active_color">#0780ab</color>
-    <color name="primary_btn_border_color">#0780ab</color>
+    <color name="primary_btn_color">#dd4b39</color>
+    <color name="primary_btn_active_color">#f44336</color>
+    <color name="primary_btn_border_color">#f44336</color>
     
-    <color name="effect_color">#ef7d20</color>
+    <color name="effect_color">#ff5722</color>
     
     
 <!-- dimens -->
@@ -40,6 +41,7 @@
     <dimen name="text_16">16sp</dimen>
     <dimen name="text_18">18sp</dimen>
     <dimen name="text_20">20sp</dimen>
+    <dimen name="text_22">22sp</dimen>
     <dimen name="text_24">24sp</dimen>
     
     <dimen name="zerofit">0dp</dimen>

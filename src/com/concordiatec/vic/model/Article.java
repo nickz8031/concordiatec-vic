@@ -92,6 +92,9 @@ public class Article extends VicModel implements Serializable {
 	 */
 	private boolean allowComment;
 	
+	private int minHeight;
+	
+	
 	public boolean isAllowComment() {
 		return allowComment;
 	}
@@ -225,6 +228,15 @@ public class Article extends VicModel implements Serializable {
 	}
 	public void setShareCount(int shareCount) {
 		this.shareCount = shareCount;
+	}
+	public int getMinHeight() {
+		return minHeight;
+	}
+	public void setMinHeight(int minHeight) {
+		this.minHeight = minHeight;
+	}
+	public void setAllowComment(boolean allowComment) {
+		this.allowComment = allowComment;
 	}
 	
 }

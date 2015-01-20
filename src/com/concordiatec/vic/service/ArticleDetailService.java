@@ -53,7 +53,16 @@ public class ArticleDetailService extends HttpUtil implements IVicService {
 		ArrayList<LinkedTreeMap<String,Object>> imgList = (ArrayList<LinkedTreeMap<String,Object>>)map.get("images");
 		List<ArticleImages> tImageList = ArticleDetailImageService.single(context, serverPath).mapListToModelList(imgList);
 		article.setImages( tImageList );
-		
+		int minHeight = 0;
+		if( tImageList.size() > 0 ){
+			minHeight = tImageList.get(0).getHeight();
+			for (int i = 1; i < tImageList.size(); i++) {
+				if( minHeight > tImageList.get(i).getHeight() ){
+					minHeight = tImageList.get(i).getHeight();
+				}
+			}
+		}
+		article.setMinHeight(minHeight);
 		article.setShopId( getIntValue(map.get("shop_id")) );
 		article.setShopAddr(map.get("shop_addr").toString());
 		article.setShopGroupId( getIntValue(map.get("shop_group")) );

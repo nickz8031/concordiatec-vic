@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class ArticleImages extends VicModel implements Serializable {
+	@Override
+	public String toString() {
+		return "ArticleImages [id=" + id + ", name=" + name + ", width=" + width + ", height=" + height + "]";
+	}
 	private int id;
 	private String name;
 	private int width;

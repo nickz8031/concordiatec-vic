@@ -3,16 +3,21 @@
 <!-- dimens -->
 	<dimen name="detail_comment_input">48dp</dimen>
     <dimen name="detail_ctrl_layout_height">48dp</dimen>
+    <dimen name="detail_image_min_height">100dp</dimen>
+    <dimen name="detail_multi_img_title_height">60dp</dimen>
+    <dimen name="detail_multi_img_title_padding_left">20dp</dimen>
+    
+<!-- colors -->
+	<color name="detail_multi_img_title_overlay">#55000000</color>    
 <!-- strings -->
 	<string name="article_detail_comment_hint">댓글 입력</string>
 	
-	<!-- actionbar menu -->
+<!-- actionbar menu -->
     <string name="menu_ignore">무시하기</string>
     <string name="menu_copy_text">텍스트 복사</string>
     <string name="menu_report">신고하기</string>
     
-    <!-- Context menu -->
-    
+<!-- Context menu -->
     <string name="comment_context_title">옵션</string>
     <string name="comment_plus">공감하기</string>
     <string name="comment_plus_cancel">공감 취소하기</string>
@@ -28,8 +33,8 @@
     <string name="comment_edit_succed">댓글이 수정되었습니다.</string>
     <string name="comment_cancel">내용 작성을 취소하시겠습니까?</string>
     
-    
-    <!-- format -->
+<!-- format -->
     <string name="format_detail_like_share">%1$d명이 이 소식을 좋아함. %2$d명이 다시 공유함</string>
+    <string name="format_detail_img_multi_count">사진 %1$d장 - 크게 보기</string>
     
 </resources>

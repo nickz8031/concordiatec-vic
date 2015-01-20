@@ -7,6 +7,8 @@ public class Constant {
 	public static final int MAX_UPLOAD_FILE_COUNTS = 8;
 	public static int SURPLUS_UPLOAD_COUNTS = MAX_UPLOAD_FILE_COUNTS;
 	
+	public static int MAX_HEIGHT_WHEN_MORE_THAN_ONE = 500;
+	
 	public static void initSurplus(){
 		SURPLUS_UPLOAD_COUNTS = MAX_UPLOAD_FILE_COUNTS;
 	}

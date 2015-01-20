@@ -1,9 +1,13 @@
 package com.concordiatec.vic.tools;
 
 import java.io.IOException;
+import com.concordiatec.vic.R;
 import com.concordiatec.vic.util.LogUtil;
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
@@ -11,19 +15,137 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.webkit.MimeTypeMap;
 
 public class Tools {
+	/**
+	 * get int value from object
+	 * @param object
+	 * @return
+	 */
 	public static int getIntValue(Object object) {
 		return Double.valueOf(object.toString()).intValue();
 	}
+	
+	/**
+	 * from float type
+	 * @param value
+	 * @return
+	 */
+	public static int getIntValue( float value ){
+		return Float.valueOf(value).intValue();
+	}
 
+	/**
+	 * get double value from object
+	 * @param object
+	 * @return
+	 */
 	public static double getDoubleValue(Object object) {
 		return Double.valueOf(object.toString());
 	}
-
+	
+	/**
+	 * get display metrics
+	 * @param activity
+	 * @param adjust
+	 * @return
+	 */
+	public static DisplayMetrics getDisplayMetrics( Activity activity , float adjust ){
+		DisplayMetrics dm = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		dm.widthPixels = (int) (dm.widthPixels - adjust);
+		return dm;
+	}
+	public static DisplayMetrics getDisplayMetrics( Activity activity  ){
+		return getDisplayMetrics(activity , 0);
+	}
+	/**
+	 * get max width when content has more than one image 
+	 * @return
+	 */
+	public static int getMultiImgMaxW(int displayWidth){
+		return (int)(displayWidth * 0.8);
+	}
+	
+	public static int getMinHeight( Context c ){
+		return (int)c.getResources().getDimension(R.dimen.detail_image_min_height);
+	}
+	
+	/**
+	 * get sample size
+	 * @param options
+	 * @param reqWidth
+	 * @param reqHeight
+	 * @return
+	 */
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+ 
+    // 如果是放大图片，filter决定是否平滑，如果是缩小图片，filter无影响
+	public static Bitmap createScaleBitmap(Bitmap src, int dstWidth, int dstHeight) {
+        Bitmap dst = Bitmap.createScaledBitmap(src, dstWidth, dstHeight, false);
+        if (src != dst) { // 如果没有缩放，那么不回收
+            src.recycle(); // 释放Bitmap的native像素数组
+        }
+        return dst;
+    }
+ 
+    /**
+     * create from thumb
+     * @param res android.content.Resource
+     * @param resId
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options); // 读取图片长款
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight); // 计算inSampleSize
+        options.inJustDecodeBounds = false;
+        Bitmap src = BitmapFactory.decodeResource(res, resId, options); // 载入一个稍大的缩略图
+        return createScaleBitmap(src, reqWidth, reqHeight); // 进一步得到目标大小的缩略图
+    }
+ 
+    /**
+     * create thumb from sd card
+     * @param pathName
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    public static Bitmap decodeSampledBitmapFromFd(String pathName, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathName, options);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        Bitmap src = BitmapFactory.decodeFile(pathName, options);
+        return createScaleBitmap(src, reqWidth, reqHeight);
+    }
+	
+	/**
+	 * convert view to bitmap
+	 * @param view
+	 * @return
+	 */
 	public static Bitmap convertViewToBitmap(View view) {
 		MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
 		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));

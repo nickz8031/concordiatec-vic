@@ -143,6 +143,7 @@
         android:layout_below="@id/news_content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         >
         <ImageView 
             android:id="@+id/news_content_img"
@@ -153,14 +154,41 @@
             android:visibility="gone"
             android:adjustViewBounds="true"/>
         
-        <!-- <ScrollView
-            android:id="@+id/news_content_img_slider" 
+        <HorizontalScrollView 
+	        android:id="@+id/content_img_hor_scroll"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:scrollbars="none"
+	        android:visibility="gone">
+	        <LinearLayout
+	            android:id="@+id/content_img_layout"
+	            android:layout_width="wrap_content" 
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal"/>
+	    </HorizontalScrollView>
+        <LinearLayout 
+        	android:id="@+id/news_content_image_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" 
-            android:scrollbars="none" /> -->
-        
-        
+            android:layout_height="@dimen/detail_multi_img_title_height"
+            android:background="@color/detail_multi_img_title_overlay"
+            android:paddingLeft="@dimen/detail_multi_img_title_padding_left"
+            android:gravity="center_vertical"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView 
+                android:id="@+id/news_content_image_title_1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="@dimen/text_20"
+	            android:textColor="@android:color/white"/>            
+           	<TextView 
+                android:id="@+id/news_content_image_title_2"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:textSize="@dimen/text_12"
+	            android:textColor="@android:color/white"/>
+        </LinearLayout>
     </RelativeLayout>
     
     <!-- control area share&like&comment -->

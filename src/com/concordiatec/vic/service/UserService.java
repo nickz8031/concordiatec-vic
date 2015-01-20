@@ -64,10 +64,12 @@ public class UserService extends HttpUtil implements IVicService {
 	public User mapToModel(LinkedTreeMap<String, Object> map) {
 		User user = new User();
 		user.name = map.get("name").toString();
+		user.sex = getIntValue(map.get("sex"));
 		user.photo = getServerImgPath(getIntValue(map.get("id"))) + map.get("photo").toString();
 		user.email = map.get("email").toString();
 		user.usrId = getIntValue(map.get("id").toString());
 		user.isShop = getIntValue(map.get("is_shop")) == 1 ? true:false;
+		
 		if(user.isShop){
 			user.shopId = Tools.getIntValue(map.get("shop_id"));
 			user.shopGroupId = Tools.getIntValue(map.get("group_id"));

@@ -15,6 +15,7 @@ public class HttpUtil {
 	
 	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		AsyncHttpClient httpClient = new AsyncHttpClient();
+		httpClient.addHeader("User-Agent", "android");
 		params.put("sign", getEncodedAuthKey());
 		params.put("token", getToken());
 		httpClient.get(getAbsoluteUrl(url), params, responseHandler);

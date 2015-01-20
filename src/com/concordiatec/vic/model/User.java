@@ -50,7 +50,8 @@ public class User extends Model {
 	public int shopStatus;
 	@Column(name="shopCreated")
 	public String shopCreated;
-	
+	@Column(name="sex")
+	public int sex;
 	public User() {
 		super();
 	}

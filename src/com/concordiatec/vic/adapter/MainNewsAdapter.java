@@ -161,15 +161,15 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
 				LayoutParams layoutParams = new LayoutParams( 
 													LayoutParams.MATCH_PARENT , 
-													getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight()
-											) );
+													getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight() ) 
+													);
 				NewsHolder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
 			}
 			
 			//writer profile photo
-			Glide.with(context).load(apData.getWriterPhotoURL()).crossFade().into(NewsHolder.writerPhoto);
+			Glide.with(context).load(apData.getWriterPhotoURL()).into(NewsHolder.writerPhoto);
 			//article cover image
-			Glide.with(context).load(apData.getCoverImageURL()).crossFade().into(NewsHolder.coverImage);
+			Glide.with(context).load(apData.getCoverImageURL()).thumbnail(0.01f).into(NewsHolder.coverImage);
 			
 			List<LastestComment> lastestComments = apData.getLatestComments();
 			//if has comments

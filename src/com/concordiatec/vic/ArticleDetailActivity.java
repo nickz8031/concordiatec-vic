@@ -16,30 +16,26 @@ import com.concordiatec.vic.service.ArticleDetailService;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.CommentService;
 import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.ImageViewPreload;
 import com.concordiatec.vic.tools.Tools;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
-import com.concordiatec.vic.widget.TagView;
 import com.google.gson.internal.LinkedTreeMap;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ImageSpan;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +50,9 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -70,28 +68,49 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private final static int CONTEXT_COMMENT_DELETE = 7;
 	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 8;
 	
-	private List<Comment> comments;
-	private ArticleDetailCommentAdapter adapter;
+
 	private ListView commentList;
 	private EditText commentContent;
 	private View contentView;
+	private ScrollView contentScroll;
+	private View sendCommentBtn;
+	private TextView content;
+	protected TextView commentCount;
+	protected TextView likeShareText;
+	
 	private ArticleDetailService detailService = new ArticleDetailService(this);
 	private CommentService commentService = new CommentService(this);
 	private ArticleService aService = new ArticleService(this);
+	private ArticleDetailCommentAdapter adapter;
 	
-	private int articleId;
-	private ScrollView contentScroll;
-	private View sendCommentBtn;
-	
+	private List<Comment> comments;
+	protected Article detail;
 	private Comment clickedComment;
+	private int articleId;
 	private int replyTargetId;
 	private boolean isRefresh;
-	private TextView content;
 	protected int clickedPosition;
-	protected TextView commentCount;
-	protected Article detail;
 	protected int currentCommentCount = 0;
-	protected TextView likeShareText;
+	
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		comments = null;
+		adapter = null;
+		commentList = null;
+		contentView = null;
+		detailService = null;
+		commentService = null;
+		aService = null;
+		contentScroll = null;
+		sendCommentBtn = null;
+		clickedComment = null;
+		content = null;
+		detail = null;
+		likeShareText = null;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,10 +126,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		commentContent = (EditText)findViewById(R.id.ar_d_comment_input);
 		
 		sendCommentBtn = findViewById(R.id.send_comment);
-		articleId = getIntent().getIntExtra("article_id", 0);
-
-		
-		
+		articleId = getIntent().getIntExtra("article_id", 0);		 
 		initListView();
 		
 		sendCommentBtn.setOnClickListener(new OnClickListener() {
@@ -125,6 +141,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					return;
 				}
 				User loginUser = checkLogin(ArticleDetailActivity.this);
+				if( loginUser == null ){
+					return;
+				}
 				ProgressUtil.show(ArticleDetailActivity.this);
 				
 				Comment comment = new Comment();
@@ -211,10 +230,11 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				TextView writerName = (TextView) contentView.findViewById(R.id.news_writer_name);
 				TextView writeTime = (TextView) contentView.findViewById(R.id.news_write_time);
 				TextView likeCount = (TextView) contentView.findViewById(R.id.news_like_btn);
+				RelativeLayout contentImgWrap = (RelativeLayout) contentView.findViewById(R.id.news_content_image_layout);
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
 				
-				detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
 				
+				detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
 				if( !StringUtil.isEmpty(detail.getShopName()) ){
 					TextView storeName = (TextView) contentView.findViewById(R.id.news_store_name);
 					TextView storeAddr = (TextView) contentView.findViewById(R.id.news_store_addr);
@@ -229,8 +249,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				currentCommentCount = detail.getCommentCount();
 				Glide.with(ArticleDetailActivity.this).load(detail.getWriterPhotoURL()).crossFade().into(imageView);
 				
-				writerName.setText(detail.getWriterName());				
-				writeTime.setText( TimeUtil.getTimePast( ArticleDetailActivity.this, detail.getPastTime() ) );
+				writerName.setText(detail.getWriterName());			
+				String timePast = TimeUtil.getTimePast( getApplicationContext(), detail.getPastTime() );
+				writeTime.setText( timePast );
 				content.setText( detail.getContent().trim() );
 				likeCount.setText( detail.getLikeCount()+"" );
 				if( detail.isLike() ){
@@ -242,16 +263,92 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				setLikeShareCount();
 				
 				List<ArticleImages> imgs = detail.getImages();
-				//show image
-				Glide.with(ArticleDetailActivity.this).load(imgs.get(0).getName()).crossFade().into(contentImg);
-				contentImg.setVisibility(View.VISIBLE);
+				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentImgWrap.getLayoutParams();
+				if( imgs.size() > 1 ){
+					HorizontalScrollView contentScroll = (HorizontalScrollView) contentView.findViewById(R.id.content_img_hor_scroll);
+					LinearLayout contentImgLayout = (LinearLayout) contentView.findViewById(R.id.content_img_layout);
+					LinearLayout imgTitleLayout = (LinearLayout) contentView.findViewById(R.id.news_content_image_title);
+					TextView tView1 = (TextView) contentView.findViewById(R.id.news_content_image_title_1);
+					TextView tView2 = (TextView) contentView.findViewById(R.id.news_content_image_title_2);
+					tView1.setText( timePast );
+					tView2.setText( String.format(getString(R.string.format_detail_img_multi_count), imgs.size()) );
+					float minHeight = detail.getMinHeight();
+					DisplayMetrics dMetrics = Tools.getDisplayMetrics(
+								ArticleDetailActivity.this, 
+								getResources().getDimension(R.dimen.mni_layout_border_width)
+							);
+					int maxWidth = Tools.getMultiImgMaxW(dMetrics.widthPixels);
+					int displayMinHeight = Tools.getMinHeight(getApplicationContext());
+					
+					if( minHeight < displayMinHeight ) minHeight = displayMinHeight;
+					layoutParams.height = (int) minHeight;
+					float scale ,rWidth ,rHeight;
+					int i = 1;
+					for (ArticleImages articleImages : imgs) {
+						scale = 1.0f;
+						rWidth = 0;
+						rHeight = minHeight;
+						//minHeight보다 작은것 존재하지 않음
+						scale = minHeight/articleImages.getHeight();
+						rWidth = articleImages.getWidth() * scale;
+						//폭이 제한된것보다 크다면
+						if( rWidth > maxWidth ){
+							scale = maxWidth/rWidth;
+							rHeight = rHeight * scale;
+						}
+						ImageView imView = new ImageView( getApplicationContext() );
+						
+						if(rWidth > rHeight){
+							rWidth = LayoutParams.WRAP_CONTENT;
+						}else{
+							rHeight = LayoutParams.WRAP_CONTENT;
+						}
+						
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								Tools.getIntValue(rWidth), 
+								Tools.getIntValue(rHeight)
+								);
+						if( i < imgs.size() ) params.setMargins(0, 0, 20, 0);
+						imView.setLayoutParams(params);
+						imView.setAdjustViewBounds(true);
+						Glide.with(getApplicationContext())
+						.load(articleImages.getName())
+						.thumbnail(0.01f)
+						.crossFade().into(imView);
+						contentImgLayout.addView(imView);
+						i++;
+					}
+					imgTitleLayout.setVisibility(View.VISIBLE);
+					contentScroll.setVisibility(View.VISIBLE);
+				}else{
+					ArticleImages img = imgs.get(0);
+					
+					layoutParams.height = getImageViewHeight(img.getWidth(), img.getHeight() );
+					//show image
+					Glide.with(getApplicationContext())
+					.load(imgs.get(0).getName())
+					.thumbnail(0.01f)
+					.crossFade()
+					.into(contentImg);
+					contentImg.setVisibility(View.VISIBLE);
+				}				
+				contentImgWrap.setLayoutParams(layoutParams);				
 				commentCount.setOnClickListener(new CommentBtnClickListener());
 				likeCount.setOnClickListener(new LikeButtonClickListener());
 				ProgressUtil.dismiss();
 			}
 		});
 	}
-
+	/**
+	 * get content imageView height
+	 * @param oldWidth
+	 * @param oldHeight
+	 * @return
+	 */
+	private int getImageViewHeight( int w , int h ){
+		float adjustMargin = getResources().getDimension(R.dimen.mni_layout_border_width) * 2;
+		return Math.round(new ImageViewPreload(this).viewHeight(w, h, adjustMargin  ) );
+	}
 	
 	private void getComments(){
 		commentService.getComments(articleId , new SimpleVicResponseListener() {
@@ -413,27 +510,27 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 
 		menu.setHeaderTitle(R.string.comment_context_title);
 		User loginUser = new UserService(this).getLoginUser();
-		//+1 혹은 취소
-		if( clickedComment.isPlus() ){
-			menu.add(0, CONTEXT_COMMENT_PLUS_CANCEL, CONTEXT_COMMENT_PLUS_CANCEL, R.string.comment_plus_cancel);
-		}else {
-			menu.add(0, CONTEXT_COMMENT_PLUS, CONTEXT_COMMENT_PLUS, R.string.comment_plus);
+		if( loginUser != null ){
+			//공감 혹은 취소
+			if( clickedComment.isPlus() ){
+				menu.add(0, CONTEXT_COMMENT_PLUS_CANCEL, CONTEXT_COMMENT_PLUS_CANCEL, R.string.comment_plus_cancel);
+			}else {
+				menu.add(0, CONTEXT_COMMENT_PLUS, CONTEXT_COMMENT_PLUS, R.string.comment_plus);
+			}
+			if( clickedComment.getWriterId() == loginUser.usrId ){
+				//수정
+				menu.add(0, CONTEXT_COMMENT_EDIT, CONTEXT_COMMENT_EDIT, R.string.comment_edit);
+				//삭제
+				menu.add(0, CONTEXT_COMMENT_DELETE, CONTEXT_COMMENT_DELETE, R.string.comment_delete);
+			}else{
+				//답글
+				menu.add(0, CONTEXT_COMMENT_REPLY, CONTEXT_COMMENT_REPLY, R.string.comment_reply);
+				//신고
+				menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.comment_report);
+			}
 		}
 		//복사
 		menu.add(0, CONTEXT_COMMENT_CONTENT_COPY, CONTEXT_COMMENT_CONTENT_COPY, R.string.comment_copy);
-		
-		if( clickedComment.getWriterId() == loginUser.usrId ){
-			//수정
-			menu.add(0, CONTEXT_COMMENT_EDIT, CONTEXT_COMMENT_EDIT, R.string.comment_edit);
-			//삭제
-			menu.add(0, CONTEXT_COMMENT_DELETE, CONTEXT_COMMENT_DELETE, R.string.comment_delete);
-		}else{
-			//답글
-			menu.add(0, CONTEXT_COMMENT_REPLY, CONTEXT_COMMENT_REPLY, R.string.comment_reply);
-			//신고
-			menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.comment_report);
-		}
-		
 		if( clickedComment.getPlusCount() > 0 ){
 			menu.add(0, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, R.string.comment_show_plus_member);
 		}
