@@ -41,7 +41,7 @@ public class PhotoShowGridAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	
+
 	public void addData(String data){
 		this.paths.add(data);
 		if( Constant.SURPLUS_UPLOAD_COUNTS > 0 ) Constant.SURPLUS_UPLOAD_COUNTS--;

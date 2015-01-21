@@ -5,9 +5,9 @@ import com.concordiatec.vic.model.Article;
 
 public class ArticleContentFilter {
 	private static ArticleContentFilter articleWriteFilter;
-	private Context context;
+//	private Context context;
 	public ArticleContentFilter(Context context) {
-		this.context = context;
+//		this.context = context;
 	}
 	
 	public Article filterWrite( Article article ){

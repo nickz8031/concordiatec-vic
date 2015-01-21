@@ -58,6 +58,7 @@
     <string name="sure_to_delete">삭제하시겠습니까?</string>
     <string name="delete_succed">삭제되었습니다.</string>
     <string name="delete_failed">삭제 실패하였습니다.</string>
+    <string name="action_failed">동작이 실패하였습니다.</string>
     
     
 	<!-- demo strings -->
@@ -72,8 +73,8 @@
 	<string name="demo_comment_contents">Comment</string>
 	<string name="demo_detail_like_share">0명이 이 소식을 좋아함. 0명이 다시 공유함</string>
 	<!-- coupon demo string -->
-	<string name="demo_shop_name">스타벅스</string>
-	<string name="demo_coupon_title">아메리카노+크레마놀 세트</string>
+	<string name="demo_shop_name">Store name</string>
+	<string name="demo_coupon_title">Event item</string>
 	
 	
 </resources>

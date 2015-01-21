@@ -1,8 +1,5 @@
 package com.concordiatec.vic;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Intent;
@@ -34,12 +31,12 @@ public class CameraShowActivity extends SubPageSherlockActivity {
 		ImageView mImageView = (ImageView) findViewById(R.id.iv_photo);
 		photoPath = getIntent().getStringExtra("photo");
 		if (photoPath != null) {
+			bm = BitmapFactory.decodeFile(photoPath);
 			int angel = Tools.getBitmapDegree(photoPath);
 			if (angel > 0) {
-				bm = BitmapFactory.decodeFile(photoPath);
 				bm = Tools.rotateBitmapByDegree(bm, angel);
-				mImageView.setImageBitmap(bm);
 			}
+			mImageView.setImageBitmap(bm);
 			new PhotoViewAttacher(mImageView);
 		} else {
 			NotifyUtil.toast(this, getString(R.string.error_with_show_image));
@@ -75,20 +72,14 @@ public class CameraShowActivity extends SubPageSherlockActivity {
 	}
 
 	private void sureToUse() {
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream( photoPath );
-			bm.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-			fos.flush();
-			fos.close();
+		if( Tools.saveCompressBitmap(bm, photoPath) ){
 			Intent intent = new Intent(this , ChoosePicListActivity.class);
 			intent.putExtra("take_photo", photoPath);
 			setResult(Activity.RESULT_OK , intent);
-			finish();
-		} catch (Exception e) {
-			LogUtil.show(e.getMessage());
+		}else{
+			NotifyUtil.toast(this, getString(R.string.action_failed));
 		}
-		
+		finish();
 	}
 	@Override
 	protected void onDestroy() {

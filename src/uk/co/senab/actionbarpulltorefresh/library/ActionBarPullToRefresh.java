@@ -41,7 +41,7 @@ public class ActionBarPullToRefresh {
         private View[] refreshableViews;
         private OnRefreshListener mOnRefreshListener;
         private ViewGroup mViewGroupToInsertInto;
-        private HashMap<Class, ViewDelegate> mViewDelegates;
+        private HashMap<Class<?>, ViewDelegate> mViewDelegates;
 
         private SetupWizard(Activity activity) {
             mActivity = activity;
@@ -72,7 +72,7 @@ public class ActionBarPullToRefresh {
 
         public SetupWizard useViewDelegate(Class<?> viewClass, ViewDelegate delegate) {
             if (mViewDelegates == null) {
-                mViewDelegates = new HashMap<Class, ViewDelegate>();
+                mViewDelegates = new HashMap<Class<?>, ViewDelegate>();
             }
             mViewDelegates.put(viewClass, delegate);
             return this;
@@ -110,8 +110,8 @@ public class ActionBarPullToRefresh {
 
             // Now set any custom view delegates
             if (mViewDelegates != null) {
-                final Set<Map.Entry<Class, ViewDelegate>> entries = mViewDelegates.entrySet();
-                for (final Map.Entry<Class, ViewDelegate> entry : entries) {
+                final Set<Map.Entry<Class<?>, ViewDelegate>> entries = mViewDelegates.entrySet();
+                for (final Map.Entry<Class<?>, ViewDelegate> entry : entries) {
                     attacher.useViewDelegate(entry.getKey(), entry.getValue());
                 }
             }

@@ -38,12 +38,6 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme"/>        
             
-        <activity 
-            android:name=".CameraShowActivity" 
-            android:theme="@style/SubTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:configChanges="orientation|screenSize"
-            android:hardwareAccelerated="false" />
         
         <activity 
             android:name=".ArticleWriteActivity" 
@@ -73,13 +67,23 @@
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/SubTheme" />
         
+        <activity 
+            android:name=".CameraShowActivity" 
+            android:theme="@style/ActionbarOverflowSubTheme"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false" />
+        
+        <activity android:name=".ArticleImagesActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/ActionbarOverflowSubTheme"/>
+        
         <!-- ActiveAndroid -->
         <meta-data
             android:name="AA_DB_NAME"
             android:value="vic" />
 		<meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="1.1" />
         <meta-data
 		    android:name="AA_MODELS"
 		    android:value="com.concordiatec.vic.model.User,com.concordiatec.vic.model.LoginAccount" />

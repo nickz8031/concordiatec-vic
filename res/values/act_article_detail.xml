@@ -3,7 +3,7 @@
 <!-- dimens -->
 	<dimen name="detail_comment_input">48dp</dimen>
     <dimen name="detail_ctrl_layout_height">48dp</dimen>
-    <dimen name="detail_image_min_height">100dp</dimen>
+    <dimen name="detail_image_min_height">200dp</dimen>
     <dimen name="detail_multi_img_title_height">60dp</dimen>
     <dimen name="detail_multi_img_title_padding_left">20dp</dimen>
     

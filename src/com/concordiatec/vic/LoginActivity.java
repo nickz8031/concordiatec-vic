@@ -147,10 +147,9 @@ public class LoginActivity extends SubPageSherlockActivity {
 				showErrorNotify();
 			} else {
 				ProgressUtil.show(LoginActivity.this);
-				lService.doLogin(email.getText().toString(), EncryptUtil.EncPwd(pwd.getText().toString()), new SimpleVicResponseListener() {
+				lService.doLogin(email.getText().toString(), pwd.getText().toString().trim(), new SimpleVicResponseListener() {
 					@Override
 					public void onSuccess(ResData data) {
-						LogUtil.show( data.getData().toString() );
 						//save email if it did not exist in local database
 						LoginAccount.addData(email.getText().toString());
 						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
@@ -161,11 +160,14 @@ public class LoginActivity extends SubPageSherlockActivity {
 					
 					@Override
 					public void onFailure(int httpResponseCode, String responseBody) {
+						LogUtil.show(responseBody);
 						showErrorNotify();
+						ProgressUtil.dismiss();
 					}
 					@Override
 					public void onEmptyResponse() {
 						showErrorNotify();
+						ProgressUtil.dismiss();
 					}
 				});
 			}

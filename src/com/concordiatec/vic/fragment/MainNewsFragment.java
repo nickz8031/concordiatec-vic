@@ -50,7 +50,6 @@ import com.google.gson.internal.LinkedTreeMap;
 
 public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshListener {
 	private View rootView;
-	private LayoutInflater inflater;
 	private ListView newsListView;
 	private List<Article> listData;
 	private PullToRefreshLayout ptrLayout;
@@ -67,7 +66,6 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		this.inflater = inflater;
 		rootView = inflater.inflate(R.layout.frag_articles, container, false);
 		this.initWidgets();
 		

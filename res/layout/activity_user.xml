@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:background="@color/background_color">
-    <RelativeLayout 
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/white">
-        
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:src="@drawable/d1" />
+
 </RelativeLayout>

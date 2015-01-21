@@ -1,11 +1,8 @@
 package com.concordiatec.vic;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.SpannableString;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +60,7 @@ public class ArticleCommentEditActivity extends SubPageSherlockActivity {
 							NotifyUtil.toast(ArticleCommentEditActivity.this, getString(R.string.comment_edit_succed));
 							Intent d = new Intent();
 							d.putExtra("edit_comment", comment);
-							setResult(0, d);
+							setResult(RESULT_OK, d);
 							finish();
 						}
 					});

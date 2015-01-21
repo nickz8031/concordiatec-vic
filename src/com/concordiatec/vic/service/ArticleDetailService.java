@@ -17,7 +17,6 @@ import com.loopj.android.http.RequestParams;
 
 public class ArticleDetailService extends HttpUtil implements IVicService {
 
-	private static ArticleDetailService ads;
 	private Context context;
 	
 	public ArticleDetailService( Context context ) {

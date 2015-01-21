@@ -95,6 +95,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 			setTitle(R.string.login);
 			profileLayout.setOnClickListener( new GoLogin() );
 		}
+		invalidateOptionsMenu();
 	}
 	
 	protected final class GoLogin implements OnClickListener{

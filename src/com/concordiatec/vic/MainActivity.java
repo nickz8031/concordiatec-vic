@@ -12,6 +12,7 @@ import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
 import com.concordiatec.vic.fragment.MainEventFragment;
 import com.concordiatec.vic.fragment.MainInfoFragment;
 import com.concordiatec.vic.fragment.MainNewsFragment;
+import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.R;
 import android.os.Bundle;
@@ -62,6 +63,10 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
+		if( new UserService(this).getLoginUser() != null ){
+			menu.add(0, R.id.logout, 9999, getString(R.string.logout));
+		}
+		
 		return true;
 	}
 	

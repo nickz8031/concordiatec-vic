@@ -169,7 +169,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 			//writer profile photo
 			Glide.with(context).load(apData.getWriterPhotoURL()).into(NewsHolder.writerPhoto);
 			//article cover image
-			Glide.with(context).load(apData.getCoverImageURL()).thumbnail(0.01f).into(NewsHolder.coverImage);
+			Glide.with(context).load(apData.getCoverImageURL()).thumbnail(0.1f).into(NewsHolder.coverImage);
 			
 			List<LastestComment> lastestComments = apData.getLatestComments();
 			//if has comments
@@ -227,15 +227,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 					TextView tvContent = new TextView(context);
 					tvContent.setText( span );
 					tvContent.setGravity(Gravity.CENTER_VERTICAL);
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					NewsHolder.commentFlip.addView(tvContent);
 					NewsHolder.commentFlip.setOnFlipListener(new OnFlipListener() {
 						@Override
@@ -420,8 +411,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	}
 	
 
-	@SuppressWarnings("unused")
-	private static class NewsHolder {
+	static class NewsHolder {
 		static TextView storeName;
 		static TextView storeAddress;
 		static TextView writerName;

@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -91,6 +90,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private boolean isRefresh;
 	protected int clickedPosition;
 	protected int currentCommentCount = 0;
+	protected List<ArticleImages> imgs;
+	private ArrayList<String> imgList;
 	
 	
 	@Override
@@ -127,6 +128,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		
 		sendCommentBtn = findViewById(R.id.send_comment);
 		articleId = getIntent().getIntExtra("article_id", 0);		 
+
+		imgList = new ArrayList<String>();
 		initListView();
 		
 		sendCommentBtn.setOnClickListener(new OnClickListener() {
@@ -233,7 +236,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				RelativeLayout contentImgWrap = (RelativeLayout) contentView.findViewById(R.id.news_content_image_layout);
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
 				
-				
 				detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
 				if( !StringUtil.isEmpty(detail.getShopName()) ){
 					TextView storeName = (TextView) contentView.findViewById(R.id.news_store_name);
@@ -262,9 +264,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				commentCount.setText( detail.getCommentCount()+"" );
 				setLikeShareCount();
 				
-				List<ArticleImages> imgs = detail.getImages();
-				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentImgWrap.getLayoutParams();
+				imgs = detail.getImages();
 				if( imgs.size() > 1 ){
+					RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentImgWrap.getLayoutParams();
 					HorizontalScrollView contentScroll = (HorizontalScrollView) contentView.findViewById(R.id.content_img_hor_scroll);
 					LinearLayout contentImgLayout = (LinearLayout) contentView.findViewById(R.id.content_img_layout);
 					LinearLayout imgTitleLayout = (LinearLayout) contentView.findViewById(R.id.news_content_image_title);
@@ -272,21 +274,24 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					TextView tView2 = (TextView) contentView.findViewById(R.id.news_content_image_title_2);
 					tView1.setText( timePast );
 					tView2.setText( String.format(getString(R.string.format_detail_img_multi_count), imgs.size()) );
-					float minHeight = detail.getMinHeight();
+					
 					DisplayMetrics dMetrics = Tools.getDisplayMetrics(
 								ArticleDetailActivity.this, 
 								getResources().getDimension(R.dimen.mni_layout_border_width)
 							);
 					int maxWidth = Tools.getMultiImgMaxW(dMetrics.widthPixels);
 					int displayMinHeight = Tools.getMinHeight(getApplicationContext());
-					
+					float minHeight = detail.getMinHeight();
 					if( minHeight < displayMinHeight ) minHeight = displayMinHeight;
-					layoutParams.height = (int) minHeight;
+					
 					float scale ,rWidth ,rHeight;
-					int i = 1;
+					
+					//최대 허용 너비보다 더 큰 이미지가 존재한다면 최소높이 다시 구해야 됨.
 					for (ArticleImages articleImages : imgs) {
-						scale = 1.0f;
-						rWidth = 0;
+						//이미지 경로 저장
+						imgList.add(articleImages.getName());
+						
+						//보여질 높이를 최소높이로 설정
 						rHeight = minHeight;
 						//minHeight보다 작은것 존재하지 않음
 						scale = minHeight/articleImages.getHeight();
@@ -295,15 +300,17 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 						if( rWidth > maxWidth ){
 							scale = maxWidth/rWidth;
 							rHeight = rHeight * scale;
+							if( minHeight > rHeight ) minHeight = rHeight;
 						}
+					}
+					//imageView 생성 및 삽입
+					int i = 1;
+					for (ArticleImages articleImages : imgs) {
+						rHeight = minHeight;
+						scale = minHeight/articleImages.getHeight();
+						rWidth = articleImages.getWidth() * scale;						
 						ImageView imView = new ImageView( getApplicationContext() );
-						
-						if(rWidth > rHeight){
-							rWidth = LayoutParams.WRAP_CONTENT;
-						}else{
-							rHeight = LayoutParams.WRAP_CONTENT;
-						}
-						
+						layoutParams.height = (int) minHeight;
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 								Tools.getIntValue(rWidth), 
 								Tools.getIntValue(rHeight)
@@ -313,32 +320,53 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 						imView.setAdjustViewBounds(true);
 						Glide.with(getApplicationContext())
 						.load(articleImages.getName())
-						.thumbnail(0.01f)
+						.thumbnail(0.3f)
 						.crossFade().into(imView);
 						contentImgLayout.addView(imView);
 						i++;
 					}
+					contentImgWrap.setLayoutParams(layoutParams);
+					contentImgLayout.setOnClickListener(new PhotoClickListener());
 					imgTitleLayout.setVisibility(View.VISIBLE);
 					contentScroll.setVisibility(View.VISIBLE);
 				}else{
 					ArticleImages img = imgs.get(0);
-					
-					layoutParams.height = getImageViewHeight(img.getWidth(), img.getHeight() );
+					//경로 저장 상세보기 위함
+					imgList.add(imgs.get(0).getName());
+					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+								LayoutParams.MATCH_PARENT , 
+								getImageViewHeight(img.getWidth(), img.getHeight())
+							);
 					//show image
 					Glide.with(getApplicationContext())
 					.load(imgs.get(0).getName())
-					.thumbnail(0.01f)
+					.thumbnail(0.3f)
 					.crossFade()
 					.into(contentImg);
+					contentImg.setLayoutParams(params);
 					contentImg.setVisibility(View.VISIBLE);
-				}				
-				contentImgWrap.setLayoutParams(layoutParams);				
+					contentImg.setOnClickListener(new PhotoClickListener());
+					
+				}
 				commentCount.setOnClickListener(new CommentBtnClickListener());
 				likeCount.setOnClickListener(new LikeButtonClickListener());
 				ProgressUtil.dismiss();
 			}
 		});
 	}
+	
+	
+	private final class PhotoClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			if( !imgList.isEmpty() ){
+				Intent intent = new Intent(ArticleDetailActivity.this , ArticleImagesActivity.class);
+				intent.putStringArrayListExtra("photo_paths", imgList);
+				startActivity(intent);
+			}
+		}
+	}
+	
 	/**
 	 * get content imageView height
 	 * @param oldWidth
@@ -586,6 +614,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				NotifyUtil.showDialogWithPositive(this, getString(R.string.sure_to_delete), new DialogInterface.OnClickListener() {  
 			        @Override  
 			        public void onClick(DialogInterface dialog, int which) {
+						ProgressUtil.show(ArticleDetailActivity.this);
 			        	commentService.deleteComment(clickedComment.getId(), loginUser.usrId, new SimpleVicResponseListener(){
 			        		@Override
 			        		public void onSuccess(ResData data) {
@@ -595,10 +624,12 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			        				commentCount.setText( currentCommentCount+"" );
 			        			}
 			    				NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.delete_succed));
+			    				ProgressUtil.dismiss();
 			        		}
 			        					        		
 			        		@Override
 			        		public void onFailure(int httpResponseCode, String responseBody) {
+			        			ProgressUtil.dismiss();
 			        			NotifyUtil.toast(ArticleDetailActivity.this , getString(R.string.failed_to_request_data));
 			        		}
 			        	});
@@ -609,12 +640,19 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				//수정
 				Intent intent = new Intent( this , ArticleCommentEditActivity.class );
 				intent.putExtra("comment", clickedComment);
-				startActivity(intent);
+				startActivityForResult(intent , 0);
 				break;
 			default:
 				break;
 		}
 		return true;
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if( requestCode == 0 && resultCode == RESULT_OK && data.hasExtra("edit_comment") ){
+			Comment editComment = (Comment) data.getExtras().get("edit_comment");
+			adapter.updateData(editComment, clickedPosition);
+		}
 	}
 	
 	private void setReplyTarget(){

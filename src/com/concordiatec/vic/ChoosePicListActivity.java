@@ -8,7 +8,6 @@ import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.LocalImageUtil;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import java.io.File;

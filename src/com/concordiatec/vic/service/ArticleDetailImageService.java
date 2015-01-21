@@ -12,10 +12,10 @@ public class ArticleDetailImageService extends HttpUtil implements IVicService {
 	
 	private static ArticleDetailImageService adis;
 	private String serverPath;
-	private Context context;
+//	private Context context;
 	public ArticleDetailImageService(Context context , String serverPath) {
 		this.serverPath = serverPath;
-		this.context = context;
+//		this.context = context;
 	}
 
 	@Override

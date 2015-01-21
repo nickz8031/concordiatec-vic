@@ -2,7 +2,6 @@ package com.concordiatec.vic.widget;
 
 
 import com.concordiatec.vic.R;
-import com.concordiatec.vic.util.LogUtil;
 import android.app.Dialog;
 import android.content.Context;
 import android.widget.TextView;

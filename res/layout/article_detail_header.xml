@@ -144,7 +144,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        >
+	    android:clickable="true" >
         <ImageView 
             android:id="@+id/news_content_img"
             android:layout_width="match_parent"

@@ -305,6 +305,7 @@ public class DefaultHeaderTransformer extends HeaderTransformer {
                 ? styleAttrs.getDrawable(R.styleable.PullToRefreshHeader_ptrHeaderBackground)
                 : getActionBarBackground(activity);
         if (bg != null) {
+
             mHeaderTextView.setBackgroundDrawable(bg);
 
             // If we have an opaque background we can remove the background from the content layout

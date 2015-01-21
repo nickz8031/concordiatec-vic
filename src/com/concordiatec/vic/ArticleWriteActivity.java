@@ -1,15 +1,11 @@
 package com.concordiatec.vic;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -38,7 +34,7 @@ import com.concordiatec.vic.widget.CircleImageView;
 
 public class ArticleWriteActivity extends SubPageSherlockActivity{
 	
-	private ArrayList<File> picsList;
+	private ArrayList<String> picsList;
 	
 	private TextView articleStore;
 	private TextView articleStoreAddr;
@@ -53,7 +49,6 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 	private PhotoShowGridAdapter adapter;
 	private User loginUser;
 	private TextView userName;
-	private int photoRowCount = 0;
 	
 	@Override
 	protected void onDestroy() {
@@ -86,9 +81,11 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_article_write);
 		setTitle(getString(R.string.write_articles));
+		
+		//업로드 수량 초기화
 		Constant.initSurplus();
 		
-		picsList = new ArrayList<File>();
+		picsList = new ArrayList<String>();
 		attachList = (GridView) findViewById(R.id.attach_images_scroll);
 		writeContent = (EditText) findViewById(R.id.write_content);
 		articleStore = (TextView) findViewById(R.id.article_store);
@@ -147,10 +144,7 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 				
 				if( rowInfo[0] > 0 ){
 					s++;
-				}
-				
-				photoRowCount = s;
-				
+				}				
 				LayoutParams params = (LayoutParams) attachList.getLayoutParams();
 				params.height = Tools.getIntValue( (
 						getResources().getDimension(R.dimen.ar_w_choosed_photo_size) +
@@ -163,6 +157,10 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 		
 	}
 		
+	/**
+	 * 업로드수량 초과여부 판단
+	 * @return
+	 */
 	private boolean isExceed(){
 		if( Constant.SURPLUS_UPLOAD_COUNTS == 0 ){
 			NotifyUtil.toast(this, getString(R.string.outnumbering_allowed_count));
@@ -180,11 +178,8 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 		        	if (bundle.getStringArrayList("files")!=null) {
 		        		ArrayList<String> uriList= bundle.getStringArrayList("files");
 						for( String filePath : uriList ){
-							File f = new File(filePath);
-							if( f.exists() ){
-								picsList.add(f);
-								adapter.addData(filePath);
-							}
+							picsList.add(filePath);
+							adapter.addData(filePath);
 						}
 					}
 		        } catch (Exception e) { 
@@ -192,12 +187,8 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 		        } 
 		    }else if( resultCode == REQUEST_TAKE_SURE ){
 		    	String pPath = data.getStringExtra("take_photo");
-				LogUtil.show(pPath);
-				File f = new File(pPath);
-				if( f.exists() ){
-					picsList.add(f);
-					adapter.addData(pPath);
-				}
+				picsList.add(pPath);
+				adapter.addData(pPath);
 		    }
 		}		
         super.onActivityResult(requestCode, resultCode, data);
