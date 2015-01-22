@@ -3,7 +3,7 @@ package com.concordiatec.vic.util;
 import android.util.Log;
 
 public class LogUtil {
-	private static final String TAG = "*----Vilcock-----*";
+	private static final String TAG = "-Vilcock-";
 	public static void show( String msg ){
 		Log.e(TAG , "*------[ " + msg + " ]------*");
 	}

@@ -5,7 +5,14 @@ import android.content.Context;
 
 public class ProgressUtil {
 	public static CustomProgressDialog dialog;
+
 	
+	public static void show( Activity context ){
+		show(context, "");
+	}
+	public static void show( Context context ){
+		show(context, "");
+	}
 	public static void show(Activity context , String msg){
 		dialog = new CustomProgressDialog(context, msg);
 		dialog.show();
@@ -29,10 +36,6 @@ public class ProgressUtil {
 			dialog.setText(text);
 		}
 		
-	}
-	
-	public static void show( Activity context ){
-		show(context, "");
 	}
 	
 	public static void dismiss(){

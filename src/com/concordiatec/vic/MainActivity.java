@@ -38,38 +38,42 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		setContentView(R.layout.activity_main);
 		runInit();
 	}
-	
+
 	private void runInit() {
 		getOverflowMenu();
 		initPages();
 	}
-	
+
 	/**
 	 * overflow menu button not display problem
 	 */
 	private void getOverflowMenu() {
-        try {
-           ViewConfiguration config = ViewConfiguration.get(this);
-           Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-           if(menuKeyField != null) {
-               menuKeyField.setAccessible(true);
-               menuKeyField.setBoolean(config, false);
-           }
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-   }
-	
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		if (new UserService(this).getLoginUser() == null) {
+			menu.findItem(R.id.logout).setVisible(false);
+		}
+		return true;
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
-		if( new UserService(this).getLoginUser() != null ){
-			menu.add(0, R.id.logout, 9999, getString(R.string.logout));
-		}
-		
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -81,8 +85,6 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		}
 		return true;
 	}
-
-	
 
 	private void initPages() {
 		viewPagerViews = new ArrayList<Fragment>();
@@ -130,42 +132,40 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 			setFragmentActive(arg0);
 		}
 	}
-	
-	
 	private static int backFlagChangeSec = 0;
-    private static int backFlagMaxSec = 2;
-    private Timer backPressTimer;  
-    private TimerTask backPressTask;
+	private static int backFlagMaxSec = 2;
+	private Timer backPressTimer;
+	private TimerTask backPressTask;
+
 	@Override
-    public void onBackPressed() {
-		if( backFlagChangeSec > 0 && backFlagChangeSec <= backFlagMaxSec ){
+	public void onBackPressed() {
+		if (backFlagChangeSec > 0 && backFlagChangeSec <= backFlagMaxSec) {
 			closeApplication();
-		}else{
-			if( backPressTask != null && backPressTimer!=null ){
+		} else {
+			if (backPressTask != null && backPressTimer != null) {
 				backPressTask.cancel();
-	        	backPressTimer.cancel();
+				backPressTimer.cancel();
 			}
-        	backFlagChangeSec = 0;
+			backFlagChangeSec = 0;
 			backPressTimer = new Timer();
-			backPressTask = new TimerTask() {  
-		        @Override  
-		        public void run() {
-		            runOnUiThread(new Runnable() {      // UI thread  
-		                @Override  
-		                public void run() {
-		                    backFlagChangeSec++;
-		                }  
-		            });  
-		        }  
-		    };
-			backPressTimer.schedule(backPressTask, 0 , 1000);
-			NotifyUtil.toast( this , getString(R.string.double_back_press) );
+			backPressTask = new TimerTask() {
+				@Override
+				public void run() {
+					runOnUiThread(new Runnable() { // UI thread
+						@Override
+						public void run() {
+							backFlagChangeSec++;
+						}
+					});
+				}
+			};
+			backPressTimer.schedule(backPressTask, 0, 1000);
+			NotifyUtil.toast(this, getString(R.string.double_back_press));
 		}
-		
-    }
-	
+	}
+
 	public void closeApplication() {
 		finish();
 		android.os.Process.killProcess(android.os.Process.myPid());
-    }
+	}
 }

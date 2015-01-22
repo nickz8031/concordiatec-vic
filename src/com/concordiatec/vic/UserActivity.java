@@ -1,14 +1,17 @@
 package com.concordiatec.vic;
 
-import android.app.Activity;
+import com.concordiatec.vic.base.SubPageSherlockActivity;
 import android.os.Bundle;
 
-public class UserActivity extends Activity {
+public class UserActivity extends SubPageSherlockActivity {
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user);
 		
 	}
+	
+	
 }
+

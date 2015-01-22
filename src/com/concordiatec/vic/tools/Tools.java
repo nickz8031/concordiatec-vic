@@ -22,6 +22,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -57,6 +58,11 @@ public class Tools {
 	public static double getDoubleValue(Object object) {
 		return Double.valueOf(object.toString());
 	}
+	
+	public static void delayExcute(Runnable runnable , int millis){
+		new Handler(){}.postDelayed(runnable, millis);
+	}
+	
 	
 	public static Uri getCreatePhotoUri(Context context){
 		String imageFilePath = createPhotoPath(context , null , "jpg");

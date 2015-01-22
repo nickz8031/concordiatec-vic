@@ -2,6 +2,7 @@ package com.concordiatec.vic.constant;
 
 public class Constant {
 	public static final boolean DEBUG = true;
+	public static final String NMAP_API_KEY = "0a98324e77992f4ea706b4becc7915a1";
 	public static final String ONLINE_BROAD_ACTION = "com.concordiatec.vic.online";
 	public static final String ONLINE_BROAD_INTENT_KEY = "vic_online";
 	public static final int MAX_UPLOAD_FILE_COUNTS = 8;

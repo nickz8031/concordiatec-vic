@@ -4,8 +4,6 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-<!-- id -->
-	<item name="logout" type="id">9999</item>
 <!-- colors -->
     <!-- font color -->
     <color name="normal_font">#333333</color>
