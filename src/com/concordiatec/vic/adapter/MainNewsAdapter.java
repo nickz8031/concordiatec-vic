@@ -1,14 +1,13 @@
 package com.concordiatec.vic.adapter;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.ImageViewPreload;
+import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
 import com.concordiatec.vic.widget.CircleImageView;
@@ -41,7 +40,6 @@ import android.widget.TextView;
 @SuppressLint("UseSparseArrays")
 public class MainNewsAdapter extends VicBaseAdapter {
 	private List<Article> data;
-	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	private Activity context;
 	private ImageViewPreload viewPreload;
@@ -55,7 +53,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		this.res = context.getResources();
 		this.data = data;
 		this.inflater = LayoutInflater.from(context);
-		this.viewMap = new HashMap<Integer, View>();
 		this.viewPreload = new ImageViewPreload(context);
 		this.aService = new ArticleService(context);
 		this.uService = new UserService(context);
@@ -63,11 +60,21 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	
 	public void clear(){
 		this.data.clear();
-		viewMap.clear();
+		notifyDataSetChanged();
+	}
+	
+	public void deleteData( int position ){
+		this.data.remove(position-1);
+		notifyDataSetChanged();
 	}
 	
 	public void setData( List<Article> data ){
 		this.data = data;
+		notifyDataSetChanged();
+	}
+	
+	public void updateData( Article article , int position ){
+		this.data.set(position-1, article);
 		notifyDataSetChanged();
 	}
 	
@@ -116,144 +123,169 @@ public class MainNewsAdapter extends VicBaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (viewMap.get(position) == null) {
-			Article apData = getItem(position);
+		NewsHolder holder;
+		Article apData = getItem(position);
+		List<LastestComment> lastestComments = apData.getLatestComments();
+		if (convertView == null) {
+			holder = new NewsHolder();
 			convertView = inflater.inflate(R.layout.li_frag_articles, parent, false);
 			
-			NewsHolder.storeInfoLayout = (RelativeLayout) convertView.findViewById(R.id.store_info_layout);
-			NewsHolder.writerName = (TextView) convertView.findViewById(R.id.news_writer_name);
-			NewsHolder.writeTime = (TextView) convertView.findViewById(R.id.news_write_time);
-			NewsHolder.content = (TextView) convertView.findViewById(R.id.news_content);
-			NewsHolder.likeCount = (TextView) convertView.findViewById(R.id.news_like_btn);
-			NewsHolder.commentCount = (TextView) convertView.findViewById(R.id.news_comment_btn);
-			NewsHolder.writerPhoto = (CircleImageView) convertView.findViewById(R.id.news_writer_photo);
-			NewsHolder.coverImage = (ImageView) convertView.findViewById(R.id.news_content_img);
+			holder.storeInfoLayout = (RelativeLayout) convertView.findViewById(R.id.store_info_layout);
+			holder.writerName = (TextView) convertView.findViewById(R.id.news_writer_name);
+			holder.writeTime = (TextView) convertView.findViewById(R.id.news_write_time);
+			holder.content = (TextView) convertView.findViewById(R.id.news_content);
+			holder.likeCount = (TextView) convertView.findViewById(R.id.news_like_btn);
+			holder.commentCount = (TextView) convertView.findViewById(R.id.news_comment_btn);
+			holder.writerPhoto = (CircleImageView) convertView.findViewById(R.id.news_writer_photo);
+			holder.coverImage = (ImageView) convertView.findViewById(R.id.news_content_img);
 			
-			if( StringUtil.isEmpty(apData.getShopName()) ){
-				NewsHolder.storeInfoLayout.setVisibility(View.GONE);
-			}else {
-				NewsHolder.storeName = (TextView) convertView.findViewById(R.id.news_store_name);
-				NewsHolder.storeAddress = (TextView) convertView.findViewById(R.id.news_store_addr);
-				
-				NewsHolder.storeName.setText( apData.getShopName() );
-				NewsHolder.storeAddress.setText( apData.getShopAddr() );
+			if( !StringUtil.isEmpty(apData.getShopName()) ){
+				holder.storeName = (TextView) convertView.findViewById(R.id.news_store_name);
+				holder.storeAddress = (TextView) convertView.findViewById(R.id.news_store_addr);
 			}
-			
-			NewsHolder.writerName.setText( apData.getWriterName() );
-			NewsHolder.writeTime.setText( TimeUtil.getTimePast( context, apData.getPastTime() ) );
-			NewsHolder.content.setText( apData.getContent() );
-			NewsHolder.likeCount.setText( apData.getLikeCount()+"" );
-			NewsHolder.commentCount.setText( apData.getCommentCount()+"" );
-			
-			//click comment icon move to detail activity
-			NewsHolder.commentCount.setOnClickListener(new CommentIconClickListener(apData.getId()));
-			
-			if( apData.isLike() ){
-				setLike(NewsHolder.likeCount);
-				NewsHolder.likeCount.setTag(true);
+
+			if( lastestComments != null && lastestComments.size() > 0 ){
+				holder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
+				holder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
+				holder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
 			}
 			
 			//click up icon do up process
-			NewsHolder.likeCount.setOnClickListener(new LikeIconClickListener(apData.getId()));
+			holder.likeCount.setOnClickListener(new LikeIconClickListener(apData.getId()));
 			
-			
-			//set cover imageView height
-			if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
-				LayoutParams layoutParams = new LayoutParams( 
-													LayoutParams.MATCH_PARENT , 
-													getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight() ) 
-													);
-				NewsHolder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
-			}
-			
-			//writer profile photo
-			Glide.with(context).load(apData.getWriterPhotoURL()).into(NewsHolder.writerPhoto);
-			//article cover image
-			Glide.with(context).load(apData.getCoverImageURL()).thumbnail(0.1f).into(NewsHolder.coverImage);
-			
-			List<LastestComment> lastestComments = apData.getLatestComments();
-			//if has comments
-			if( lastestComments != null && lastestComments.size() > 0 ){
-				NewsHolder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
-				NewsHolder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
-				NewsHolder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
-				
-				for (int i = 0; i < lastestComments.size(); i++) {
-					LastestComment c = lastestComments.get(i);
-					//commenter photo
-					CircleImageView iView = new CircleImageView(context);
-					int cpSize = (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_width);
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cpSize , cpSize);
-					params.setMargins(0, 0, (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_margin), 0);
-					iView.setLayoutParams(params);
-					iView.setBorderColor(res.getColor(R.color.effect_color));
-					Glide.with(context)
-					.load(c.getUserPhoto())
-					.crossFade()
-					.into(iView);
-					
-					NewsHolder.commentorPhotosLayout.addView(iView);
-					final ViewGroup cpl = NewsHolder.commentorPhotosLayout;
-
-					setCmtPhotoBorder( cpl , 0 );
-					
-					String content = c.getCommentText().trim();
-					if( c.getPlusCount() > 0 ){
-						content = content + " +" + c.getPlusCount();
-						
-					}			
-					if( c.getReplyWhose() > 0 ){
-						content = "@"+c.getReplyWhoseName() + " " + content;
-					}
-					
-					content = c.getUserName() + " " + content;
-					SpannableString span = new SpannableString(content);
-					StringUtil.setBoldText(span, 0, c.getUserName().length());
-					
-					if( c.getReplyWhose() > 0 ){
-						int start = c.getUserName().length() + 1;
-						int end = start + c.getReplyWhoseName().length()+1;
-						StringUtil.setTextColor(span, Color.BLUE, start, end);
-					}
-					if( c.getPlusCount() > 0 ){
-						String tmpPlusCount = "+"+c.getPlusCount();
-						int startPos = content.length() - tmpPlusCount.length();
-						int endPos = content.length();
-						StringUtil.setTextColor(span, context.getResources().getColor(R.color.theme_wrap_color), startPos, endPos);
-						StringUtil.setBoldText(span, startPos, endPos);
-					}
-					
-					
-					TextView tvContent = new TextView(context);
-					tvContent.setText( span );
-					tvContent.setGravity(Gravity.CENTER_VERTICAL);
-					NewsHolder.commentFlip.addView(tvContent);
-					NewsHolder.commentFlip.setOnFlipListener(new OnFlipListener() {
-						@Override
-						public void onShowPrevious(CustomViewFlipper flipper) {}
-						@Override
-						public void onShowNext(CustomViewFlipper flipper) {
-							setCmtPhotoBorder( cpl ,  flipper.getDisplayedChild() );
-						}
-					});
-					
-				}
-				//stop auto flip if there is only one comment
-				if( lastestComments.size() == 1 ){
-					NewsHolder.commentFlip.stopFlipping();
-					NewsHolder.commentFlip.setAutoStart(false);
-				}
-				//display
-				NewsHolder.commentorPhotosLayout.setVisibility(View.VISIBLE);
-				NewsHolder.commentLayout.setVisibility(View.VISIBLE);
-			}
-			
-			viewMap.put(position, convertView);
-			convertView.startAnimation(animation);
+			//viewMap.put(position, convertView);
+			//convertView.startAnimation(animation);
+			convertView.setTag(holder);
 		} else {
-			convertView = viewMap.get(position);
+			//convertView = viewMap.get(position);
+			holder = (NewsHolder) convertView.getTag();
 		}
-		this.clearAnimation(position);
+		
+		holder.commentCount.setOnClickListener(null);
+		
+		if( !StringUtil.isEmpty(apData.getShopName())
+			&& holder.storeName != null
+			&& holder.storeAddress != null ){
+			holder.storeName.setText( apData.getShopName() );
+			holder.storeAddress.setText( apData.getShopAddr() );
+		}else {
+			holder.storeInfoLayout.setVisibility(View.GONE);
+		}
+		
+		holder.writerName.setText( apData.getWriterName() );
+		holder.writeTime.setText( TimeUtil.getTimePast( context, apData.getPastTime() ) );
+		holder.content.setText( apData.getContent() );
+		holder.likeCount.setText( apData.getLikeCount()+"" );
+		holder.commentCount.setText( apData.getCommentCount()+"" );
+		
+		//click comment icon move to detail activity
+		holder.commentCount.setOnClickListener(new CommentIconClickListener(apData.getId()));
+
+		//set cover imageView height
+		if( apData.getCoverImageWidth() > 0 && apData.getCoverImageHeight() > 0 ){
+			LayoutParams layoutParams = new LayoutParams( 
+												LayoutParams.MATCH_PARENT , 
+												getImageViewHeight(apData.getCoverImageWidth(), apData.getCoverImageHeight() ) 
+												);
+			holder.coverImage.setLayoutParams((RelativeLayout.LayoutParams)layoutParams);
+		}
+		
+		//writer profile photo
+		Glide.with(context).load(apData.getWriterPhotoURL()).into(holder.writerPhoto);
+		//article cover image
+		Glide.with(context).load(apData.getCoverImageURL()).thumbnail(0.1f).into(holder.coverImage);
+		
+		if( apData.isLike() ){
+			setLike(holder.likeCount);
+			holder.likeCount.setTag(true);
+		}else{
+			setDislike( holder.likeCount );
+			holder.likeCount.setTag(null);
+		}
+		
+		//if has comments
+		if( lastestComments != null 
+				&& lastestComments.size() > 0 
+				&& holder.commentLayout != null
+				&& holder.commentorPhotosLayout != null
+				&& holder.commentFlip != null ){
+			//initialize
+			holder.commentorPhotosLayout.removeAllViewsInLayout();
+			holder.commentFlip.removeAllViewsInLayout();
+			holder.commentFlip.setOnFlipListener(null);
+			holder.commentorPhotosLayout.setVisibility(View.GONE);
+			holder.commentLayout.setVisibility(View.GONE);
+			
+			for (int i = 0; i < lastestComments.size(); i++) {
+				LastestComment c = lastestComments.get(i);
+				//commenter photo
+				CircleImageView iView = new CircleImageView(context);
+				int cpSize = (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_width);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cpSize , cpSize);
+				params.setMargins(0, 0, (int) res.getDimension(R.dimen.mni_ctrl_commentor_photo_margin), 0);
+				iView.setLayoutParams(params);
+				iView.setBorderColor(res.getColor(R.color.effect_color));
+				Glide.with(context)
+				.load(c.getUserPhoto())
+				.crossFade()
+				.into(iView);
+				
+				holder.commentorPhotosLayout.addView(iView);
+				final ViewGroup cpl = holder.commentorPhotosLayout;
+
+				setCmtPhotoBorder( cpl , 0 );
+				
+				String content = c.getCommentText().trim();
+				if( c.getPlusCount() > 0 ){
+					content = content + " +" + c.getPlusCount();
+					
+				}			
+				if( c.getReplyWhose() > 0 ){
+					content = "@"+c.getReplyWhoseName() + " " + content;
+				}
+				
+				content = c.getUserName() + " " + content;
+				SpannableString span = new SpannableString(content);
+				StringUtil.setBoldText(span, 0, c.getUserName().length());
+				
+				if( c.getReplyWhose() > 0 ){
+					int start = c.getUserName().length() + 1;
+					int end = start + c.getReplyWhoseName().length()+1;
+					StringUtil.setTextColor(span, Color.BLUE, start, end);
+				}
+				if( c.getPlusCount() > 0 ){
+					String tmpPlusCount = "+"+c.getPlusCount();
+					int startPos = content.length() - tmpPlusCount.length();
+					int endPos = content.length();
+					StringUtil.setTextColor(span, context.getResources().getColor(R.color.theme_wrap_color), startPos, endPos);
+					StringUtil.setBoldText(span, startPos, endPos);
+				}
+				
+				
+				TextView tvContent = new TextView(context);
+				tvContent.setText( span );
+				tvContent.setGravity(Gravity.CENTER_VERTICAL);
+				
+				holder.commentFlip.addView(tvContent);
+				holder.commentFlip.setOnFlipListener(new OnFlipListener() {
+					@Override
+					public void onShowPrevious(CustomViewFlipper flipper) {}
+					@Override
+					public void onShowNext(CustomViewFlipper flipper) {
+						setCmtPhotoBorder( cpl ,  flipper.getDisplayedChild() );
+					}
+				});
+			}
+			//stop auto flip if there is only one comment
+			if( lastestComments.size() == 1 ){
+				holder.commentFlip.stopFlipping();
+				holder.commentFlip.setAutoStart(false);
+			}
+			//display
+			holder.commentorPhotosLayout.setVisibility(View.VISIBLE);
+			holder.commentLayout.setVisibility(View.VISIBLE);
+		}
+		//this.clearAnimation(position);
 		return convertView;
 	}
 	
@@ -386,17 +418,17 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		}
 	}
 	
-	private void clearAnimation(int viewPos){
-		if( viewMap == null ) return;
-		for (int i = 0; i < viewMap.size(); i++) {
-			if( i == viewPos ){
-				continue;
-			}
-			if( viewMap.get(i) != null ){
-				viewMap.get(i).clearAnimation();
-			}
-		}
-	}
+//	private void clearAnimation(int viewPos){
+//		if( viewMap == null ) return;
+//		for (int i = 0; i < viewMap.size(); i++) {
+//			if( i == viewPos ){
+//				continue;
+//			}
+//			if( viewMap.get(i) != null ){
+//				viewMap.get(i).clearAnimation();
+//			}
+//		}
+//	}
 	
 	/**
 	 * get content cover image height
@@ -411,22 +443,22 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	}
 	
 
-	static class NewsHolder {
-		static TextView storeName;
-		static TextView storeAddress;
-		static TextView writerName;
-		static TextView writeTime;
-		static TextView content;
-		static TextView likeCount;
-		static TextView commentCount;
-		static ImageView storeType;
-		static CircleImageView writerPhoto;
-		static ImageView coverImage;
+	class NewsHolder {
+		TextView storeName;
+		TextView storeAddress;
+		TextView writerName;
+		TextView writeTime;
+		TextView content;
+		TextView likeCount;
+		TextView commentCount;
+		ImageView storeType;
+		CircleImageView writerPhoto;
+		ImageView coverImage;
 		
-		static LinearLayout commentorPhotosLayout;
-		static RelativeLayout commentContentsLayout;
-		static RelativeLayout commentLayout;
-		static CustomViewFlipper commentFlip;
-		static RelativeLayout storeInfoLayout;
+		LinearLayout commentorPhotosLayout;
+		RelativeLayout commentContentsLayout;
+		RelativeLayout commentLayout;
+		CustomViewFlipper commentFlip;
+		RelativeLayout storeInfoLayout;
 	}
 }

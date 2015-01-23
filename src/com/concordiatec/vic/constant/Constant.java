@@ -9,6 +9,11 @@ public class Constant {
 	public static int SURPLUS_UPLOAD_COUNTS = MAX_UPLOAD_FILE_COUNTS;
 	
 	public static int MAX_HEIGHT_WHEN_MORE_THAN_ONE = 500;
+
+	public static final int ONLINE_BROAD_RESULT_CODE = 10001;
+	
+	public static final int EDIT_ARTICLE_SUCCED = 15000;
+	
 	
 	public static void initSurplus(){
 		SURPLUS_UPLOAD_COUNTS = MAX_UPLOAD_FILE_COUNTS;

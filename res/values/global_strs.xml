@@ -55,12 +55,13 @@
     <string name="are_you_sure_to_exit">앱을 종료하시겠습니까? </string>
     <string name="show_more">더 보기</string>
     <string name="copy_content_succed">클립보드로 복사되었습니다.</string>
-    <string name="sure_to_delete">삭제하시겠습니까?</string>
-    <string name="delete_succed">삭제되었습니다.</string>
+    <string name="sure_to_delete">정말로 삭제하시겠습니까?</string>
+    <string name="delete_succed">글이 삭제되었습니다.</string>
     <string name="delete_failed">삭제 실패하였습니다.</string>
     <string name="action_failed">동작이 실패하였습니다.</string>
     <string name="gps_closed">위치 정보 사용을 허용하시면 더욱 정확한 정보를 보실수 있습니다.허용하시겠습니까?</string>
-    
+    <string name="content_cannot_be_null">내용을 적어주세요.</string>
+    <string name="content_not_changed">수정된 내용이 없습니다.</string>
     
 	<!-- demo strings -->
 	<string name="demo_store_name">Store name</string>

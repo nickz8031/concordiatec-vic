@@ -6,6 +6,7 @@ import com.actionbarsherlock.view.Menu;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.adapter.ArticleDetailCommentAdapter;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
@@ -67,6 +68,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private final static int CONTEXT_COMMENT_DELETE = 7;
 	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 8;
 	
+	private final static int ACTIVITY_REQUEST_COMMENT_EDIT = 0;
+	private final static int ACTIVITY_REQUEST_ARTICLE_EDIT = 1;
+	
 
 	private ListView commentList;
 	private EditText commentContent;
@@ -92,6 +96,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	protected int currentCommentCount = 0;
 	protected List<ArticleImages> imgs;
 	private ArrayList<String> imgList;
+	private com.actionbarsherlock.view.MenuItem deleteArticleMenu;
+	private com.actionbarsherlock.view.MenuItem editArticleMenu;
 	
 	
 	@Override
@@ -175,6 +181,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		});
 	}
 	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.article_detail, menu);
@@ -184,13 +191,63 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 		switch (item.getItemId()) {
+			//새로 고침
 			case R.id.ar_d_menu_refresh:
 				recreate();
+				break;
+			//글 수정
+			case R.id.ar_d_menu_edit:
+				Intent intent = new Intent( this , ArticleEditActivity.class );
+				intent.putExtra("article", detail);
+				startActivityForResult(intent , ACTIVITY_REQUEST_ARTICLE_EDIT);
+				break;
+			//글 삭제
+			case R.id.ar_d_menu_delete:
+				ProgressUtil.show(this);
+				aService.deleteArticle(detail.getId(), new SimpleVicResponseListener(){
+					@Override
+					public void onSuccess(ResData data) {
+						NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.delete_succed));
+						setResult(RESULT_OK);
+						finish();
+					}
+				});
+				break;
+			case R.id.ar_d_menu_ignore:
+				break;
+			//글 신고
+			case R.id.ar_d_menu_report:
+				break;
+			//내용 복사
+			case R.id.ar_d_menu_copy_text:
 				break;
 			default:
 				break;
 		}
 		return true;
+	}
+	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case 0: //댓글 수정 성공시
+			if( resultCode == RESULT_OK && data.hasExtra("edit_comment") ){
+				Comment editComment = (Comment) data.getExtras().get("edit_comment");
+				adapter.updateData(editComment, clickedPosition);
+			}
+			break;
+		
+		case ACTIVITY_REQUEST_ARTICLE_EDIT: //원글내용 수정 성공시
+			if( resultCode == RESULT_OK && data.hasExtra("edit_article") ){
+				Article editDetail = (Article) data.getExtras().get("edit_article");
+				content.setText( editDetail.getContent() );
+				setResult(Constant.EDIT_ARTICLE_SUCCED, new Intent().putExtra("edit_article", editDetail.getContent()));
+			}
+			break;
+		default:
+			break;
+		}
 	}
 	
 	/**
@@ -218,6 +275,13 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		getComments();
 	}
 	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		editArticleMenu = menu.findItem(R.id.ar_d_menu_edit);
+		deleteArticleMenu = menu.findItem(R.id.ar_d_menu_delete);
+		return true;
+	}
+	
 	private void getArticleContents(){
 		ProgressUtil.show(this);
 		detailService.getDetail(articleId , new SimpleVicResponseListener() {
@@ -237,6 +301,14 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
 				
 				detail = detailService.mapToModel( (LinkedTreeMap<String,Object>)data.getData() );
+
+				
+				User loginUser = new UserService(ArticleDetailActivity.this).getLoginUser();
+				if( loginUser == null || loginUser.usrId != detail.getWriterId() ){
+					editArticleMenu.setVisible(false);
+					deleteArticleMenu.setVisible(false);
+				}
+				
 				if( !StringUtil.isEmpty(detail.getShopName()) ){
 					TextView storeName = (TextView) contentView.findViewById(R.id.news_store_name);
 					TextView storeAddr = (TextView) contentView.findViewById(R.id.news_store_addr);
@@ -390,9 +462,11 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			}
 			@Override
 			public void onEmptyResponse() {
-				commentList.setVisibility(View.GONE);
-				contentScroll.setVisibility(View.VISIBLE);
-				contentScroll.addView(contentView);
+				if( commentList != null && contentScroll!=null ){
+					commentList.setVisibility(View.GONE);
+					contentScroll.setVisibility(View.VISIBLE);
+					contentScroll.addView(contentView);
+				}
 			}
 		});
 		
@@ -421,6 +495,11 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		}
 	}
 	
+	/**
+	 * comment button click action
+	 * @author Nick.Z
+	 *
+	 */
 	private final class CommentBtnClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
@@ -428,6 +507,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		}
 	}
 	
+	/**
+	 * request focus to Comment content Edit text
+	 */
 	private void focusCommContent(){
 		commentContent.requestFocus();
 		commentContent.requestFocusFromTouch();
@@ -435,6 +517,11 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
 	}
 	
+	/**
+	 * 좋아요 버튼 클릭시 실행액션
+	 * @author Nick.Z
+	 *
+	 */
 	private final class LikeButtonClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
@@ -446,7 +533,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	}
 	
 	/**
-	 * like action
+	 * like Article 좋아요
 	 * @param v
 	 */
 	private void likeArticle( View v , int articleId ){
@@ -478,15 +565,10 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			}
 		});
 	}
-	
-	private void setLikeShareCount(){
-		likeShareText.setText( 
-				String.format(getResources().getString(R.string.format_detail_like_share), 
-				detail.getLikeCount() , 
-				detail.getShareCount() ) 
-				);
-	}
-	
+	/**
+	 * 좋아요 액션
+	 * @param v
+	 */
 	private void setLike(View v){
 		TextView t = (TextView) v;
 		t.setTextColor(Color.WHITE);
@@ -495,7 +577,10 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 		t.setCompoundDrawables(drawable, null, null, null);
 	}
-	
+	/**
+	 * 좋아요 취소 액션
+	 * @param v
+	 */
 	private void setDislike( View v ){
 		TextView t = (TextView) v;
 		t.setTextColor( getResources().getColor(R.color.mni_ctrl_btn_text) );
@@ -506,7 +591,18 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	}
 	
 	/**
-	 * start animation with like action
+	 * 몇명이 좋아하고 몇명이 다시 공유함.
+	 */
+	private void setLikeShareCount(){
+		likeShareText.setText( 
+				String.format(getResources().getString(R.string.format_detail_like_share), 
+				detail.getLikeCount() , 
+				detail.getShareCount() ) 
+				);
+	}
+	
+	/**
+	 * 좋아요 클릭시 진행되는 애니메이션 효과
 	 * @param v
 	 */
 	private void activeLikeAnimation( View v ){
@@ -532,7 +628,9 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	}
 	
 	
-
+	/**
+	 * 댓글 클릭시 나오는 메뉴
+	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 
@@ -547,14 +645,14 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			}
 			if( clickedComment.getWriterId() == loginUser.usrId ){
 				//수정
-				menu.add(0, CONTEXT_COMMENT_EDIT, CONTEXT_COMMENT_EDIT, R.string.comment_edit);
+				menu.add(0, CONTEXT_COMMENT_EDIT, CONTEXT_COMMENT_EDIT, R.string.menu_edit);
 				//삭제
-				menu.add(0, CONTEXT_COMMENT_DELETE, CONTEXT_COMMENT_DELETE, R.string.comment_delete);
+				menu.add(0, CONTEXT_COMMENT_DELETE, CONTEXT_COMMENT_DELETE, R.string.menu_delete);
 			}else{
 				//답글
 				menu.add(0, CONTEXT_COMMENT_REPLY, CONTEXT_COMMENT_REPLY, R.string.comment_reply);
 				//신고
-				menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.comment_report);
+				menu.add(0, CONTEXT_COMMENT_REPORT, CONTEXT_COMMENT_REPORT, R.string.menu_report);
 			}
 		}
 		//복사
@@ -563,6 +661,10 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			menu.add(0, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, CONTEXT_COMMENT_SHOW_PLUS_MEMBER, R.string.comment_show_plus_member);
 		}
 	}
+	
+	/**
+	 * 댓글 클릭시 액션 진행
+	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		final User loginUser = checkLogin(ArticleDetailActivity.this);
@@ -640,21 +742,17 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				//수정
 				Intent intent = new Intent( this , ArticleCommentEditActivity.class );
 				intent.putExtra("comment", clickedComment);
-				startActivityForResult(intent , 0);
+				startActivityForResult(intent , ACTIVITY_REQUEST_COMMENT_EDIT);
 				break;
 			default:
 				break;
 		}
 		return true;
 	}
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if( requestCode == 0 && resultCode == RESULT_OK && data.hasExtra("edit_comment") ){
-			Comment editComment = (Comment) data.getExtras().get("edit_comment");
-			adapter.updateData(editComment, clickedPosition);
-		}
-	}
 	
+	/**
+	 * 답글 시 이름 태그 생성삽입
+	 */
 	private void setReplyTarget(){
 		replyTargetId = clickedComment.getId();
 		commentContent.setText(null);

@@ -1,6 +1,7 @@
 package com.concordiatec.vic;
 
 import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.LoginAccount;
 import com.concordiatec.vic.model.ResData;
@@ -154,7 +155,7 @@ public class LoginActivity extends SubPageSherlockActivity {
 						LoginAccount.addData(email.getText().toString());
 						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 						lService.login(usr);
-						LoginActivity.this.setResult(RESULT_OK);
+						LoginActivity.this.setResult(Constant.ONLINE_BROAD_RESULT_CODE);
 						LoginActivity.this.finish();
 					}
 					

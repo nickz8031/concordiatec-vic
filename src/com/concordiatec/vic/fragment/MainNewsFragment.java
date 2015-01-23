@@ -7,6 +7,7 @@ import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +61,10 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private MainNewsAdapter adapter;
 	private ArticleListService aService;
 	private LinearLayout writeButton;
+	
+	private int clickedPosition;
+	private Article clickedArticle;
+	private final static int DETAIL_ACTIVITY_REQUEST = 0;
 	
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
@@ -208,7 +213,11 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		});
 	}
 	
-
+	/**
+	 * 정열바 클릭시 액션
+	 * @author Nick.Z
+	 *
+	 */
 	private final class SortClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -238,15 +247,28 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		}
 	}
 	
+	/**
+	 * 리스트 아이템 클릭시 액션
+	 * @author Nick.Z
+	 *
+	 */
+	
 	private final class ListViewItemClickListener implements OnItemClickListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			clickedPosition = position;
+			clickedArticle = adapter.getItem(id);
 			Intent intent = new Intent(getActivity() , ArticleDetailActivity.class);
-			intent.putExtra("article_id", adapter.getItem(id).getId());
-			startActivity(intent);
+			intent.putExtra("article_id", clickedArticle.getId());
+			startActivityForResult(intent , DETAIL_ACTIVITY_REQUEST);
 		}
-		
 	}
+	
+	/**
+	 * 리스트 더보기 
+	 * @author Nick.Z
+	 *
+	 */
 	private final class ListViewScrollListener implements OnScrollListener {
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -258,23 +280,42 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 				break;
 			}
 		}
-
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		}
 	}
 	
+	/**
+	 * 정열방식 오른쪽 아이콘 치환
+	 * @param resId
+	 */
 	protected void setSortbarDrawableRight(int resId){
 		sortCurrentSelect.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(resId), null);
 	}
 	
+	
+	public void responseResult(int resultCode, Intent data){
+		if( resultCode == Constant.EDIT_ARTICLE_SUCCED && data.hasExtra("edit_article") ){
+			String editContent = data.getStringExtra("edit_article");
+			clickedArticle.setContent(editContent);
+			adapter.updateData( clickedArticle , clickedPosition );
+		}else{
+			adapter.deleteData(clickedPosition);
+		}
+	}
+	
+	/**
+	 * 글쓰기 액션
+	 * @author Nick.Z
+	 *
+	 */
 	private final class WriteButtonClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
 			User loginUser = getLoginUser();
 			if( loginUser==null ){
 				Intent intent = new Intent(getActivity() , LoginActivity.class);
-				startActivityForResult(intent , 0);
+				startActivity(intent);
 			}else {
 				Intent intent = new Intent(getActivity() , ArticleWriteActivity.class);
 				startActivity(intent);
@@ -283,4 +324,5 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		}
 		
 	}
+	
 }

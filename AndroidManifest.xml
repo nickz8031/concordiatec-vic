@@ -48,6 +48,11 @@
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize" />
         <activity 
+            android:name=".ArticleEditActivity" 
+            android:theme="@style/SubTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize" />
+        <activity 
             android:name=".ArticleDetailActivity" 
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/SubTheme" />

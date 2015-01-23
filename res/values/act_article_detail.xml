@@ -15,7 +15,9 @@
 <!-- actionbar menu -->
     <string name="menu_ignore">무시하기</string>
     <string name="menu_copy_text">텍스트 복사</string>
-    <string name="menu_report">신고하기</string>
+    <string name="menu_report">신고</string>
+    <string name="menu_edit">수정</string>
+    <string name="menu_delete">삭제</string>
     
 <!-- Context menu -->
     <string name="comment_context_title">옵션</string>
@@ -23,9 +25,6 @@
     <string name="comment_plus_cancel">공감 취소하기</string>
     <string name="comment_reply">답장하기</string>
     <string name="comment_copy">내용 복사하기</string>
-    <string name="comment_report">신고하기</string>
-    <string name="comment_edit">수정하기</string>
-    <string name="comment_delete">삭제하기</string>
     <string name="comment_show_plus_member">공감한 사람 보기</string>
     
     <string name="comment_cannot_be_null">댓글 내용을 적어주세요.</string>

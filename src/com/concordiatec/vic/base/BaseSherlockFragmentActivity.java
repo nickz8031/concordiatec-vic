@@ -53,7 +53,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if( resultCode == RESULT_OK ){
+		if( resultCode == Constant.ONLINE_BROAD_RESULT_CODE ){
 			restoreActionbar();
 			sendOnlineBroad(true);
 		}

@@ -1,11 +1,13 @@
 package com.concordiatec.vic.base;
 
 import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.inf.IVicRespondLocation;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.nhn.android.maps.NMapActivity;
 import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.NMapView;
+import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 import android.annotation.SuppressLint;
@@ -18,7 +20,8 @@ import android.provider.Settings;
 public class VicMapActivity extends NMapActivity {
 	private NMapLocationManager mMapLocationManager;
 	private NMapView mMapView;
-
+	private IVicRespondLocation respondListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -29,27 +32,29 @@ public class VicMapActivity extends NMapActivity {
 		super.setMapDataProviderListener(new DataProviderLis());
 	}
 	
-	protected void getMyLocation() {
+	protected void getMyLocation( IVicRespondLocation lis ) {
+		if( lis == null ) return;
+		this.respondListener = lis;
 		if (!mMapLocationManager.isMyLocationEnabled()) {
 			boolean isMyLocationEnabled = mMapLocationManager.enableMyLocation(true);
 			if (!isMyLocationEnabled) {
-				NotifyUtil.toast(this, "Please enable a My Location source in system settings");
+				String reason = "Please enable a My Location source in system settings";
+				NotifyUtil.toast(this, reason);
 				Intent goToSettings = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 				startActivity(goToSettings);
+				lis.onFailed( reason );
 				return;
 			}else{
 				delayGetMyLocation();
 			}
 		}else{
-			if( mMapLocationManager.getMyLocation() == null ){
+			NGeoPoint geoPoint = mMapLocationManager.getMyLocation();
+			if( geoPoint == null ){
 				delayGetMyLocation();
 			}else{
-				double lat = mMapLocationManager.getMyLocation().getLatitude();
-				double lng = mMapLocationManager.getMyLocation().getLongitude();
-				findPlacemarkAtLocation( lng , lat );
+				findPlacemarkAtLocation( geoPoint.getLongitude() , geoPoint.getLatitude() );		
+				lis.onSucced(geoPoint.getLatitude() , geoPoint.getLongitude());		
 				mMapLocationManager.disableMyLocation();
-				LogUtil.show("LAT : " + lat );
-				LogUtil.show("LONG : " + lng );
 			}
 			
 		}
@@ -57,10 +62,13 @@ public class VicMapActivity extends NMapActivity {
 	}
 	
 	private void delayGetMyLocation(){
+		if(Constant.DEBUG) {
+			LogUtil.showDebug(getClass().getSimpleName() + ": Retry to get my location.");
+		}
 		delayExcute(new Runnable() {
 					@Override
 					public void run() {
-						getMyLocation();
+						getMyLocation(respondListener);
 					}
 				} , 1000);
 	}
@@ -73,15 +81,20 @@ public class VicMapActivity extends NMapActivity {
 		@Override
 		public void onReverseGeocoderResponse(NMapPlacemark placeMark, NMapError error) {
 			if( placeMark !=null ){
-				LogUtil.show( placeMark.toString() );
+				respondListener.onPlaceComplete(placeMark);
+				if( Constant.DEBUG ){
+					LogUtil.showDebug( placeMark.toString() );
+				}
+				
 			}
 			if (error != null) {
-				LogUtil.show(error.toString());
+				if( Constant.DEBUG ){
+					LogUtil.show( error.toString() );
+				}
+				respondListener.onPlaceError(error.toString());
 				return;
 			}
 		}
 	}
-	
-	
 }
 

@@ -6,7 +6,8 @@ public class ApiURL {
 	public static final String ARTICLE_LIKE = "/?r=article/like";
 
 	public static final String ARTICLE_WRITE = "/?r=article/create";
-	public static final String ARTICLE_WRITE_DEBUG = "/uploadTest.php";
+	public static final String ARTICLE_DELETE = "/?r=article/delete";
+	public static final String ARTICLE_EDIT = "/?r=article/edit";
 
 	public static final String COMMENT_LIST = "/?r=comment";
 	public static final String COMMENT_WRITE = "/?r=comment/create";

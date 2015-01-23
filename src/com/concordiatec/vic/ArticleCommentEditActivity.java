@@ -48,6 +48,9 @@ public class ArticleCommentEditActivity extends SubPageSherlockActivity {
 					if( writedContent.length() == 0 ){
 						NotifyUtil.toast(ArticleCommentEditActivity.this, getString(R.string.comment_cannot_be_null));
 						return;
+					}else if( writedContent.equals(comment.getContent()) ){
+						NotifyUtil.toast(ArticleCommentEditActivity.this, getString(R.string.content_not_changed));
+						return;
 					}
 					ProgressUtil.show(ArticleCommentEditActivity.this);
 					if( replyTargetId > 0 ) comment.setReplyId( replyTargetId );
