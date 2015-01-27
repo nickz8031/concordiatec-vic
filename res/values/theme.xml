@@ -13,7 +13,12 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_action_navigation_arrow_back</item>
     </style>
     
-    <style name="ActionbarOverflowSubTheme" parent="SubTheme">
+    <style name="ActionbarOverflowSubTheme"  parent="android:Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.CustomactionbarAlpha</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverflowActionButton</item>
+        <item name="ptrHeaderTitleTextAppearance">@style/ActionBarTitle</item>
+        <item name="ptrHeaderBackground">@color/theme_color</item>
+        <item name="tagViewStyle">@style/Widget.TagView</item>
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
@@ -22,8 +27,17 @@
     	<item name="android:textSize">@dimen/text_18</item>
     </style>
     
+    <style name="ActionBarTitleDark" parent="@android:style/TextAppearance.Holo.Large">
+        <item name="android:textColor">@android:color/darker_gray</item>
+    	<item name="android:textSize">@dimen/text_18</item>
+    </style>
+    
     <style name="ActionBar.Solid.Customactionbar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/theme_color</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+    </style>
+    <style name="ActionBar.Solid.CustomactionbarAlpha" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@color/alpha_0</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
     </style>
     

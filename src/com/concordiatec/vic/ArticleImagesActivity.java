@@ -9,44 +9,54 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.base.SubPageAlphaSherlockActivity;
 import com.concordiatec.vic.util.NotifyUtil;
+import com.concordiatec.vic.util.UniversalUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ArticleImagesActivity extends SubPageSherlockActivity implements OnPageChangeListener {
+public class ArticleImagesActivity extends SubPageAlphaSherlockActivity implements OnPageChangeListener {
 	private List<String> imagesList;
 	private List<View> viewImages;
 	private ViewPager vpager;
+	private DisplayImageOptions imageOptions;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ImageLoader.getInstance().init( UniversalUtil.getUniversalConfig(this) );
+		imageOptions = UniversalUtil.getUniversalDisplayOption();
+		
 		Intent intent = getIntent();
 		if( intent.hasExtra("photo_paths") ){
 			imagesList = intent.getExtras().getStringArrayList("photo_paths");
 			if( imagesList != null && imagesList.size() > 0 ){
 				hideStatusBar(true);
-				toggleActionBar();
+				//toggleActionBar();
 				setContentView(R.layout.activity_article_images);
 				vpager = (ViewPager) findViewById(R.id.image_vp);
+				
 				viewImages = new ArrayList<View>();
+				
 				for (int i = 0; i < imagesList.size(); i++) {
-					ImageView iv = new ImageView(this);
-					Glide.with(this).load(imagesList.get(i)).thumbnail(0.3f).crossFade().into(iv);
+					
+					View v = LayoutInflater.from(this).inflate(R.layout.article_image_activity, null);
+					ImageView iv = (ImageView) v.findViewById(R.id.vp_iv);
+					ImageLoader.getInstance().displayImage( imagesList.get(i) , iv , imageOptions );
 					iv.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							toggleActionBar();
 						}
 					});
-					viewImages.add(iv);
+					viewImages.add(v);
 				}
 				setTitle("1/"+imagesList.size());
 				vpager.setAdapter( new ImageAdapter() );
 				vpager.setOnPageChangeListener(this);
-				
 			}
 		}else{
 			NotifyUtil.toast(this, getString(R.string.no_data));

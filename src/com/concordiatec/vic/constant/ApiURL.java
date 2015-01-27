@@ -16,6 +16,7 @@ public class ApiURL {
 	public static final String COMMENT_LIKE = "/?r=comment/plus";
 	
 	public static final String LOGIN = "/?r=site/login";
+	public static final String SIGNUP = "/?r=site/join";
 	
 	public static final String REPORT_COMMENT = "/?r=report/comment";
 }

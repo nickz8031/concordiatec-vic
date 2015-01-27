@@ -2,6 +2,7 @@ package com.concordiatec.vic.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.http.Header;
 import android.content.Context;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
@@ -16,6 +17,7 @@ import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.google.gson.internal.LinkedTreeMap;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class UserService extends HttpUtil implements IVicService {
@@ -24,6 +26,25 @@ public class UserService extends HttpUtil implements IVicService {
 	public UserService( Context context ){
 		this.context = context;
 	}
+	
+	public void signup( User user , VicResponseListener listener ){
+		if( user != null ){
+			RequestParams params = new RequestParams();
+			params.put("email", user.email);
+			params.put("password", user.pwd);
+			params.put("name", user.name);
+			params.put("sex", user.sex);
+			
+			post(ApiURL.SIGNUP, params, new VicResponseHandler(listener));
+		}
+	} 
+	
+	/**
+	 * login
+	 * @param account
+	 * @param pwd
+	 * @param listener
+	 */
 	public void doLogin(String account , String pwd , VicResponseListener listener){
 		
 		if( StringUtil.isEmpty(account) || StringUtil.isEmpty(pwd) ){
@@ -37,7 +58,10 @@ public class UserService extends HttpUtil implements IVicService {
 		post(ApiURL.LOGIN, params, new VicResponseHandler(listener));
 		
 	}
-	
+	/**
+	 * login user information from location
+	 * @return
+	 */
 	public User getLoginUser(){
 		return new Select().from(User.class).executeSingle();
 	}

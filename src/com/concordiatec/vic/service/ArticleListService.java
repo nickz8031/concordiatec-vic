@@ -76,32 +76,36 @@ public class ArticleListService extends HttpUtil implements IVicService{
 	@SuppressWarnings("unchecked")
 	public Article mapToModel(LinkedTreeMap<String, Object> map) {
 		Article article = new Article();
-		article.setId( getIntValue(map.get("id")) );
-		article.setKind( getIntValue(map.get("kind")) );
-		article.setEffectId( getIntValue(map.get("effected_id")) );
-		article.setContent(map.get("content").toString());
-		article.setPastTime( getIntValue(map.get("pasttime")) );
-		article.setWriterId( getIntValue(map.get("writer_id")) );
-		article.setWriterName( map.get("writer_name").toString() );
+		if( map.get("id") != null ) article.setId( getIntValue(map.get("id")) );
+		if( map.get("kind") != null ) article.setKind( getIntValue(map.get("kind")) );
+		if( map.get("effected_id") != null ) article.setEffectId( getIntValue(map.get("effected_id")) );
+		if( map.get("content") != null ) article.setContent(map.get("content").toString());
+		if( map.get("pasttime") != null ) article.setPastTime( getIntValue(map.get("pasttime")) );
+		if( map.get("writer_id") != null ) article.setWriterId( getIntValue(map.get("writer_id")) );
+		if( map.get("writer_name") != null ) article.setWriterName( map.get("writer_name").toString() );
 		
-		String pUrl = getServerImgPath(article.getWriterId() , map.get("writer_photo").toString());
-		String cUrl = getServerImgPath(article.getWriterId() , map.get("image").toString());
-
-		article.setWriterPhotoURL( pUrl );
 		
-		article.setCoverImageWidth( getIntValue(map.get("width")) );
-		article.setCoverImageHeight( getIntValue(map.get("height")) );
-		article.setCoverImageURL( cUrl );
+		if( map.get("writer_photo") != null ){
+			String pUrl = getServerImgPath(article.getWriterId() , map.get("writer_photo").toString());
+			article.setWriterPhotoURL( pUrl );
+		}
+		if( map.get("width") != null ) article.setCoverImageWidth( getIntValue(map.get("width")) );
+		if( map.get("height") != null ) article.setCoverImageHeight( getIntValue(map.get("height")) );
 		
-		article.setShopId( getIntValue(map.get("shop_id")) );
-		article.setShopAddr(map.get("shop_addr").toString());
-		article.setShopGroupId( getIntValue(map.get("shop_group")) );
-		article.setShopName(map.get("shop_name").toString());
-		article.setLikeCount( getIntValue(map.get("like_count")) );
-		article.setCommentCount( getIntValue(map.get("comment_count")) );
+		if( map.get("image") != null ){
+			String cUrl = getServerImgPath(article.getWriterId() , map.get("image").toString());
+			article.setCoverImageURL( cUrl );
+		} 
+		
+		if( map.get("shop_id") != null ) article.setShopId( getIntValue(map.get("shop_id")) );
+		if( map.get("shop_addr") != null ) article.setShopAddr(map.get("shop_addr").toString());
+		if( map.get("shop_group") != null ) article.setShopGroupId( getIntValue(map.get("shop_group")) );
+		if( map.get("shop_name") != null ) article.setShopName(map.get("shop_name").toString());
+		if( map.get("like_count") != null ) article.setLikeCount( getIntValue(map.get("like_count")) );
+		if( map.get("comment_count") != null ) article.setCommentCount( getIntValue(map.get("comment_count")) );
 		
 		boolean isLike = false;
-		if( getIntValue(map.get("is_like")) == 1 ){
+		if( map.get("is_like") != null && getIntValue(map.get("is_like")) == 1 ){
 			isLike = true;
 		}
 		article.setLike( isLike );

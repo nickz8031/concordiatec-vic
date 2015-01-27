@@ -68,8 +68,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	private final static int CONTEXT_COMMENT_DELETE = 7;
 	private final static int CONTEXT_COMMENT_SHOW_PLUS_MEMBER = 8;
 	
-	private final static int ACTIVITY_REQUEST_COMMENT_EDIT = 0;
-	private final static int ACTIVITY_REQUEST_ARTICLE_EDIT = 1;
+	
 	
 
 	private ListView commentList;
@@ -199,7 +198,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 			case R.id.ar_d_menu_edit:
 				Intent intent = new Intent( this , ArticleEditActivity.class );
 				intent.putExtra("article", detail);
-				startActivityForResult(intent , ACTIVITY_REQUEST_ARTICLE_EDIT);
+				startActivityForResult(intent , Constant.ARTICLE_EDIT);
 				break;
 			//글 삭제
 			case R.id.ar_d_menu_delete:
@@ -208,7 +207,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 					@Override
 					public void onSuccess(ResData data) {
 						NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.delete_succed));
-						setResult(RESULT_OK);
+						setResult(Constant.ARTICLE_DELETE_SUCCED);
 						finish();
 					}
 				});
@@ -231,18 +230,18 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case 0: //댓글 수정 성공시
-			if( resultCode == RESULT_OK && data.hasExtra("edit_comment") ){
+		case Constant.COMMENT_EDIT: //댓글 수정 성공시
+			if( resultCode == Constant.COMMENT_EDIT_SUCCED && data.hasExtra("edit_comment") ){
 				Comment editComment = (Comment) data.getExtras().get("edit_comment");
 				adapter.updateData(editComment, clickedPosition);
 			}
 			break;
 		
-		case ACTIVITY_REQUEST_ARTICLE_EDIT: //원글내용 수정 성공시
+		case Constant.ARTICLE_EDIT: //원글내용 수정 성공시
 			if( resultCode == RESULT_OK && data.hasExtra("edit_article") ){
 				Article editDetail = (Article) data.getExtras().get("edit_article");
 				content.setText( editDetail.getContent() );
-				setResult(Constant.EDIT_ARTICLE_SUCCED, new Intent().putExtra("edit_article", editDetail.getContent()));
+				setResult(Constant.ARTICLE_EDIT_SUCCED, new Intent().putExtra("edit_article", editDetail.getContent()));
 			}
 			break;
 		default:
@@ -742,7 +741,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity{
 				//수정
 				Intent intent = new Intent( this , ArticleCommentEditActivity.class );
 				intent.putExtra("comment", clickedComment);
-				startActivityForResult(intent , ACTIVITY_REQUEST_COMMENT_EDIT);
+				startActivityForResult(intent , Constant.COMMENT_EDIT);
 				break;
 			default:
 				break;

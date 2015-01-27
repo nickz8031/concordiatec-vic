@@ -19,16 +19,41 @@
     <string name="logout">로그아웃</string>
     <string name="email">이메일</string>
     <string name="password">비밀번호</string>
+    <string name="nick_name">닉네임</string>
     <string name="return_str">돌아가기</string>
     <string name="cancel_str">취소</string>
     <string name="complete">완료</string>
     <string name="choose">선택</string>
     <string name="confirm">확인</string>
-	
     <string name="file_name">파일명</string>
     <string name="file_count">몇개</string>
+    <string name="gender">성별</string>
+    <string name="female">여성</string>
+    <string name="male">남성</string>
+    
+    
+    <!-- login & register words -->
+    <string name="nickname_hint">닉네임 입력</string>
+    <string name="nick_name_rule_msg">2~10자 이내 한글 혹은 영문, 공백,특수부호 불가능</string>
+    <string name="pwd_rule_msg">6~20자 이내</string>
+    <string name="email_hint">이메일 주소 입력</string>
+    <string name="pwd_hint">비밀번호 입력</string>
+    <string name="please_enter_email">이메일을 입력해주세요.</string>
+    <string name="please_enter_nickname">닉네임을 공백이나 특수부호 등을 제외한 2~10자 이내로 입력해주세요.</string>
+    <string name="please_enter_pwd">비밀번호를 공백없이 6~20자로 입력해주세요.</string>
+    <string name="please_enter_valid_login_info">이메일/비밀번호를 확인해주세요.</string>
+    <string name="logout_succed">로그아웃하셨습니다.</string>
+    <string name="logout_failed">로그아웃에 실패하였습니다.</string>
+    <string name="agree_with_location_service">위치기반 서비스 이용약관에 동의</string>
+    <string name="please_agree_location_service">위치기반 서비스 이용약관에 동의하셔야 합니다.</string>
+    <string name="agree_with_personal_information_usage">개인정보 수집 및 이용약관에 동의</string>
+    <string name="please_agree_personal_information_usage">개인정보 수집 및 이용약관에 동의하셔야 합니다.</string>
+    <string name="submit_register">가입하기</string>
+    <string name="complete_register">가입완료</string>
+	
     
     <!-- format -->
+	<string name="default_user_introduce">안녕하세요. %1$s 입니다.</string>
     <string name="format_price_string">%1$s원</string>
     <string name="format_end_time">%1$s 마감</string>
     <string name="format_location_range_meter">%1$s m</string>
@@ -64,19 +89,19 @@
     <string name="content_not_changed">수정된 내용이 없습니다.</string>
     
 	<!-- demo strings -->
-	<string name="demo_store_name">Store name</string>
-	<string name="demo_store_addr">Address</string>
-	<string name="demo_writer_name">Writer</string>
-	<string name="demo_write_time">Time</string>
-	<string name="demo_news_content">Content</string>
+	<string name="demo_store_name">가게명</string>
+	<string name="demo_store_addr">주소</string>
+	<string name="demo_writer_name">글쓴 이</string>
+	<string name="demo_write_time">시간</string>
+	<string name="demo_news_content">내용</string>
 	
 	<string name="demo_like_count">0</string>
 	<string name="demo_comment_count">0</string>
 	<string name="demo_comment_contents">Comment</string>
 	<string name="demo_detail_like_share">0명이 이 소식을 좋아함. 0명이 다시 공유함</string>
 	<!-- coupon demo string -->
-	<string name="demo_shop_name">Store name</string>
-	<string name="demo_coupon_title">Event item</string>
+	<string name="demo_shop_name">가게명</string>
+	<string name="demo_coupon_title">이벤트 시간</string>
 	
 	
 </resources>

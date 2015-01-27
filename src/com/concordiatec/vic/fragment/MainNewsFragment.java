@@ -129,7 +129,11 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		aService.getArticles(new SimpleVicResponseListener() {
 			@Override
 			public void onSuccess(ResData data) {
-				setAdapterData(data.getData());
+				if( data == null || data.getData() == null ) {
+					NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
+				}else{
+					setAdapterData(data.getData());
+				}
 				ProgressUtil.dismiss();
 			}
 			@Override
@@ -144,6 +148,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 	
 	private void setAdapterData(Object data){
+		if( data == null ) return;
 		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
 		if( !isRefresh || adapter == null ){
 			adapter = new MainNewsAdapter(getActivity(), listData);
@@ -295,12 +300,19 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	
 	
 	public void responseResult(int resultCode, Intent data){
-		if( resultCode == Constant.EDIT_ARTICLE_SUCCED && data.hasExtra("edit_article") ){
-			String editContent = data.getStringExtra("edit_article");
-			clickedArticle.setContent(editContent);
-			adapter.updateData( clickedArticle , clickedPosition );
-		}else{
+		switch (resultCode) {
+		case Constant.ARTICLE_EDIT_SUCCED:
+			if( data.hasExtra("edit_article") ){
+				String editContent = data.getStringExtra("edit_article");
+				clickedArticle.setContent(editContent);
+				adapter.updateData( clickedArticle , clickedPosition );
+			}
+			break;
+		case Constant.ARTICLE_DELETE_SUCCED:
 			adapter.deleteData(clickedPosition);
+			break;
+		default:
+			break;
 		}
 	}
 	

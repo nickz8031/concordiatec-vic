@@ -1,12 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@color/background_color">
-
+    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res/com.concordiatec.vic">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/d1" />
-
+        android:layout_height="@dimen/user_wallpaper_height" 
+        android:src="@drawable/default_user_wallpaper"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true" />
+    <LinearLayout
+        android:id="@+id/user_wallpaper_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_wallpaper_height" 
+        android:layout_alignParentStart="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="#AA000000" >
+        <com.concordiatec.vic.widget.CircleImageView
+            android:layout_width="103dp"
+            android:layout_height="103dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/demo_avatar"
+            app:border_width="3dp"
+            app:border_color="@color/background_color" />
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="@string/demo_writer_name" 
+            />
+        <TextView
+            android:id="@+id/user_intro"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="@string/default_user_introduce"
+            android:textColor="@color/background_color"
+            android:textSize="@dimen/text_12"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" 
+            android:gravity="center"
+            
+            >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp" 
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/background_color_wrapper"
+                android:text="소식"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_marginRight="10dp" 
+                android:textStyle="bold"
+                android:textSize="@dimen/text_12"
+                android:textColor="@android:color/white"
+                android:text="153"
+                />
+            
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"  
+                android:layout_marginRight="3dp" 
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/background_color_wrapper"
+                android:text="팔로어"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_marginRight="10dp" 
+                android:textStyle="bold"
+                android:textSize="@dimen/text_12"
+                android:textColor="@android:color/white"
+                android:text="10,351"
+                />
+            
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"  
+                android:layout_marginRight="3dp" 
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/background_color_wrapper"
+                android:text="팔로잉"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:text="1,011"
+                />
+            
+        </LinearLayout>
+    </LinearLayout>    
+    
+    <Button 
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="Follow"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_12"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_white_alpha_selector"/>
+    
+    <!-- 탭 -->
+    <RelativeLayout 
+        android:layout_below="@id/user_wallpaper_layout"
+	  	android:id="@+id/main_user_tab_labels"
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/user_tab_menu_layout_height"
+	    android:orientation="horizontal"
+	    android:background="@color/background_color">
+	 		<!-- tab1 -->
+	        <LinearLayout 
+	            android:id="@+id/user_tab_1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	
+	            <TextView
+	            	android:id="@+id/user_tab_label_1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="@dimen/user_tab_menu_height"
+		            android:paddingLeft="@dimen/user_tab_menu_label_padding"
+		            android:paddingRight="@dimen/user_tab_menu_label_padding"
+	                android:paddingTop="@dimen/user_tab_menu_padding_top"
+	                android:gravity="center"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/user_tab_menu_1"/>
+	            <TextView 
+				    android:id="@+id/tab_active_line_1"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/user_tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	
+	        </LinearLayout>
+	        
+	        <!-- tab2 -->
+	        
+	        <LinearLayout 
+	            android:layout_toRightOf="@id/user_tab_1"
+	            android:id="@+id/user_tab_2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	            
+	            <TextView
+	            	android:id="@+id/user_tab_label_2"
+	                android:layout_width="wrap_content"
+		            android:paddingLeft="@dimen/user_tab_menu_label_padding"
+		            android:paddingRight="@dimen/user_tab_menu_label_padding"
+	                android:layout_height="@dimen/user_tab_menu_height"
+	                android:gravity="center"
+	                android:paddingTop="@dimen/user_tab_menu_padding_top"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/user_tab_menu_2" />
+				<TextView 
+				    android:id="@+id/tab_active_line_2"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/user_tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	        </LinearLayout>
+	        
+	        <!-- tab3 -->
+	        <LinearLayout 
+	            android:layout_toRightOf="@id/user_tab_2"
+	            android:id="@+id/user_tab_3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	            
+	            <TextView
+	            	android:id="@+id/user_tab_label_3"
+	                android:layout_width="wrap_content"
+		            android:paddingLeft="@dimen/user_tab_menu_label_padding"
+		            android:paddingRight="@dimen/user_tab_menu_label_padding"
+	                android:layout_height="@dimen/user_tab_menu_height"
+	                android:paddingTop="@dimen/user_tab_menu_padding_top"
+	                android:gravity="center"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/user_tab_menu_3" />
+				<TextView 
+				    android:id="@+id/tab_active_line_3"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/user_tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	        </LinearLayout>
+	        
+	        <!-- tab4 -->
+	        <LinearLayout 
+	            android:layout_toRightOf="@id/user_tab_3"
+	            android:id="@+id/user_tab_4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:clickable="true"
+	            android:orientation="vertical">
+	            
+	            <TextView
+	            	android:id="@+id/user_tab_label_4"
+	                android:layout_width="wrap_content"
+		            android:paddingLeft="@dimen/user_tab_menu_label_padding"
+		            android:paddingRight="@dimen/user_tab_menu_label_padding"
+	                android:layout_height="@dimen/user_tab_menu_height"
+	                android:paddingTop="@dimen/user_tab_menu_padding_top"
+	                android:gravity="center"
+	                android:textSize="@dimen/text_16"
+	                android:text="@string/user_tab_menu_4" />
+				<TextView 
+				    android:id="@+id/tab_active_line_4"
+	                android:layout_width="match_parent"
+	                android:layout_height="@dimen/user_tab_menu_padding_top"
+	            	android:background="@drawable/tab_border_active"
+	            	android:visibility="gone"
+	                />
+	        </LinearLayout>
+	</RelativeLayout>
+    
 </RelativeLayout>

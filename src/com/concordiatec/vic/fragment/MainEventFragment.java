@@ -74,6 +74,13 @@ public class MainEventFragment extends BaseSherlockFragment implements OnRefresh
 		for (int i = 0; i < 15; i++) {
 			listData.add(coupon);
 		}
+		
+		listHeaderPaddingView = new TextView(getActivity());
+		int height = (int) getResources().getDimension(R.dimen.sort_display_height);
+		AbsListView.LayoutParams params = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, height);
+		listHeaderPaddingView.setLayoutParams(params);
+		eventListView.addHeaderView(listHeaderPaddingView);
+		
 		eventListView.setAdapter(new MainEventAdapter(getActivity(), listData));
 		
 		eventListView.setOnItemClickListener(new OnItemClickListener() {
@@ -84,11 +91,7 @@ public class MainEventFragment extends BaseSherlockFragment implements OnRefresh
 			}}
 		);
 		
-		listHeaderPaddingView = new TextView(getActivity());
-		int height = (int) getResources().getDimension(R.dimen.sort_display_height);
-		AbsListView.LayoutParams params = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, height);
-		listHeaderPaddingView.setLayoutParams(params);
-		eventListView.addHeaderView(listHeaderPaddingView);
+		
 	}
 	
 	/**

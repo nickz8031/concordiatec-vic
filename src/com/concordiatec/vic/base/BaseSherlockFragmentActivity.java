@@ -47,7 +47,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 			
 			profileLayout.setOnClickListener(new ActionbarAvatarClick() );
 		}else{
-			profileLayout.setOnClickListener( new GoLogin() );
+			profileLayout.setOnClickListener( new ActionbarAvatarClickTest() );
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		}else{
 			setIcon(R.drawable.ic_default_avatar);
 			setTitle(R.string.login);
-			profileLayout.setOnClickListener( new GoLogin() );
+			profileLayout.setOnClickListener( new ActionbarAvatarClickTest() );
 		}
 		invalidateOptionsMenu();
 	}
@@ -107,6 +107,15 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		
 	}
 	
+	//-------------------test
+	protected final class ActionbarAvatarClickTest implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent( getApplicationContext() , UserActivity.class );
+			startActivity(intent);
+		}
+	} 
+	//-------------------test
 	
 	protected final class ActionbarAvatarClick implements OnClickListener{
 		@Override
@@ -116,7 +125,6 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 			intent.putExtra("user_id", usr.usrId);
 			startActivity(intent);
 		}
-		
 	} 
 	
 	

@@ -1,31 +1,31 @@
 package com.concordiatec.vic.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 
-public class SubPageSherlockActivity extends SherlockActivity {
+public class SubPageAlphaSherlockActivity extends SherlockActivity {
 	protected ImageView backButton;
 	private TextView customTitle;
 	
 	protected final static int REQUEST_TAKE_PHOTO = 30001;
 	protected final static int REQUEST_CHOOSE_PHOTO = 30002;
 	protected final static int REQUEST_TAKE_SURE = 30003;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +35,28 @@ public class SubPageSherlockActivity extends SherlockActivity {
 		actionBar.setDisplayUseLogoEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setCustomView(R.layout.actionbar_subpage);
+		actionBar.setCustomView(R.layout.actionbar_subpage_alpha);
 		actionBar.setDisplayShowCustomEnabled(true);
+		
 		backButton = (ImageView) actionBar.getCustomView().findViewById(R.id.actionbar_back);
 		customTitle = (TextView) actionBar.getCustomView().findViewById(R.id.actionbar_custom_title);
-		backButton.setOnClickListener(new OnClickListener() {
+		backButton.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
-		});
+		} );
 	}
-
+	
 	@Override
 	public void setTitle(CharSequence title) {
-		if (title.length() > 0) {
+		if( title.length() > 0 ){
 			customTitle.setText(title);
 			customTitle.setVisibility(View.VISIBLE);
 		}
 	}
-
-	protected void noDataToast(Activity activity) {
+	
+	protected void noDataToast(Activity activity){
 		NotifyUtil.toast(activity, getString(R.string.no_data));
 		new Thread(new Runnable() {
 			@Override
@@ -69,14 +70,14 @@ public class SubPageSherlockActivity extends SherlockActivity {
 			}
 		}).start();
 	}
-
-	protected User checkLogin(Activity activity) {
+	
+	protected User checkLogin( Activity activity ) {
 		User loginUser = new UserService(activity).getLoginUser();
-		if (loginUser == null) {
-			Intent intent = new Intent(activity, LoginActivity.class);
-			startActivityForResult(intent, 0);
+		if( loginUser == null ){
+			Intent intent = new Intent(activity , LoginActivity.class);
+			startActivityForResult(intent , 0);
 			return null;
-		} else {
+		}else{
 			return loginUser;
 		}
 	}

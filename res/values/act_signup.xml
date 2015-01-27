@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- dimens -->
+    <dimen name="default_wrap_vert_padding">30dp</dimen>
+    <dimen name="default_block_margin_hor">10dp</dimen>
+    <dimen name="default_block_margin_ver">20dp</dimen>
+    <dimen name="default_block_margin_ver_30">30dp</dimen>
+    
+    <dimen name="reg_nickname_label_height">25dp</dimen>
+    <dimen name="reg_nickname_edit_height">45dp</dimen>
+    <dimen name="reg_gender_layout_height">60dp</dimen>
+    <dimen name="reg_nickname_edit_padding_left">8dp</dimen>
+    <dimen name="reg_checkbox_label_padding">10dp</dimen>
+    
+   <dimen name="checkbox_item_margin_right">20dp</dimen>
+   <dimen name="reg_submit_margin_hor">50dp</dimen>
+    
+</resources>

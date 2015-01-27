@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.ResData;
@@ -63,7 +64,7 @@ public class ArticleCommentEditActivity extends SubPageSherlockActivity {
 							NotifyUtil.toast(ArticleCommentEditActivity.this, getString(R.string.comment_edit_succed));
 							Intent d = new Intent();
 							d.putExtra("edit_comment", comment);
-							setResult(RESULT_OK, d);
+							setResult(Constant.COMMENT_EDIT_SUCCED, d);
 							finish();
 						}
 					});

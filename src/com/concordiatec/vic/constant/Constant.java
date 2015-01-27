@@ -12,8 +12,15 @@ public class Constant {
 
 	public static final int ONLINE_BROAD_RESULT_CODE = 10001;
 	
-	public static final int EDIT_ARTICLE_SUCCED = 15000;
+	//activity request & result code
+	public final static int ARTICLE_EDIT = 4001;
+	public final static int ARTICLE_EDIT_SUCCED = 4002;
 	
+	public final static int ARTICLE_DELETE_SUCCED = 6002;
+	
+	public final static int COMMENT_EDIT = 5001;
+	public final static int COMMENT_EDIT_SUCCED = 5002;
+	//result & request code end;
 	
 	public static void initSurplus(){
 		SURPLUS_UPLOAD_COUNTS = MAX_UPLOAD_FILE_COUNTS;
