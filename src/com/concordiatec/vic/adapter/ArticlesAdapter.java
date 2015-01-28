@@ -38,7 +38,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 @SuppressLint("UseSparseArrays")
-public class MainNewsAdapter extends VicBaseAdapter {
+public class ArticlesAdapter extends VicBaseAdapter {
 	private List<Article> data;
 	private LayoutInflater inflater;
 	private Activity context;
@@ -47,7 +47,7 @@ public class MainNewsAdapter extends VicBaseAdapter {
 	private ArticleService aService;
 	private UserService uService;
 
-	public MainNewsAdapter(Activity context, List<Article> data) {
+	public ArticlesAdapter(Activity context, List<Article> data) {
 		super();
 		this.context = context;
 		this.res = context.getResources();
@@ -99,7 +99,6 @@ public class MainNewsAdapter extends VicBaseAdapter {
 		}else{
 			return 0;
 		}
-		
 	}
 
 	@Override

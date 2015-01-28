@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.concordiatec.vic.R;
 
-public class MainInfoFragment extends SherlockFragment{
+public class StoreFragment extends SherlockFragment{
 	private View rootView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

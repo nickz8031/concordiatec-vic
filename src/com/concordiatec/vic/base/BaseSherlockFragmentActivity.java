@@ -14,6 +14,8 @@ import com.concordiatec.vic.UserActivity;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 
 public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
@@ -47,7 +49,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 			
 			profileLayout.setOnClickListener(new ActionbarAvatarClick() );
 		}else{
-			profileLayout.setOnClickListener( new ActionbarAvatarClickTest() );
+			profileLayout.setOnClickListener( new GoLogin() );
 		}
 	}
 	
@@ -64,7 +66,12 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 	}
 	
 	protected void setIcon(String uri){
-		Glide.with(this).load(uri).into(profilePhoto);
+		if( StringUtil.isEmpty(uri) ){
+			Glide.with(this).load(R.drawable.ic_default_avatar).into(profilePhoto);
+		}else{
+			Glide.with(this).load(uri).into(profilePhoto);
+		}
+		
 	}
 	
 	@Override
@@ -93,7 +100,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		}else{
 			setIcon(R.drawable.ic_default_avatar);
 			setTitle(R.string.login);
-			profileLayout.setOnClickListener( new ActionbarAvatarClickTest() );
+			profileLayout.setOnClickListener( new GoLogin() );
 		}
 		invalidateOptionsMenu();
 	}

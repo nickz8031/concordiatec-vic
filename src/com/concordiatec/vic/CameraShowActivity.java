@@ -1,6 +1,5 @@
 package com.concordiatec.vic;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.tools.Tools;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 
 public class CameraShowActivity extends SubPageSherlockActivity {
@@ -37,7 +35,6 @@ public class CameraShowActivity extends SubPageSherlockActivity {
 				bm = Tools.rotateBitmapByDegree(bm, angel);
 			}
 			mImageView.setImageBitmap(bm);
-			new PhotoViewAttacher(mImageView);
 		} else {
 			NotifyUtil.toast(this, getString(R.string.error_with_show_image));
 			finish();

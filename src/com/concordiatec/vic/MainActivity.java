@@ -7,11 +7,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.concordiatec.vic.adapter.MainVpAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
-import com.concordiatec.vic.fragment.MainEventFragment;
-import com.concordiatec.vic.fragment.MainInfoFragment;
-import com.concordiatec.vic.fragment.MainNewsFragment;
+import com.concordiatec.vic.fragment.EventFragment;
+import com.concordiatec.vic.fragment.StoreFragment;
+import com.concordiatec.vic.fragment.ArticlesFragment;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
@@ -19,6 +18,7 @@ import com.concordiatec.vic.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
@@ -34,9 +34,9 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	// tab
 	private int[] tabIds = { R.id.main_tab_select_1, R.id.main_tab_select_2, R.id.main_tab_select_3 };
 
-	private MainNewsFragment newsFragment;
-	private MainEventFragment eventFragment;
-	private MainInfoFragment infoFragment;
+	private ArticlesFragment newsFragment;
+	private EventFragment eventFragment;
+	private StoreFragment infoFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +95,13 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		newsFragment.responseResult(resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void initPages() {
-		newsFragment = new MainNewsFragment();
-		eventFragment = new MainEventFragment();
-		infoFragment = new MainInfoFragment();
+		newsFragment = new ArticlesFragment();
+		eventFragment = new EventFragment();
+		infoFragment = new StoreFragment();
 		
 		viewPagerViews = new ArrayList<Fragment>();
 		viewPagerViews.add(newsFragment);
@@ -108,7 +109,7 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		viewPagerViews.add(infoFragment);
 		
 		mainVp = (ViewPager) findViewById(R.id.main_vp);
-		mainVp.setAdapter(new MainVpAdapter(getSupportFragmentManager(), viewPagerViews));
+		mainVp.setAdapter(new VpAdapter());
 		mainVp.setOffscreenPageLimit(2);
 		this.setFragmentActive(initFragmentPosition);
 		mainVp.setOnPageChangeListener(new MainVPChangeListener());
@@ -183,5 +184,21 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	public void closeApplication() {
 		finish();
 		android.os.Process.killProcess(android.os.Process.myPid());
+	}
+	
+	private final class VpAdapter extends FragmentPagerAdapter {
+		public VpAdapter() {
+			super(getSupportFragmentManager());
+		}
+
+		@Override
+		public int getCount() {
+			return viewPagerViews.size();
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			return viewPagerViews.get(position);
+		}
 	}
 }

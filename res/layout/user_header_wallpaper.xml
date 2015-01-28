@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.concordiatec.vic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_wallpaper_height"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/desc_user_wallpaper"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_user_wallpaper" />
+
+    <LinearLayout
+        android:id="@+id/user_wallpaper_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_wallpaper_height"
+        android:layout_alignParentStart="true"
+        android:background="#AA000000"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <com.concordiatec.vic.widget.CircleImageView
+            android:layout_width="@dimen/user_avatar_size"
+            android:layout_height="@dimen/user_avatar_size"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/demo_avatar"
+            app:border_color="@color/background_color"
+            app:border_width="3dp" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/user_name_margin_vert"
+            android:layout_marginTop="@dimen/user_name_margin_vert"
+            android:gravity="center_horizontal"
+            android:text="@string/demo_writer_name"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/user_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxHeight="35dp"
+            android:text="@string/default_user_introduce"
+            android:textColor="@color/background_color"
+            android:textSize="@dimen/text_12"
+            android:textStyle="bold" />
+
+        <!-- count of totals -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:text="@string/user_news"
+                android:textColor="@color/background_color_wrapper"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/demo_like_count"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:text="@string/user_follower"
+                android:textColor="@color/background_color_wrapper"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/demo_like_count"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:text="@string/user_following"
+                android:textColor="@color/background_color_wrapper"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/demo_like_count"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_12"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- follow button -->
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/btn_white_alpha_selector"
+        android:text="@string/follow_btn_string"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_12" />
+
+    <!-- 탭 -->
+
+    <LinearLayout
+        android:layout_below="@id/user_wallpaper_layout"
+        android:id="@+id/user_tab_labels"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_tab_menu_layout_height"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <!-- tab1 -->
+
+        <LinearLayout
+            android:id="@+id/user_tab_1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/user_tab_label_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_height"
+                android:gravity="center"
+                android:paddingLeft="@dimen/user_tab_menu_label_padding"
+                android:paddingRight="@dimen/user_tab_menu_label_padding"
+                android:paddingTop="@dimen/user_tab_menu_padding_top"
+                android:text="@string/user_news"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/user_tab_line_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_padding_top"
+                android:background="@drawable/tab_border_active" />
+        </LinearLayout>
+
+        <!-- tab2 -->
+
+        <LinearLayout
+            android:id="@+id/user_tab_2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/user_tab_label_2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_height"
+                android:gravity="center"
+                android:paddingLeft="@dimen/user_tab_menu_label_padding"
+                android:paddingRight="@dimen/user_tab_menu_label_padding"
+                android:paddingTop="@dimen/user_tab_menu_padding_top"
+                android:text="@string/user_stores"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/user_tab_line_2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_padding_top"
+                android:background="@drawable/tab_border_active"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- tab3 -->
+
+        <LinearLayout
+            android:id="@+id/user_tab_3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/user_tab_label_3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_height"
+                android:gravity="center"
+                android:paddingLeft="@dimen/user_tab_menu_label_padding"
+                android:paddingRight="@dimen/user_tab_menu_label_padding"
+                android:paddingTop="@dimen/user_tab_menu_padding_top"
+                android:text="@string/user_follower"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/user_tab_line_3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_padding_top"
+                android:background="@drawable/tab_border_active"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- tab4 -->
+
+        <LinearLayout
+            android:id="@+id/user_tab_4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/user_tab_label_4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_height"
+                android:gravity="center"
+                android:paddingLeft="@dimen/user_tab_menu_label_padding"
+                android:paddingRight="@dimen/user_tab_menu_label_padding"
+                android:paddingTop="@dimen/user_tab_menu_padding_top"
+                android:text="@string/user_following"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/user_tab_line_4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_tab_menu_padding_top"
+                android:background="@drawable/tab_border_active"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

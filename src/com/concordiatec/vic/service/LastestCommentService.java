@@ -31,19 +31,24 @@ public class LastestCommentService extends HttpUtil implements IVicService {
 	public LastestComment mapToModel(LinkedTreeMap<String, Object> map) {
 		LastestComment cmt = new LastestComment();
 		
-		cmt.setCommentId( getIntValue(map.get("comment_id")) );
-		cmt.setUserId( getIntValue( map.get("user_id") ) );
-		cmt.setUserName( map.get("user_name").toString() );
-		String pUrl = getServerImgPath(cmt.getUserId()) + map.get("user_photo").toString();
-		cmt.setUserPhoto( pUrl );
-		cmt.setCommentText( map.get("comment_text").toString() );
-		cmt.setPlusCount( getIntValue(map.get("plus_count")) );
-		int replyWhose = getIntValue( map.get("replied_user") );
-		if( replyWhose > 0 ){
-			cmt.setReplyWhose( replyWhose );
-			cmt.setReplyWhoseName( map.get("replied_username").toString().trim() );
+		if( map.get("comment_id") != null ) cmt.setCommentId( getIntValue(map.get("comment_id")) );
+		if( map.get("user_id") != null ) cmt.setUserId( getIntValue( map.get("user_id") ) );
+		if( map.get("user_name") != null ) cmt.setUserName( map.get("user_name").toString() );
+		if( map.get("user_photo") != null ){
+			String pUrl = getServerImgPath(cmt.getUserId()) + map.get("user_photo").toString();
+			cmt.setUserPhoto( pUrl );
 		}
 		
+		if( map.get("comment_text") != null ) cmt.setCommentText( map.get("comment_text").toString() );
+		if( map.get("plus_count") != null ) cmt.setPlusCount( getIntValue(map.get("plus_count")) );
+		
+		if(map.get("plus_count") != null && getIntValue( map.get("replied_user")) > 0 ){
+			int replyWhose = getIntValue( map.get("replied_user") );
+			if( replyWhose > 0 ){
+				cmt.setReplyWhose( replyWhose );
+				cmt.setReplyWhoseName( map.get("replied_username").toString().trim() );
+			}
+		}
 		
 		return cmt;
 	}

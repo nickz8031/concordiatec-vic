@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MainEventAdapter extends VicBaseAdapter {
+public class EventsAdapter extends VicBaseAdapter {
 	private List<Coupon> data;
 	private Context context;
 	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	
-	public MainEventAdapter(Context context , List<Coupon> data) {
+	public EventsAdapter(Context context , List<Coupon> data) {
 		this.data = data;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);

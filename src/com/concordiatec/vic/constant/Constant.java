@@ -20,6 +20,9 @@ public class Constant {
 	
 	public final static int COMMENT_EDIT = 5001;
 	public final static int COMMENT_EDIT_SUCCED = 5002;
+	
+	//detail page request
+	public final static int DETAIL_ACTIVITY_REQUEST = 0;
 	//result & request code end;
 	
 	public static void initSurplus(){

@@ -7,7 +7,6 @@ import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +30,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
-import com.concordiatec.vic.adapter.MainNewsAdapter;
+import com.concordiatec.vic.adapter.ArticlesAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
@@ -49,7 +48,7 @@ import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshListener {
+public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshListener {
 	private View rootView;
 	private ListView newsListView;
 	private List<Article> listData;
@@ -58,13 +57,12 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 	private LinearLayout sortCurrentLayout;
 	private RelativeLayout sortContentLayout;
 	private TextView sortCurrentSelect;
-	private MainNewsAdapter adapter;
+	private ArticlesAdapter adapter;
 	private ArticleListService aService;
 	private LinearLayout writeButton;
 	
 	private int clickedPosition;
 	private Article clickedArticle;
-	private final static int DETAIL_ACTIVITY_REQUEST = 0;
 	
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
@@ -123,43 +121,6 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 		newsListView.setOnScrollListener(new ListViewScrollListener());
 		newsListView.setOnItemClickListener(new ListViewItemClickListener());
 	}
-
-	private void getArticles(){
-		ProgressUtil.show(getActivity());
-		aService.getArticles(new SimpleVicResponseListener() {
-			@Override
-			public void onSuccess(ResData data) {
-				if( data == null || data.getData() == null ) {
-					NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
-				}else{
-					setAdapterData(data.getData());
-				}
-				ProgressUtil.dismiss();
-			}
-			@Override
-			public void onFailure(int httpResponseCode, String responseBody) {
-				LogUtil.show("Status : "+ httpResponseCode);
-				LogUtil.show("Response Body : "+ responseBody);
-				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
-				ProgressUtil.dismiss();
-				ptrLayout.setRefreshComplete();
-			}
-		});
-	}
-	
-	private void setAdapterData(Object data){
-		if( data == null ) return;
-		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
-		if( !isRefresh || adapter == null ){
-			adapter = new MainNewsAdapter(getActivity(), listData);
-			newsListView.setAdapter(adapter);
-		}else{
-			adapter.setData(listData);
-		}
-		if( ptrLayout.isRefreshing() ){
-			ptrLayout.setRefreshComplete();
-		}
-	}
 	
 	/**
 	 * initialize ActionBar pull to refresh widget
@@ -184,6 +145,47 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			}
 		});
 	}
+	
+	private void getArticles(){
+		ProgressUtil.show(getActivity());
+		aService.getArticles(new SimpleVicResponseListener() {
+			@Override
+			public void onSuccess(ResData data) {
+				if( data == null || data.getData() == null ) {
+					NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
+				}else{
+					setAdapterData(data.getData());
+				}
+				ProgressUtil.dismiss();
+			}
+			@Override
+			public void onFailure(int httpResponseCode, String responseBody) {
+				if( Constant.DEBUG ){
+					LogUtil.show("Status : "+ httpResponseCode);
+					LogUtil.show("Response Body : "+ responseBody);
+				}
+				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
+				ProgressUtil.dismiss();
+				ptrLayout.setRefreshComplete();
+			}
+		});
+	}
+	
+	private void setAdapterData(Object data){
+		if( data == null ) return;
+		listData = aService.mapListToModelList( (ArrayList<LinkedTreeMap<String,Object>>)data );
+		if( !isRefresh || adapter == null ){
+			adapter = new ArticlesAdapter(getActivity(), listData);
+			newsListView.setAdapter(adapter);
+		}else{
+			adapter.setData(listData);
+		}
+		if( ptrLayout.isRefreshing() ){
+			ptrLayout.setRefreshComplete();
+		}
+	}
+	
+	
 
 	@Override
 	public void onRefreshStarted(View view) {
@@ -214,6 +216,21 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				NotifyUtil.toast(getActivity(), getString(R.string.no_more_data));
+				isLoadingNow = false;
+			}
+			@Override
+			public void onEmptyResponse() {
+				if( Constant.DEBUG ){
+					super.onEmptyResponse();
+				}
+				NotifyUtil.toast(getActivity(), getString(R.string.no_more_data));
+				isLoadingNow = false;
+				if( ProgressUtil.isShowing() ){
+					ProgressUtil.dismiss();
+				}
+				if( ptrLayout.isRefreshing() ){
+					ptrLayout.setRefreshComplete();
+				}
 			}
 		});
 	}
@@ -265,7 +282,7 @@ public class MainNewsFragment extends BaseSherlockFragment implements OnRefreshL
 			clickedArticle = adapter.getItem(id);
 			Intent intent = new Intent(getActivity() , ArticleDetailActivity.class);
 			intent.putExtra("article_id", clickedArticle.getId());
-			startActivityForResult(intent , DETAIL_ACTIVITY_REQUEST);
+			startActivityForResult(intent , Constant.DETAIL_ACTIVITY_REQUEST);
 		}
 	}
 	

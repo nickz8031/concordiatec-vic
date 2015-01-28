@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="user_wallpaper_height">230dp</dimen>
-    <dimen name="user_tab_menu_layout_height">53dp</dimen>
-    <dimen name="user_tab_menu_height">48dp</dimen>
+    <dimen name="user_tab_menu_layout_height">43dp</dimen>
+    <dimen name="user_tab_margin_top">283dp</dimen>
+    <dimen name="user_tab_menu_height">40dp</dimen>
     <dimen name="user_tab_menu_padding_top">3dp</dimen>
     <dimen name="user_tab_menu_label_padding">12dp</dimen>
     <dimen name="user_tab_menu_margin_left">16dp</dimen>
     
+    <dimen name="user_avatar_size">100dp</dimen>
+    <dimen name="user_name_margin_vert">5dp</dimen>
     
-    <string name="user_tab_menu_1">소식</string>
-    <string name="user_tab_menu_2">가게</string>
-    <string name="user_tab_menu_3">팔로어</string>
-    <string name="user_tab_menu_4">팔로잉</string>  
+    <string name="user_news">소식</string>
+    <string name="user_stores">가게</string>
+    <string name="user_follower">팔로어</string>
+    <string name="user_following">팔로잉</string>  
+    
+    <string name="follow_btn_string">팔로우</string>
+    
 </resources>

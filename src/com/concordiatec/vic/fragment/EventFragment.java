@@ -25,13 +25,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import com.concordiatec.vic.adapter.MainEventAdapter;
+import com.concordiatec.vic.adapter.EventsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.model.Coupon;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.R;
 
-public class MainEventFragment extends BaseSherlockFragment implements OnRefreshListener {
+public class EventFragment extends BaseSherlockFragment implements OnRefreshListener {
 
 	private View rootView;
 	private ListView eventListView;
@@ -81,7 +81,7 @@ public class MainEventFragment extends BaseSherlockFragment implements OnRefresh
 		listHeaderPaddingView.setLayoutParams(params);
 		eventListView.addHeaderView(listHeaderPaddingView);
 		
-		eventListView.setAdapter(new MainEventAdapter(getActivity(), listData));
+		eventListView.setAdapter(new EventsAdapter(getActivity(), listData));
 		
 		eventListView.setOnItemClickListener(new OnItemClickListener() {
 
