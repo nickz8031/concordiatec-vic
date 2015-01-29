@@ -138,16 +138,12 @@ public class ArticlesAdapter extends VicBaseAdapter {
 			holder.writerPhoto = (CircleImageView) convertView.findViewById(R.id.news_writer_photo);
 			holder.coverImage = (ImageView) convertView.findViewById(R.id.news_content_img);
 			
-			if( !StringUtil.isEmpty(apData.getShopName()) ){
-				holder.storeName = (TextView) convertView.findViewById(R.id.news_store_name);
-				holder.storeAddress = (TextView) convertView.findViewById(R.id.news_store_addr);
-			}
-
-			if( lastestComments != null && lastestComments.size() > 0 ){
-				holder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
-				holder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
-				holder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
-			}
+			holder.storeName = (TextView) convertView.findViewById(R.id.news_store_name);
+			holder.storeAddress = (TextView) convertView.findViewById(R.id.news_store_addr);
+			
+			holder.commentorPhotosLayout = (LinearLayout) convertView.findViewById(R.id.news_commentor_photos);
+			holder.commentLayout = (RelativeLayout) convertView.findViewById(R.id.display_comment_layout);
+			holder.commentFlip = (CustomViewFlipper) convertView.findViewById(R.id.display_comment_content);
 			
 			//click up icon do up process
 			holder.likeCount.setOnClickListener(new LikeIconClickListener(apData.getId()));
@@ -203,14 +199,10 @@ public class ArticlesAdapter extends VicBaseAdapter {
 		}
 		
 		//if has comments
-		if( lastestComments != null 
-				&& lastestComments.size() > 0 
-				&& holder.commentLayout != null
-				&& holder.commentorPhotosLayout != null
-				&& holder.commentFlip != null ){
+		if( lastestComments != null && lastestComments.size() > 0 ){
 			//initialize
-			holder.commentorPhotosLayout.removeAllViewsInLayout();
-			holder.commentFlip.removeAllViewsInLayout();
+			holder.commentorPhotosLayout.removeAllViews();
+			holder.commentFlip.removeAllViews();
 			holder.commentFlip.setOnFlipListener(null);
 			holder.commentorPhotosLayout.setVisibility(View.GONE);
 			holder.commentLayout.setVisibility(View.GONE);

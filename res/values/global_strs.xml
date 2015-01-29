@@ -12,6 +12,7 @@
 	
 	<string name="unit_zang">장</string>
 	
+	<string name="user_panel">유저정보</string>
     <string name="setting">설정</string>
     <string name="login">로그인</string>
     <string name="signup">회원가입</string>
@@ -74,6 +75,7 @@
     <string name="loading">로딩 중 입니다.</string>
     <string name="server_no_responding">서버로부터 응답이 없습니다.</string>
     <string name="double_back_press">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="error_request">통신과정에 오류가 발생하였습니다.</string>
     <string name="failed_to_request_data">데이터 요청에 실패하였습니다.</string>
     <string name="no_data">데이터가 없습니다.</string>
     <string name="no_more_data">더 이상 데이터가 없습니다.</string>

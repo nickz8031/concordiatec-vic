@@ -18,5 +18,7 @@ public class ApiURL {
 	public static final String LOGIN = "/?r=site/login";
 	public static final String SIGNUP = "/?r=site/join";
 	
+	public static final String USER_INFO = "/?r=user/info";
+	
 	public static final String REPORT_COMMENT = "/?r=report/comment";
 }

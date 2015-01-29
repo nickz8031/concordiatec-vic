@@ -16,20 +16,20 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
 
 public class ArticleDetailService extends HttpUtil implements IVicService {
-
 	private Context context;
-	
-	public ArticleDetailService( Context context ) {
+
+	public ArticleDetailService(Context context) {
 		this.context = context;
 	}
-	
+
 	@Override
 	public List<Article> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
 		return null;
 	}
-	
+
 	/**
 	 * parse Map data to java bean model which from detail
+	 * 
 	 * @param map
 	 * @return
 	 */
@@ -37,68 +37,68 @@ public class ArticleDetailService extends HttpUtil implements IVicService {
 	@Override
 	public Article mapToModel(LinkedTreeMap<String, Object> map) {
 		Article article = new Article();
-		article.setId( getIntValue(map.get("id")) );
-		article.setKind( getIntValue(map.get("kind")) );
-		article.setEffectId( getIntValue(map.get("effected_id")) );
-		article.setContent(map.get("content").toString());
-		article.setPastTime( getIntValue(map.get("pasttime")) );
-		article.setWriterId( getIntValue(map.get("writer_id")) );
-		article.setWriterName( map.get("writer_name").toString() );
-		
+		if (map.get("id") != null) article.setId(getIntValue(map.get("id")));
+		if (map.get("kind") != null) article.setKind(getIntValue(map.get("kind")));
+		if (map.get("effected_id") != null) article.setEffectId(getIntValue(map.get("effected_id")));
+		if (map.get("content") != null) article.setContent(map.get("content").toString());
+		if (map.get("pasttime") != null) article.setPastTime(getIntValue(map.get("pasttime")));
+		if (map.get("writer_id") != null) article.setWriterId(getIntValue(map.get("writer_id")));
+		if (map.get("writer_name") != null) article.setWriterName(map.get("writer_name").toString());
 		String serverPath = getServerImgPath(article.getWriterId());
-		String pUrl = serverPath + map.get("writer_photo").toString();
-		article.setWriterPhotoURL( pUrl );
-		
-		ArrayList<LinkedTreeMap<String,Object>> imgList = (ArrayList<LinkedTreeMap<String,Object>>)map.get("images");
-		List<ArticleImages> tImageList = ArticleDetailImageService.single(context, serverPath).mapListToModelList(imgList);
-		article.setImages( tImageList );
-		int minHeight = 0;
-		if( tImageList.size() > 0 ){
-			minHeight = tImageList.get(0).getHeight();
-			for (int i = 1; i < tImageList.size(); i++) {
-				if( minHeight > tImageList.get(i).getHeight() ){
-					minHeight = tImageList.get(i).getHeight();
+		if (map.get("writer_photo") != null) {
+			String pUrl = serverPath + map.get("writer_photo").toString();
+			article.setWriterPhotoURL(pUrl);
+		}
+		if (map.get("images") != null) {
+			ArrayList<LinkedTreeMap<String, Object>> imgList = (ArrayList<LinkedTreeMap<String, Object>>) map.get("images");
+			List<ArticleImages> tImageList = ArticleDetailImageService.single(context, serverPath).mapListToModelList(imgList);
+			article.setImages(tImageList);
+			int minHeight = 0;
+			if (tImageList.size() > 0) {
+				minHeight = tImageList.get(0).getHeight();
+				for (int i = 1; i < tImageList.size(); i++) {
+					if (minHeight > tImageList.get(i).getHeight()) {
+						minHeight = tImageList.get(i).getHeight();
+					}
 				}
 			}
+			article.setMinHeight(minHeight);
 		}
-		article.setMinHeight(minHeight);
-		article.setShopId( getIntValue(map.get("shop_id")) );
-		article.setShopAddr(map.get("shop_addr").toString());
-		article.setShopGroupId( getIntValue(map.get("shop_group")) );
-		article.setShopName(map.get("shop_name").toString());
-		article.setLikeCount( getIntValue(map.get("like_count")) );
-		article.setCommentCount( getIntValue(map.get("comment_count")) );
-		
-		boolean isLike = false;
-		if( map.get("is_like").toString().trim().equals("1.0") ){
-			isLike = true;
+		if (map.get("shop_id") != null) article.setShopId(getIntValue(map.get("shop_id")));
+		if (map.get("shop_addr") != null) article.setShopAddr(map.get("shop_addr").toString());
+		if (map.get("shop_group") != null) article.setShopGroupId(getIntValue(map.get("shop_group")));
+		if (map.get("shop_name") != null) article.setShopName(map.get("shop_name").toString());
+		if (map.get("like_count") != null) article.setLikeCount(getIntValue(map.get("like_count")));
+		if (map.get("comment_count") != null) article.setCommentCount(getIntValue(map.get("comment_count")));
+		if (map.get("is_like") != null) {
+			boolean isLike = false;
+			if ( getIntValue(map.get("is_like")) == 1 ) {
+				isLike = true;
+			}
+			article.setLike(isLike);
 		}
-		article.setLike( isLike );
-		
 		return article;
 	}
-	
+
 	/**
 	 * get article detail
+	 * 
 	 * @param listener
-	 * @param articleId article id
+	 * @param articleId
+	 *            article id
 	 */
-	public void getDetail(int articleId ,VicResponseListener listener){
+	public void getDetail(int articleId, VicResponseListener listener) {
 		RequestParams params = new RequestParams();
-		if( articleId > 0 ){
+		if (articleId > 0) {
 			params.put("id", articleId);
-		}else{
+		} else {
 			LogUtil.show("error request[ no detail article id.]");
 			return;
 		}
 		User loginUser = new UserService(context).getLoginUser();
-		if( loginUser != null ){
+		if (loginUser != null) {
 			params.put("user", loginUser.usrId);
 		}
 		post(ApiURL.ARTICLE_DETAIL, params, new VicResponseHandler(listener));
-		
-	}	
+	}
 }
-
-
-

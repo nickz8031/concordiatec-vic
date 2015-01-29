@@ -24,6 +24,7 @@
         android:orientation="vertical" >
 
         <com.concordiatec.vic.widget.CircleImageView
+            android:id="@+id/user_profile_photo"
             android:layout_width="@dimen/user_avatar_size"
             android:layout_height="@dimen/user_avatar_size"
             android:layout_marginTop="15dp"
@@ -57,46 +58,61 @@
         <!-- count of totals -->
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:background="@drawable/user_wallpaper_tag" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
+                android:layout_marginRight="5dp"
                 android:text="@string/user_news"
-                android:textColor="@color/background_color_wrapper"
+                android:textColor="@color/more_deep_light_font"
                 android:textSize="@dimen/text_14" />
 
             <TextView
+                android:id="@+id/user_article_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:text="@string/demo_like_count"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_12"
+                android:textColor="@color/theme_light_font"
+                android:textSize="@dimen/text_14"
                 android:textStyle="bold" />
-
+            
+            <TextView 
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="@color/more_deep_light_font"/>
+            
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:text="@string/user_follower"
-                android:textColor="@color/background_color_wrapper"
+                android:layout_marginRight="5dp"
+                android:text="@string/user_like_attention_stores"
+                android:textColor="@color/more_deep_light_font"
                 android:textSize="@dimen/text_14" />
 
             <TextView
+                android:id="@+id/user_attention_store_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:text="@string/demo_like_count"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_12"
+                android:textColor="@color/theme_light_font"
+                android:textSize="@dimen/text_14"
                 android:textStyle="bold" />
 
+            <!-- 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,6 +128,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_12"
                 android:textStyle="bold" />
+             -->
         </LinearLayout>
     </LinearLayout>
 

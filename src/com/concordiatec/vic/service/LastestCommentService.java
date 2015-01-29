@@ -6,6 +6,7 @@ import android.content.Context;
 import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.util.HttpUtil;
+import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class LastestCommentService extends HttpUtil implements IVicService {
@@ -39,10 +40,10 @@ public class LastestCommentService extends HttpUtil implements IVicService {
 			cmt.setUserPhoto( pUrl );
 		}
 		
-		if( map.get("comment_text") != null ) cmt.setCommentText( map.get("comment_text").toString() );
+		if( map.get("comment") != null ) cmt.setCommentText( map.get("comment").toString() );
 		if( map.get("plus_count") != null ) cmt.setPlusCount( getIntValue(map.get("plus_count")) );
 		
-		if(map.get("plus_count") != null && getIntValue( map.get("replied_user")) > 0 ){
+		if(map.get("replied_user") != null && getIntValue( map.get("replied_user")) > 0 ){
 			int replyWhose = getIntValue( map.get("replied_user") );
 			if( replyWhose > 0 ){
 				cmt.setReplyWhose( replyWhose );
@@ -51,12 +52,5 @@ public class LastestCommentService extends HttpUtil implements IVicService {
 		}
 		
 		return cmt;
-	}
-	
-	public static LastestCommentService single( Context context ){
-		if( lcs == null ){
-			lcs = new LastestCommentService(context);
-		}
-		return lcs;
 	}
 }

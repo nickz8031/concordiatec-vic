@@ -117,12 +117,12 @@ public class ArticleDetailCommentAdapter extends BaseAdapter {
 				content = content + " +" + comment.getPlusCount();
 				
 			}			
-			if( comment.getReplyId() > 0 ){
+			if( comment.getReplyWhose() > 0 ){
 				content = "@"+comment.getReplyWhoseName() + " " + content;
 			}
 			SpannableString span = new SpannableString(content);
-			if( comment.getReplyId() > 0 ){
-				final int replyTarget = comment.getReplyWhose();
+			final int replyTarget = comment.getReplyWhose();
+			if( replyTarget > 0 ){
 				StringUtil.setClickableText(span, 0, comment.getReplyWhoseName().length()+1, new IVicClickableSpan() {
 					@Override
 					public void onClick() {

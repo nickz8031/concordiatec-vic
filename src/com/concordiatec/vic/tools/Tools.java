@@ -36,6 +36,7 @@ public class Tools {
 	 * @return
 	 */
 	public static int getIntValue(Object object) {
+		if( object == null ) return 0;
 		return Double.valueOf(object.toString()).intValue();
 	}
 

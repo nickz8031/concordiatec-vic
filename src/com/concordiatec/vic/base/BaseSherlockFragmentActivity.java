@@ -113,17 +113,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		}
 		
 	}
-	
-	//-------------------test
-	protected final class ActionbarAvatarClickTest implements OnClickListener{
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent( getApplicationContext() , UserActivity.class );
-			startActivity(intent);
-		}
-	} 
-	//-------------------test
-	
+
 	protected final class ActionbarAvatarClick implements OnClickListener{
 		@Override
 		public void onClick(View v) {

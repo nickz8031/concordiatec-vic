@@ -13,9 +13,10 @@
     
     <string name="user_news">소식</string>
     <string name="user_stores">가게</string>
+    <string name="user_like_attention_stores">찜한 가게</string>
     <string name="user_follower">팔로어</string>
     <string name="user_following">팔로잉</string>  
     
-    <string name="follow_btn_string">팔로우</string>
+    <string name="follow_btn_string">관심등록</string>
     
 </resources>

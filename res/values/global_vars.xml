@@ -10,12 +10,13 @@
     <color name="light_font">#666666</color>
     <color name="normal_light_font">#FF999999</color>
     <color name="deep_light_font">#FFBBBBBB</color>
+    <color name="more_deep_light_font">#FFDDDDDD</color>
     <!-- /end -->
     
     <color name="bule_overlay">#660D92DD</color>
     <!-- <color name="theme_color">#2cb1e1</color>-->
     <color name="theme_color">#dd4b39</color>
-    <color name="theme_light_font">#ff7970</color>
+    <color name="theme_light_font">#f6dd00</color>
     <color name="alpha_3_theme_color">#33dd4b39</color>
     <color name="theme_wrap_color">#f44336</color>
     <color name="background_color">#FFEEEEEE</color>

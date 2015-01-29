@@ -39,6 +39,12 @@ public class UserService extends HttpUtil implements IVicService {
 		}
 	} 
 	
+	public void getUserInfo( int userId , VicResponseListener listener ){
+		RequestParams params = new RequestParams();
+		params.put("id", userId);
+		post(ApiURL.USER_INFO, params, new VicResponseHandler(listener));
+	}
+	
 	/**
 	 * login
 	 * @param account

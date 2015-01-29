@@ -135,16 +135,15 @@ public class CommentService extends HttpUtil implements IVicService {
 	@Override
 	public Comment mapToModel(LinkedTreeMap<String, Object> map) {
 		Comment cmt = new Comment();
-		cmt.setId( getIntValue(map.get("id")) );
+		cmt.setId( getIntValue(map.get("comment_id")) );
 		cmt.setWriterId( getIntValue(map.get("user_id")) );
-		cmt.setWriterName( map.get("name").toString() );
-		cmt.setWriterPhotoURL( getServerImgPath( getIntValue(map.get("user_id")) , map.get("photo").toString()) );
-		cmt.setContent( map.get("comment").toString() );
-		cmt.setPastTime( getIntValue(map.get("pastime")) );
+		if( map.get("user_name") != null ) cmt.setWriterName( map.get("user_name").toString() );
+		if( map.get("user_photo") != null ) cmt.setWriterPhotoURL( getServerImgPath( getIntValue(map.get("user_id")) , map.get("user_photo").toString()) );
+		if( map.get("comment") != null ) cmt.setContent( map.get("comment").toString() );
+		cmt.setPastTime( getIntValue(map.get("created")) );
 		
-		cmt.setReplyId(getIntValue(map.get("replied_comment")));
 		cmt.setReplyWhose(getIntValue(map.get("replied_user")));
-		cmt.setReplyWhoseName(map.get("replied_username").toString());
+		if( map.get("replied_username") != null ) cmt.setReplyWhoseName(map.get("replied_username").toString());
 		
 		cmt.setPlusCount(getIntValue(map.get("plus_count")));
 		

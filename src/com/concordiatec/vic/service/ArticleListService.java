@@ -110,9 +110,11 @@ public class ArticleListService extends HttpUtil implements IVicService{
 		}
 		article.setLike( isLike );
 		
-		ArrayList<LinkedTreeMap<String, Object>> commentList = (ArrayList<LinkedTreeMap<String,Object>>)map.get("lastest_comments");
-		List<LastestComment> commList = LastestCommentService.single(context).mapListToModelList( commentList );
-		article.setLatestComments( commList );
+		if( map.get("lastest_comments") != null ){
+			ArrayList<LinkedTreeMap<String, Object>> commentList = (ArrayList<LinkedTreeMap<String,Object>>)map.get("lastest_comments");
+			List<LastestComment> commList = new LastestCommentService(context).mapListToModelList( commentList );
+			article.setLatestComments( commList );
+		}
 		
 		return article;
 	}

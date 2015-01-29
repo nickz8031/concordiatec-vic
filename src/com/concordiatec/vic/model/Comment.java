@@ -12,6 +12,10 @@ public class Comment extends VicModel implements Serializable {
 	 */
 	private int id;
 	
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", articleId=" + articleId + ", writerId=" + writerId + ", writerName=" + writerName + ", writerPhotoURL=" + writerPhotoURL + ", content=" + content + ", pastTime=" + pastTime + ", plusCount=" + plusCount + ", replyId=" + replyId + ", replyWhose=" + replyWhose + ", replyWhoseName=" + replyWhoseName + ", isPlus=" + isPlus + "]";
+	}
 	/**
 	 * 댓글 소속 원글 아이디
 	 */
@@ -42,7 +46,7 @@ public class Comment extends VicModel implements Serializable {
 	 */
 	private int plusCount;
 	/**
-	 * reply comment id
+	 * replied comment id
 	 */
 	private int replyId;
 	/**
@@ -105,12 +109,6 @@ public class Comment extends VicModel implements Serializable {
 	public void setPlus(boolean isPlus) {
 		this.isPlus = isPlus;
 	}
-	public int getReplyId() {
-		return replyId;
-	}
-	public void setReplyId(int replyId) {
-		this.replyId = replyId;
-	}
 	public int getReplyWhose() {
 		return replyWhose;
 	}
@@ -128,6 +126,12 @@ public class Comment extends VicModel implements Serializable {
 	}
 	public void setArticleId(int articleId) {
 		this.articleId = articleId;
+	}
+	public int getReplyId() {
+		return replyId;
+	}
+	public void setReplyId(int replyId) {
+		this.replyId = replyId;
 	}
 	
 }
