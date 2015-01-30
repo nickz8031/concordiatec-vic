@@ -11,7 +11,12 @@
 	<string name="time_format_string_year"> 년 전</string>
 	
 	<string name="unit_zang">장</string>
-	
+	<string name="unit_won">원</string>
+	<string name="meter">m</string>
+    <string name="kilometer">km</string>
+    
+	<string name="event_end_label">마감</string>
+	<string name="coupon_detail_title">쿠폰정보</string>
 	<string name="user_panel">유저정보</string>
     <string name="setting">설정</string>
     <string name="login">로그인</string>
@@ -31,7 +36,11 @@
     <string name="gender">성별</string>
     <string name="female">여성</string>
     <string name="male">남성</string>
-    
+    <string name="end">종료</string>
+    <string name="end_soon">마감임박</string>
+    <string name="get_coupon">쿠폰받기</string>
+    <string name="use_coupon">사용하기</string>
+    <string name="exceed_limit">기간만료</string>
     
     <!-- login & register words -->
     <string name="nickname_hint">닉네임 입력</string>
@@ -103,7 +112,7 @@
 	<string name="demo_detail_like_share">0명이 이 소식을 좋아함. 0명이 다시 공유함</string>
 	<!-- coupon demo string -->
 	<string name="demo_shop_name">가게명</string>
-	<string name="demo_coupon_title">이벤트 시간</string>
+	<string name="demo_coupon_title">휘트니스 50,000 추가할인권</string>
 	
 	
 </resources>

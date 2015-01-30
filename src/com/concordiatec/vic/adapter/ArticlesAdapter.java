@@ -197,15 +197,16 @@ public class ArticlesAdapter extends VicBaseAdapter {
 			setDislike( holder.likeCount );
 			holder.likeCount.setTag(null);
 		}
+
+		//initialize
+		holder.commentorPhotosLayout.removeAllViews();
+		holder.commentFlip.removeAllViews();
+		holder.commentFlip.setOnFlipListener(null);
+		holder.commentorPhotosLayout.setVisibility(View.GONE);
+		holder.commentLayout.setVisibility(View.GONE);
 		
 		//if has comments
 		if( lastestComments != null && lastestComments.size() > 0 ){
-			//initialize
-			holder.commentorPhotosLayout.removeAllViews();
-			holder.commentFlip.removeAllViews();
-			holder.commentFlip.setOnFlipListener(null);
-			holder.commentorPhotosLayout.setVisibility(View.GONE);
-			holder.commentLayout.setVisibility(View.GONE);
 			
 			for (int i = 0; i < lastestComments.size(); i++) {
 				LastestComment c = lastestComments.get(i);

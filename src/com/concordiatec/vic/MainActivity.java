@@ -7,12 +7,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
 import com.concordiatec.vic.fragment.EventFragment;
 import com.concordiatec.vic.fragment.StoreFragment;
 import com.concordiatec.vic.fragment.ArticlesFragment;
 import com.concordiatec.vic.service.UserService;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.R;
 import android.content.Intent;
@@ -23,21 +23,30 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 
 public class MainActivity extends BaseSherlockFragmentActivity {
 	private ViewPager mainVp;
 	private List<Fragment> viewPagerViews;
 	private int initFragmentPosition = 0;
+	
+	/**
+	 * back button clicked variables
+	 */
+	private static int backFlagChangeSec = 0;
+	private static int backFlagMaxSec = 2;
+	private Timer backPressTimer;
+	private TimerTask backPressTask;
+	
 	// tab underline
 	private int[] tabLineIds = { R.id.tab_active_line_1, R.id.tab_active_line_2, R.id.tab_active_line_3 };
 	// tab
 	private int[] tabIds = { R.id.main_tab_select_1, R.id.main_tab_select_2, R.id.main_tab_select_3 };
-
-	private ArticlesFragment newsFragment;
+	private ArticlesFragment articlesFragment;
 	private EventFragment eventFragment;
-	private StoreFragment infoFragment;
-	
+	private StoreFragment storeFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,12 +83,13 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		}
 		return true;
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -91,22 +101,22 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		}
 		return true;
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		newsFragment.responseResult(resultCode, data);
+		articlesFragment.responseResult(resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void initPages() {
-		newsFragment = new ArticlesFragment();
-		eventFragment = new EventFragment();
-		infoFragment = new StoreFragment();
 		
+		articlesFragment = new ArticlesFragment();
+		eventFragment = new EventFragment();
+		storeFragment = new StoreFragment();
 		viewPagerViews = new ArrayList<Fragment>();
-		viewPagerViews.add(newsFragment);
+		viewPagerViews.add(articlesFragment);
 		viewPagerViews.add(eventFragment);
-		viewPagerViews.add(infoFragment);
+		viewPagerViews.add(storeFragment);
 		
 		mainVp = (ViewPager) findViewById(R.id.main_vp);
 		mainVp.setAdapter(new VpAdapter());
@@ -149,13 +159,26 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 			setFragmentActive(arg0);
 		}
 	}
-	private static int backFlagChangeSec = 0;
-	private static int backFlagMaxSec = 2;
-	private Timer backPressTimer;
-	private TimerTask backPressTask;
+	
 
+	
+	private boolean isDidFragmentBackPressed( BaseSherlockFragment fragClass ){
+		if( fragClass.backPressFlag() ){
+			fragClass.backPressed();
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
 	@Override
 	public void onBackPressed() {
+		if( mainVp.getCurrentItem() == 0 && isDidFragmentBackPressed( articlesFragment ) ){
+			return;
+		} else if( mainVp.getCurrentItem() == 1 && isDidFragmentBackPressed( eventFragment ) ){
+			return;
+		}
+
 		if (backFlagChangeSec > 0 && backFlagChangeSec <= backFlagMaxSec) {
 			closeApplication();
 		} else {
@@ -179,16 +202,25 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 			backPressTimer.schedule(backPressTask, 0, 1000);
 			NotifyUtil.toast(this, getString(R.string.double_back_press));
 		}
+		
+		
+		
 	}
 
 	public void closeApplication() {
 		finish();
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
-	
+
 	private final class VpAdapter extends FragmentPagerAdapter {
 		public VpAdapter() {
 			super(getSupportFragmentManager());
+		}
+		
+		@Override
+		public void setPrimaryItem(ViewGroup container, int position, Object object) {
+			// TODO Auto-generated method stub
+			super.setPrimaryItem(container, position, object);
 		}
 
 		@Override

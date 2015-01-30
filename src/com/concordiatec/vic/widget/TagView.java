@@ -47,6 +47,11 @@ public class TagView extends TextView {
 
     private int tagPaddingHor;
     private int tagPaddingVert;
+    private int tagPaddingLeft;
+    private int tagPaddingRight;
+    private int tagPaddingTop;
+    private int tagPaddingBottom;
+    
     private int tagCornerRadius;
     private boolean uppercaseTags = DEFAULT_UPPERCASE;
 
@@ -62,8 +67,23 @@ public class TagView extends TextView {
         super(context, attrs, defStyle);
         if (attrs != null) {
             TypedArray attributesArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TagView, defStyle, R.style.Widget_TagView);
-            tagPaddingHor = attributesArray.getDimensionPixelSize(R.styleable.TagView_tagPaddingHor, dipToPixels(DEFAULT_PADDING));
-            tagPaddingVert = attributesArray.getDimensionPixelSize(R.styleable.TagView_tagPaddingVert, dipToPixels(DEFAULT_PADDING));
+            int defaultPadding = dipToPixels(DEFAULT_PADDING);
+            tagPaddingLeft = attributesArray.getDimensionPixelSize(R.styleable.TagView_paddingLeft, 0);
+            tagPaddingRight = attributesArray.getDimensionPixelSize(R.styleable.TagView_paddingRight, 0);
+            tagPaddingHor = attributesArray.getDimensionPixelSize(R.styleable.TagView_paddingHor, defaultPadding);
+            if( tagPaddingLeft == 0 & tagPaddingRight == 0 ){
+            	tagPaddingLeft = tagPaddingHor;
+            	tagPaddingRight = tagPaddingHor;
+            }
+            
+            tagPaddingTop = attributesArray.getDimensionPixelSize(R.styleable.TagView_paddingTop, 0);
+            tagPaddingBottom = attributesArray.getDimensionPixelSize(R.styleable.TagView_paddingBottom, 0);
+            tagPaddingVert = attributesArray.getDimensionPixelSize(R.styleable.TagView_paddingVert, defaultPadding);
+            if( tagPaddingTop == 0 & tagPaddingBottom == 0 ){
+            	tagPaddingTop = tagPaddingVert;
+            	tagPaddingBottom = tagPaddingVert;
+            }
+            
             tagCornerRadius = attributesArray.getDimensionPixelSize(R.styleable.TagView_tagCornerRadius, dipToPixels(DEFAULT_CORNER_RADIUS));
             uppercaseTags = attributesArray.getBoolean(R.styleable.TagView_tagUppercase, DEFAULT_UPPERCASE);
             attributesArray.recycle();
@@ -143,8 +163,10 @@ public class TagView extends TextView {
     private TagSpan createSpan(String text, int color) {
         return new TagSpan(
                 text,
-                tagPaddingHor,
-                tagPaddingVert,
+                tagPaddingLeft,
+                tagPaddingTop,
+                tagPaddingRight,
+                tagPaddingBottom,
                 getTextSize(),
                 getTypeface() == Typeface.DEFAULT_BOLD,
                 getCurrentTextColor(),
@@ -206,8 +228,11 @@ public class TagView extends TextView {
     }
 
     private static class TagSpan extends ImageSpan {
-        public TagSpan(String text, int tagPaddingHor,int tagPaddingVert, float textSize, boolean bold, int textColor, int tagColor, float roundCornersFactor) {
-            super(new TagDrawable(text, tagPaddingHor, tagPaddingVert, textSize, bold, textColor, tagColor, roundCornersFactor));
+    	public TagSpan(String text, int tagPaddingHor,int tagPaddingVert, float textSize, boolean bold, int textColor, int tagColor, float roundCornersFactor) {
+            this(text, tagPaddingHor, tagPaddingVert, tagPaddingHor, tagPaddingVert, textSize, bold, textColor, tagColor, roundCornersFactor);
+        }
+    	public TagSpan(String text, int pLeft , int pTop , int pRight , int pBottom , float textSize, boolean bold, int textColor, int tagColor, float roundCornersFactor) {
+            super(new TagDrawable(text, pLeft, pTop, pRight, pBottom, textSize, bold, textColor, tagColor, roundCornersFactor));
         }
     }
 
@@ -222,7 +247,11 @@ public class TagView extends TextView {
         private Rect backgroundPadding;
         
         public TagDrawable(String text, int tagPaddingHor, int tagPaddingVert, float textSize, boolean bold, int textColor, int tagColor, float roundCornersFactor) {
-            this.backgroundPadding = new Rect(tagPaddingHor, tagPaddingVert, tagPaddingHor, tagPaddingVert);
+            this(text, tagPaddingHor, tagPaddingVert, tagPaddingHor, tagPaddingVert, textSize, bold, textColor, tagColor, roundCornersFactor);
+        }
+        
+        public TagDrawable(String text , int pLeft , int pTop , int pRight , int pBottom , float textSize, boolean bold, int textColor, int tagColor, float roundCornersFactor) {
+            this.backgroundPadding = new Rect(pLeft, pTop, pRight, pBottom);
             this.text = text;
             this.roundCornersFactor = roundCornersFactor;
             this.textContentPain = new Paint();

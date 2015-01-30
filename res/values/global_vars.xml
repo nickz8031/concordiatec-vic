@@ -19,7 +19,7 @@
     <color name="theme_light_font">#f6dd00</color>
     <color name="alpha_3_theme_color">#33dd4b39</color>
     <color name="theme_wrap_color">#f44336</color>
-    <color name="background_color">#FFEEEEEE</color>
+    <color name="background_color">#e6e7e7</color>
     <color name="background_color_wrapper">#FFDDDDDD</color>
     <color name="background_color_alpha">#70EEEEEE</color>
     <color name="alpha_0">#33000000</color>

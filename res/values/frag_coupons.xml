@@ -4,21 +4,30 @@
 	<color name="coupon_list_price">#BDBDBD</color>
     <color name="coupon_normal_ctrl_text">#757575</color>
     <color name="coupon_ctrl_btn_border">#0F000000</color>
+    <color name="cp_time_color">#f1842d</color>
+    
+    
 <!-- dimenssions -->
-	<dimen name="cp_img_width">100dp</dimen>
-    <dimen name="cp_img_height">100dp</dimen>
-    <dimen name="cp_img_margin_top">6dp</dimen>
+	<dimen name="cp_img_width">98dp</dimen>
+    <dimen name="cp_img_height">98dp</dimen>
+    <dimen name="cp_img_margin_top">16dp</dimen>
     <dimen name="cp_img_margin_bottom">16dp</dimen>
     <dimen name="cp_img_margin_h">16dp</dimen>
+    <dimen name="cp_img_margin_rgt">16dp</dimen>
+    <dimen name="cp_distance_margin_top">17dp</dimen>
     
     <dimen name="cp_info_margin_h">6dp</dimen>
-    <dimen name="cp_info_margin_top">6dp</dimen>
+    <dimen name="cp_info_margin_top">16dp</dimen>
     
     <!-- coupon text info -->
-    <dimen name="cp_info_price_margin">3dp</dimen>
+    <dimen name="cp_info_price_margin">8dp</dimen>
     
-    <dimen name="cp_ctrl_btn_layout_height">40dp</dimen>
+    <dimen name="cp_ctrl_btn_layout_height">50dp</dimen>
     <dimen name="cp_ctrl_margin_top">10dp</dimen>
+    <dimen name="cp_ctrl_drawable_padding">5dp</dimen>
+    <dimen name="cp_ctrl_btn_padding_right">10dp</dimen>
+    <dimen name="cp_ctrl_btn_padding_horizontal">8dp</dimen>
+    <dimen name="cp_ctrl_btn_padding_verticle">4dp</dimen>
     
 <!-- strings -->
 	<string name="cp_surplus">잔여</string>

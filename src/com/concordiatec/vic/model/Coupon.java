@@ -4,100 +4,287 @@
 package com.concordiatec.vic.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Coupon extends VicModel implements Serializable {
-	/**
-	 * 쿠폰 아이디
-	 */
 	private int id;
-	/**
-	 * 쿠폰 타이틀
-	 */
-	private String couponTitle;
-	/**
-	 * 쿠폰 사용가능 시작 시간
-	 */
-	private int startTime;
-	/**
-	 * 쿠폰 마감시간
-	 */
-	private int endTime;
-	/**
-	 * 쿠폰 가격(?)
-	 */
-	private int listPrice;
-	/**
-	 * 쿠폰 실제 가격( 할인 후 가격 )
-	 */
+	private int shopId;
+	private int userId;
+	private String name;
+	private String image;
+	private int imageWidth;
+	private int imageHeight;
+	private List<String> notice;
 	private int price;
-	/**
-	 * 쿠폰 발행 수
-	 */
-	private int totalCount;
-	/**
-	 * 쿠폰 잔여 량
-	 */
-	private int surplusCount;
-	/**
-	 * 쿠폰 발행 가게	
-	 */
-	private Shop shop;
-	
-	
+	private int listPrice;
+	private int quantity;
+	private int total;
+	private String startTime;
+	private String endTime;
+	private String useStart;
+	private String useEnd;
+	private int surPlusTime;
+	private int kind;
+	private String kindName;
+	private int likeCount;
+	private int shareCount;
+	private int groupId;
+	private String groupName;
+	private String shopName;
+	private String shopPhoto;
+	private String shopAddr1;
+	private String shopAddr2;
+	private double shopLongitude;
+	private double shopLatitude;
+	private boolean isKeep;
+	private boolean isLike;
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getCouponTitle() {
-		return couponTitle;
+
+	public int getShopId() {
+		return shopId;
 	}
-	public void setCouponTitle(String couponTitle) {
-		this.couponTitle = couponTitle;
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
 	}
-	public int getStartTime() {
-		return startTime;
+
+	public int getUserId() {
+		return userId;
 	}
-	public void setStartTime(int startTime) {
-		this.startTime = startTime;
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
-	public int getEndTime() {
-		return endTime;
+
+	public String getName() {
+		return name;
 	}
-	public void setEndTime(int endTime) {
-		this.endTime = endTime;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public int getListPrice() {
-		return listPrice;
+
+	public String getImage() {
+		return image;
 	}
-	public void setListPrice(int listPrice) {
-		this.listPrice = listPrice;
+
+	public void setImage(String image) {
+		this.image = image;
 	}
+
+	public int getImageWidth() {
+		return imageWidth;
+	}
+
+	public void setImageWidth(int imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+
+	public int getImageHeight() {
+		return imageHeight;
+	}
+
+	public void setImageHeight(int imageHeight) {
+		this.imageHeight = imageHeight;
+	}
+
+	public List<String> getNotice() {
+		return notice;
+	}
+
+	public void setNotice(List<String> notice) {
+		this.notice = notice;
+	}
+
 	public int getPrice() {
 		return price;
 	}
+
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getTotalCount() {
-		return totalCount;
+
+	public int getListPrice() {
+		return listPrice;
 	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
+
+	public void setListPrice(int listPrice) {
+		this.listPrice = listPrice;
 	}
-	public int getSurplusCount() {
-		return surplusCount;
+
+	public int getQuantity() {
+		return quantity;
 	}
-	public void setSurplusCount(int surplusCount) {
-		this.surplusCount = surplusCount;
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
-	public Shop getShop() {
-		return shop;
+
+	public int getTotal() {
+		return total;
 	}
-	public void setShop(Shop shop) {
-		this.shop = shop;
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
-		
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getUseStart() {
+		return useStart;
+	}
+
+	public void setUseStart(String useStart) {
+		this.useStart = useStart;
+	}
+
+	public String getUseEnd() {
+		return useEnd;
+	}
+
+	public void setUseEnd(String useEnd) {
+		this.useEnd = useEnd;
+	}
+
+	public int getSurPlusTime() {
+		return surPlusTime;
+	}
+
+	public void setSurPlusTime(int surPlusTime) {
+		this.surPlusTime = surPlusTime;
+	}
+
+	public int getKind() {
+		return kind;
+	}
+
+	public void setKind(int kind) {
+		this.kind = kind;
+	}
+
+	public String getKindName() {
+		return kindName;
+	}
+
+	public void setKindName(String kindName) {
+		this.kindName = kindName;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public int getShareCount() {
+		return shareCount;
+	}
+
+	public void setShareCount(int shareCount) {
+		this.shareCount = shareCount;
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
+
+	public String getShopPhoto() {
+		return shopPhoto;
+	}
+
+	public void setShopPhoto(String shopPhoto) {
+		this.shopPhoto = shopPhoto;
+	}
+
+	public String getShopAddr1() {
+		return shopAddr1;
+	}
+
+	public void setShopAddr1(String shopAddr1) {
+		this.shopAddr1 = shopAddr1;
+	}
+
+	public String getShopAddr2() {
+		return shopAddr2;
+	}
+
+	public void setShopAddr2(String shopAddr2) {
+		this.shopAddr2 = shopAddr2;
+	}
+
+	public double getShopLongitude() {
+		return shopLongitude;
+	}
+
+	public void setShopLongitude(double shopLongitude) {
+		this.shopLongitude = shopLongitude;
+	}
+
+	public double getShopLatitude() {
+		return shopLatitude;
+	}
+
+	public void setShopLatitude(double shopLatitude) {
+		this.shopLatitude = shopLatitude;
+	}
+
+	public boolean isKeep() {
+		return isKeep;
+	}
+
+	public void setKeep(boolean isKeep) {
+		this.isKeep = isKeep;
+	}
+
+	public boolean isLike() {
+		return isLike;
+	}
+
+	public void setLike(boolean isLike) {
+		this.isLike = isLike;
+	}
 }

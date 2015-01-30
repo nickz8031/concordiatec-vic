@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="err_request_data_invalidate">Error request.</string>
+    <string name="err_request_data_invalidate">잘못된 요청입니다.</string>
 </resources>

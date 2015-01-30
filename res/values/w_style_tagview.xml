@@ -2,13 +2,14 @@
 <resources>
     <style name="Widget"/>
     <style name="Widget.TagView" parent="@android:style/Widget.TextView">
-        <item name="tagCornerRadius">2dp</item>
-        <item name="tagPaddingHor">8dp</item>
-        <item name="tagPaddingVert">2dp</item>
+        <item name="tagCornerRadius">0dp</item>
+        <item name="paddingHor">3dp</item>
+        <item name="paddingTop">2dp</item>
+        <item name="paddingBottom">3dp</item>
         <item name="tagUppercase">false</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/text_12</item>
         <item name="android:lineSpacingExtra">2sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

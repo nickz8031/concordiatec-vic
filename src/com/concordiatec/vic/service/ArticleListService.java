@@ -127,17 +127,4 @@ public class ArticleListService extends HttpUtil implements IVicService{
 		}
 		return models;
 	}
-
-	
-	/**
-	 * get singleton
-	 * @param context
-	 * @return
-	 */
-	public static ArticleListService single( Context context ) {
-		if (ars == null) {
-			ars = new ArticleListService(context);
-		}
-		return ars;
-	}
 }

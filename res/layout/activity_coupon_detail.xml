@@ -41,6 +41,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="@dimen/cp_distance_margin_top"
         android:drawableLeft="@drawable/ic_action_room"
+        android:text="500m"
         android:textColor="@color/coupon_normal_ctrl_text" />
 
     <!-- 쿠폰과 가게 정보 -->
@@ -69,8 +70,8 @@
             android:id="@+id/shop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="40dp"
             android:layout_marginTop="6dp"
+            android:maxHeight="40dp"
             android:gravity="center_vertical"
             android:text="@string/demo_shop_name"
             android:textSize="@dimen/text_18"
@@ -103,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/cp_info_price_margin"
                 android:gravity="center_vertical"
+                android:text="1,500원"
                 android:textColor="@color/coupon_list_price"
                 android:textSize="@dimen/text_12" />
 
@@ -113,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:text="900원"
                 android:textSize="@dimen/text_16"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -125,6 +128,7 @@
             android:drawableLeft="@drawable/ic_device_access_time"
             android:drawablePadding="3dp"
             android:gravity="center_vertical"
+            android:text="2015.1.30 20:00"
             android:textColor="@color/cp_time_color"
             android:textSize="@dimen/text_14" />
     </LinearLayout>
@@ -133,70 +137,55 @@
 
     <!-- 아래 측 버튼 -->
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_below="@id/main_coupon_img_layout"
         android:id="@+id/coupon_ctrl_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/cp_ctrl_btn_layout_height"
-        android:layout_marginLeft="@dimen/cp_img_margin_h"
-        android:layout_marginRight="@dimen/cp_img_margin_h"
         android:layout_marginTop="@dimen/cp_ctrl_margin_top"
-        android:background="@drawable/top_bgcolor_border_1_dp" >
-
-        <TextView
-            android:id="@+id/coupon_ctrl_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/news_ctrl_btn_selector"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_maps_local_offer"
-            android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
-            android:gravity="center_vertical"
-            android:paddingBottom="5dp"
-            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-            android:paddingRight="@dimen/cp_ctrl_btn_padding_right"
-            android:paddingTop="5dp"
-            android:text="@string/get_coupon"
-            android:textColor="@color/coupon_normal_ctrl_text"
-            android:textSize="@dimen/text_14" />
-
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/top_bgcolor_border_1_dp"
+        android:orientation="horizontal">
         <ImageButton
             android:id="@+id/coupon_share_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/coupon_ctrl_btn"
             android:background="@drawable/news_ctrl_btn_selector"
             android:paddingBottom="5dp"
             android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
             android:paddingTop="5dp"
-            android:src="@drawable/ic_share_26_gray" />
-
-        <TextView
-            android:id="@+id/coupon_like_btn"
-            android:layout_width="wrap_content"
+            android:src="@drawable/ic_action_favorite_outline" />
+        
+        <Button 
+            android:layout_width="0dp"
+            android:layout_weight="4"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/news_ctrl_btn_selector"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_action_favorite_outline"
-            android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
-            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="쿠폰받기"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_primary"/>
+        
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:paddingBottom="5dp"
             android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-            android:paddingRight="@dimen/cp_ctrl_btn_padding_right"
+            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
             android:paddingTop="5dp"
-            android:text="@string/demo_comment_count"
-            android:textColor="@color/coupon_normal_ctrl_text"
-            android:textSize="@dimen/text_14"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:src="@drawable/ic_share_26_gray"
+            android:background="@drawable/news_ctrl_btn_selector" />
+    </LinearLayout>
 
 </RelativeLayout>

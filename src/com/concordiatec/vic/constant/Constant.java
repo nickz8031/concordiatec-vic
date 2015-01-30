@@ -22,7 +22,8 @@ public class Constant {
 	public final static int COMMENT_EDIT_SUCCED = 5002;
 	
 	//detail page request
-	public final static int DETAIL_ACTIVITY_REQUEST = 0;
+	public final static int DETAIL_ACTIVITY_REQUEST = 0; //article detail
+	public final static int COUPON_DETAIL_ACTIVITY_REQUEST = 10; //coupon detail
 	//result & request code end;
 	
 	public static void initSurplus(){

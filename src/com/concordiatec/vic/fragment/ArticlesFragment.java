@@ -65,13 +65,29 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	private boolean isRefresh = false;
 	public boolean isLoadingNow = false;
 
+	/**
+	 * 데이타 로드 시작
+	 */
+	@Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+        	aService = new ArticleListService(getActivity());
+        	getArticles();
+        }
+    }
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
 		rootView = inflater.inflate(R.layout.frag_articles, container, false);
-		this.initWidgets();
+		
 		// sign in/out broadcast receiver register
 		IntentFilter filter = new IntentFilter(Constant.ONLINE_BROAD_ACTION);
 		getActivity().registerReceiver(onlineReceiver, filter);
+		
+		this.initViews();
 		return rootView;
 	}
 	/**
@@ -80,31 +96,29 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	BroadcastReceiver onlineReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// 1. refresh list
 			refreshList();
 		}
 	};
 	public boolean isNoMoreData;
 
 	/**
-	 * init widgets in main news fragment
+	 * initialize views in fragment
 	 */
-	private void initWidgets() {
-		aService = new ArticleListService(getActivity());
+	private void initViews() {
 		this.initListView();
-		this.initPtrLayout();
 		this.initSortBar();
-		this.getArticles();
-		this.initWriteButton();
-	}
-
-	private void initWriteButton() {
+		
+		//pull to refresh
+		ptrLayout = (PullToRefreshLayout) rootView.findViewById(R.id.ptr_layout);
+		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable().listener(this).setup(ptrLayout);
+		
+		//write button
 		writeButton = (LinearLayout) rootView.findViewById(R.id.floating_write_layout);
 		writeButton.setOnClickListener(new WriteButtonClickListener());
 	}
-
+	
 	/**
-	 * add header padding item into ListView
+	 * listview 초기화
 	 */
 	private void initListView() {
 		newsListView = (ListView) rootView.findViewById(R.id.news_list);
@@ -119,15 +133,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 
 	/**
-	 * initialize ActionBar pull to refresh widget
-	 */
-	private void initPtrLayout() {
-		ptrLayout = (PullToRefreshLayout) rootView.findViewById(R.id.ptr_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable().listener(this).setup(ptrLayout);
-	}
-
-	/**
-	 * init sort bar
+	 * sort bar initialize
 	 */
 	private void initSortBar() {
 		sortCurrentLayout = (LinearLayout) rootView.findViewById(R.id.sort_current_select_layout);
@@ -141,7 +147,10 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 			}
 		});
 	}
-
+	
+	/**
+	 * 소식리스트 가져오기
+	 */
 	private void getArticles() {
 		ProgressUtil.show(getActivity());
 		aService.getArticles(new SimpleVicResponseListener() {
@@ -168,6 +177,10 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 		});
 	}
 
+	/**
+	 * adapter데이타 설정
+	 * @param data
+	 */
 	private void setAdapterData(Object data) {
 		if (data == null) return;
 		listData = aService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
@@ -182,11 +195,17 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 		}
 	}
 
+	/**
+	 * pull to refresh
+	 */
 	@Override
 	public void onRefreshStarted(View view) {
 		refreshList();
 	}
 
+	/**
+	 * 새로 고침
+	 */
 	private void refreshList() {
 		if (adapter != null) {
 			adapter.clear();
@@ -196,6 +215,9 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 		getArticles();
 	}
 
+	/**
+	 * 더보기 
+	 */
 	private void getMore() {
 		if (isNoMoreData) return;
 		isLoadingNow = true;
@@ -236,47 +258,65 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 
 	/**
 	 * 정열바 클릭시 액션
-	 * 
 	 * @author Nick.Z
 	 *
 	 */
 	private final class SortClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			AlphaAnimation animation;
-			if (sortContentLayout.getVisibility() == View.GONE) {
-				v.setBackgroundResource(R.drawable.sorting_top_style_active);
-				sortContentLayout.startAnimation(AniUtil.fadeInAnimation());
-				sortContentLayout.setVisibility(View.VISIBLE);
-				setSortbarDrawableRight(R.drawable.drop_up_24);
-			} else {
-				v.setBackgroundResource(R.drawable.sorting_top_style);
-				setSortbarDrawableRight(R.drawable.drop_down_24);
-				animation = (AlphaAnimation) AniUtil.fadeOutAnimation();
-				animation.setAnimationListener(new AnimationListener() {
-					@Override
-					public void onAnimationStart(Animation animation) {
-					}
+			toggleSortbar();
+			
+		}
+	}
+	
+	@Override
+	public void backPressed(){
+		if( isSortbarShowing() ){
+			toggleSortbar();
+		}
+	}
+	
+	@Override
+	public boolean backPressFlag(){
+		return isSortbarShowing();
+	}
+	
+	private boolean isSortbarShowing(){
+		return ( sortContentLayout.getVisibility() == View.VISIBLE );
+	}
+	
+	private void toggleSortbar(){
+		AlphaAnimation animation;
+		if ( !isSortbarShowing() ) {
+			sortCurrentLayout.setBackgroundResource(R.drawable.sorting_top_style_active);
+			sortContentLayout.startAnimation(AniUtil.fadeInAnimation());
+			sortContentLayout.setVisibility(View.VISIBLE);
+			setSortbarDrawableRight(R.drawable.drop_up_24);
+		} else {
+			sortCurrentLayout.setBackgroundResource(R.drawable.sorting_top_style);
+			setSortbarDrawableRight(R.drawable.drop_down_24);
+			animation = (AlphaAnimation) AniUtil.fadeOutAnimation();
+			animation.setAnimationListener(new AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+				}
 
-					@Override
-					public void onAnimationRepeat(Animation animation) {
-					}
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+				}
 
-					@Override
-					public void onAnimationEnd(Animation animation) {
-						sortContentLayout.setVisibility(View.GONE);
-					}
-				});
-				sortContentLayout.startAnimation(animation);
-			}
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					sortContentLayout.setVisibility(View.GONE);
+				}
+			});
+			sortContentLayout.startAnimation(animation);
 		}
 	}
 
 	/**
 	 * 리스트 아이템 클릭시 액션
-	 * 
 	 * @author Nick.Z
-	 *
 	 */
 	private final class ListViewItemClickListener implements OnItemClickListener {
 		@Override
@@ -291,7 +331,6 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 
 	/**
 	 * 리스트 더보기
-	 * 
 	 * @author Nick.Z
 	 *
 	 */
@@ -313,14 +352,18 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 
 	/**
-	 * 정열방식 오른쪽 아이콘 치환
-	 * 
+	 * sort바 아래로/위로 아이콘 치환
 	 * @param resId
 	 */
 	protected void setSortbarDrawableRight(int resId) {
 		sortCurrentSelect.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(resId), null);
 	}
 
+	/**
+	 * MainActivity가 onAcitivity실행시 실행되는 메소드
+	 * @param resultCode
+	 * @param data
+	 */
 	public void responseResult(int resultCode, Intent data) {
 		switch (resultCode) {
 		case Constant.ARTICLE_EDIT_SUCCED:
@@ -339,8 +382,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 
 	/**
-	 * 글쓰기 액션
-	 * 
+	 * 글쓰기버튼
 	 * @author Nick.Z
 	 *
 	 */

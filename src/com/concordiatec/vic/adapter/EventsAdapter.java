@@ -1,10 +1,11 @@
 package com.concordiatec.vic.adapter;
 
-import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Coupon;
+import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.util.NotifyUtil;
+import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.widget.TagView;
 import com.concordiatec.vic.R;
 import android.content.Context;
@@ -12,21 +13,63 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class EventsAdapter extends VicBaseAdapter {
 	private List<Coupon> data;
 	private Context context;
-	private Map<Integer, View> viewMap;
 	private LayoutInflater inflater;
 	
 	public EventsAdapter(Context context , List<Coupon> data) {
 		this.data = data;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
-		this.viewMap = new HashMap<Integer, View>();
 	}
 
+	public void clear(){
+		this.data.clear();
+		notifyDataSetChanged();
+	}
+	
+	public void deleteData( int position ){
+		this.data.remove(position-1);
+		notifyDataSetChanged();
+	}
+	
+	public void setData( List<Coupon> data ){
+		this.data = data;
+		notifyDataSetChanged();
+	}
+	
+	public void updateData( Coupon article , int position ){
+		this.data.set(position-1, article);
+		notifyDataSetChanged();
+	}
+	
+	public void addData( Coupon data ){
+		if(data != null){
+			this.data.add(data);
+		}
+	}
+	
+	public void addData( List<Coupon> data ){
+		if(data != null && data.size()>0 ){
+			for (int i = 0; i < data.size(); i++) {
+				addData( data.get(i) );
+			}
+			notifyDataSetChanged();
+		}
+	}
+	
+	public int getLastRecordId(){
+		if( this.data.size()>0 ){
+			return this.data.get(this.data.size()-1).getId();
+		}else{
+			return 0;
+		}
+	}
 	@Override
 	public int getCount() {
 		return data.size();
@@ -36,6 +79,9 @@ public class EventsAdapter extends VicBaseAdapter {
 	public Coupon getItem(int position) {
 		return data.get(position);
 	}
+	public Coupon getItem(long position) {
+		return data.get((int)position);
+	}
 
 	@Override
 	public long getItemId(int position) {
@@ -44,45 +90,88 @@ public class EventsAdapter extends VicBaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-//		CouponHolder holder;
-		if (viewMap.get(position) == null) {
-//			Coupon apData = getItem(position);
+		
+		CouponHolder holder;
+		Coupon apData = getItem(position);
+		if (convertView == null) {
+			holder = new CouponHolder();
 			convertView = inflater.inflate(R.layout.li_frag_coupons, parent, false);
+			holder.couponImage = (CircleImageView) convertView.findViewById(R.id.main_coupon_img);
+			holder.couponTag = (TagView) convertView.findViewById(R.id.coupon_tag);
+			holder.shopName = (TextView) convertView.findViewById(R.id.shop_name);
+			holder.couponName = (TextView) convertView.findViewById(R.id.coupon_title);
+			holder.price = (TextView) convertView.findViewById(R.id.coupon_price);
+			holder.listPrice = (TextView) convertView.findViewById(R.id.coupon_list_price);
+			holder.endTime = (TextView) convertView.findViewById(R.id.coupon_end_time);
+			holder.distance = (TextView) convertView.findViewById(R.id.shop_distance);
+			holder.getCouponBtn = (TextView) convertView.findViewById(R.id.coupon_ctrl_btn);
+			holder.likeButton = (TextView) convertView.findViewById(R.id.coupon_like_btn);
+			holder.shareButton = (ImageButton) convertView.findViewById(R.id.coupon_share_btn);
 			
-			TagView tv = (TagView) convertView.findViewById(R.id.coupon_tag);
-			TagView.Tag tag = new TagView.Tag("실시간 상품", context.getResources().getColor(R.color.theme_color) );
-			tv.setSingleTag(tag);
-			tv.setVisibility(View.VISIBLE);
-			
-			TextView price = (TextView) convertView.findViewById(R.id.coupon_price);
-			TextView listPrice = (TextView) convertView.findViewById(R.id.coupon_list_price);
-			TextView endTime = (TextView) convertView.findViewById(R.id.coupon_end_time);
-			TextView distance = (TextView) convertView.findViewById(R.id.shop_distance);
-			//가격 설정
-			long tempNumber = Math.round(Math.random()*19999);
-			price.setText( formatString( R.string.format_price_string , NumberFormat.getInstance().format(tempNumber+5000)) );
-			
-			listPrice.setText( formatString( R.string.format_price_string , NumberFormat.getInstance().format(tempNumber)) );
-			listPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-			
-			endTime.setText( formatString( R.string.format_end_time , "2015.03.31 21:00:00") );
-			
-			distance.setText( formatString( R.string.format_location_range_meter , "530") );
-			
-			viewMap.put(position, convertView);
-			convertView.startAnimation(animation);
+			convertView.setTag(holder);
 		} else {
-			convertView = viewMap.get(position);
-			// holder = (MainNewsHolder) convertView.getTag();
+			 holder = (CouponHolder) convertView.getTag();
 		}
+		
+		Glide.with(context).load(apData.getImage()).crossFade().into(holder.couponImage);
+		
+		TagView.Tag tag = new TagView.Tag(apData.getKindName(), getTagColor( apData.getKind() ) );
+		holder.couponTag.setSingleTag(tag);
+				
+		holder.price.setText( apData.getPrice() + context.getString(R.string.unit_won) );
+		holder.listPrice.setText( apData.getListPrice() + context.getString(R.string.unit_won) );
+		
+		holder.listPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+		
+		holder.endTime.setText( apData.getEndTime() + context.getString(R.string.event_end_label) );
+		
+		holder.shopName.setText( apData.getShopName() );
+		holder.couponName.setText( apData.getName() );
+		holder.likeButton.setText( apData.getLikeCount()+"" );
+		
+		if( apData.isLike() ){
+			holder.likeButton.setCompoundDrawablesWithIntrinsicBounds( context.getResources().getDrawable(R.drawable.ic_action_favorite) , null, null, null);
+		}
+		holder.likeButton.setOnClickListener( new LikeButtonClickListener() );
+		
+		holder.distance.setText( "50" + context.getString(R.string.meter) );
+		
+		
 		return convertView;
 	}
-
-	private String formatString(int formatResId , String toString){
-		return String.format(context.getResources().getString(formatResId), toString );
+	
+	private final class LikeButtonClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			NotifyUtil.toast(context, "aaaaaaaaaaaaaaaaaa");
+		}
 	}
 	
-	@SuppressWarnings("unused")
-	private static class CouponHolder {
+	private int getTagColor(int kind){
+		int color;
+		switch ( kind ) {
+			case 1:
+				color = context.getResources().getColor(R.color.theme_color);
+				break;
+			default:
+				color = context.getResources().getColor(R.color.effect_color);
+				break;
+		}
+		return color;
+	}
+
+	
+	static class CouponHolder {
+		TextView shopName;
+		CircleImageView couponImage;
+		TextView couponName;
+		TagView couponTag;
+		TextView distance;
+		TextView listPrice;
+		TextView price;
+		TextView endTime;
+		TextView getCouponBtn;
+		ImageButton shareButton;
+		TextView likeButton;
 	}
 }
