@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import com.concordiatec.vic.adapter.ArticlesAdapter;
-import com.concordiatec.vic.adapter.EventsAdapter;
+import com.concordiatec.vic.adapter.CouponsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
@@ -45,7 +45,7 @@ import com.concordiatec.vic.CouponDetailActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class EventFragment extends BaseSherlockFragment implements OnRefreshListener {
+public class CouponsFragment extends BaseSherlockFragment implements OnRefreshListener {
 	private View rootView;
 	private ListView eventListView;
 	private List<Coupon> listData;
@@ -55,7 +55,7 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 	private LinearLayout sortCurrentLayout;
 	private TextView sortCurrentSelect;
 	private RelativeLayout sortContentLayout;
-	private EventsAdapter adapter;
+	private CouponsAdapter adapter;
 	private boolean isNoMoreData;
 	private boolean isRefresh;
 	public int clickedPosition;
@@ -65,30 +65,29 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.frag_coupons, container, false);
-		
 		this.initViews();
 		return rootView;
 	}
-	
+
 	/**
 	 * view 초기화
 	 */
-	private void initViews(){
+	private void initViews() {
 		initListView();
 		initSortBar();
 	}
-	
+
 	/**
 	 * 데이타 로드 시작
 	 */
 	@Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-        	initData();
-        }
-    }
-	
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			initData();
+		}
+	}
+
 	/**
 	 * 페이지에 필요한 데이타 최기화, 서보통신 부분
 	 */
@@ -113,8 +112,6 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 		eventListView.setOnItemClickListener(new ListViewItemClickListener());
 	}
 
-	
-
 	/**
 	 * init sort bar
 	 */
@@ -130,16 +127,17 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 			}
 		});
 	}
-	
+
 	/**
-	 * adapter에 데이타 삽입 
+	 * adapter에 데이타 삽입
+	 * 
 	 * @param data
 	 */
 	private void setAdapterData(Object data) {
 		if (data == null) return;
 		listData = couponService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
 		if (!isRefresh || adapter == null) {
-			adapter = new EventsAdapter(getActivity(), listData);
+			adapter = new CouponsAdapter(getActivity(), listData);
 			eventListView.setAdapter(adapter);
 		} else {
 			adapter.setData(listData);
@@ -195,14 +193,14 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 		this.isRefresh = true;
 		getCoupons();
 	}
-	
+
 	private final class SortClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			toggleSortbar();
 		}
 	}
-	
+
 	/**
 	 * refresh list
 	 */
@@ -210,6 +208,7 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 	public void onRefreshStarted(View view) {
 		refreshList();
 	}
+
 	/**
 	 * back button pressed
 	 */
@@ -222,15 +221,17 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 
 	/**
 	 * 뒤로 버튼 클릭시 선행 액션이 진행여부를 판단한다
+	 * 
 	 * @author nick.z
 	 */
 	@Override
 	public boolean backPressFlag() {
 		return isSortbarShowing();
 	}
-	
+
 	/**
 	 * sort바가 보여진 상태에 있는지 판단
+	 * 
 	 * @return
 	 */
 	private boolean isSortbarShowing() {
@@ -260,11 +261,14 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 			sortContentLayout.startAnimation(animation);
 		}
 	}
+
 	protected void setSortbarDrawableRight(int resId) {
 		sortCurrentSelect.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(resId), null);
 	}
+
 	/**
 	 * 리스트 아이템 클릭시 액션
+	 * 
 	 * @author Nick.Z
 	 */
 	private final class ListViewItemClickListener implements OnItemClickListener {
@@ -280,6 +284,7 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 
 	/**
 	 * 리스트 더보기
+	 * 
 	 * @author Nick.Z
 	 *
 	 */
@@ -288,12 +293,13 @@ public class EventFragment extends BaseSherlockFragment implements OnRefreshList
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			switch (scrollState) {
 			case OnScrollListener.SCROLL_STATE_IDLE:
-				if (isLoadingNow == false && view.getLastVisiblePosition() >= (adapter.getCount() / 2) && isNoMoreData == false) {
+				if (adapter.getCount() > 15 && isLoadingNow == false && view.getLastVisiblePosition() >= (adapter.getCount() / 2) && isNoMoreData == false) {
 					getMoreCoupons();
 				}
 				break;
 			}
 		}
+
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		}

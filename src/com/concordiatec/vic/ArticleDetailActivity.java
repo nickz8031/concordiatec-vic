@@ -265,6 +265,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 			@Override
 			@SuppressWarnings("unchecked")
 			public void onSuccess(ResData data) {
+				detail = detailService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
+				
 				content = (TextView) contentView.findViewById(R.id.news_content);
 				commentCount = (TextView) contentView.findViewById(R.id.news_comment_btn);
 				likeShareText = (TextView) contentView.findViewById(R.id.ar_d_like_share_text);
@@ -274,7 +276,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 				TextView likeCount = (TextView) contentView.findViewById(R.id.news_like_btn);
 				RelativeLayout contentImgWrap = (RelativeLayout) contentView.findViewById(R.id.news_content_image_layout);
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
-				detail = detailService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 				User loginUser = new UserService(ArticleDetailActivity.this).getLoginUser();
 				if (loginUser == null || loginUser.usrId != detail.getWriterId()) {
 					editArticleMenu.setVisible(false);

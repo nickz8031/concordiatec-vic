@@ -30,10 +30,10 @@
     <dimen name="cp_ctrl_btn_padding_verticle">4dp</dimen>
     
 <!-- strings -->
-	<string name="cp_surplus">잔여</string>
-    <string name="cp_tag_live">실시간상품</string>
-    <string name="cp_favorite">찜하기</string>
-    <string name="cp_event_finish">종료</string>
+	<string name="neighbouring_store">주변가게</string>
+	<string name="hot_deal">HOT DEAL</string>
+	<string name="frequented_store">단골가게</string>
+	<string name="select_category">선택업종</string>
 	<!-- image desc -->
 	<string name="coupon_img">쿠폰 이미지</string>
     <string name="coupon_surlus_icon">잔여량</string>

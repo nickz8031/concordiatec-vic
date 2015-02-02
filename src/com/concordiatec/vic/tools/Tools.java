@@ -8,6 +8,7 @@ import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.util.TimeUtil;
+import com.concordiatec.vic.widget.TagView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -29,6 +30,14 @@ import android.view.View.MeasureSpec;
 import android.webkit.MimeTypeMap;
 
 public class Tools {
+	
+	public static TagView.Tag getTagLabel( String label, int color ){
+		if( !StringUtil.isEmpty(label) ){
+			return new TagView.Tag(label.trim(), color );
+		}
+		return null;
+	}
+	
 	/**
 	 * get int value from object
 	 * 

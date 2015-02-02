@@ -20,6 +20,8 @@
     <dimen name="sort_item_line_margin_vert">10dp</dimen>
     <dimen name="sort_item_drawable_padding">20dp</dimen>
     
+    <dimen name="sort_item_padding_vert_16">16dp</dimen>
+    <dimen name="sort_item_padding_hor_16">16dp</dimen>
 <!-- strings -->
 
 	<!-- tab menu labels -->

@@ -16,6 +16,7 @@
     <string name="kilometer">km</string>
     
 	<string name="event_end_label">마감</string>
+	<string name="period_link_string"> ~ </string>
 	<string name="coupon_detail_title">쿠폰정보</string>
 	<string name="user_panel">유저정보</string>
     <string name="setting">설정</string>
@@ -43,6 +44,7 @@
     <string name="exceed_limit">기간만료</string>
     
     <!-- login & register words -->
+    <string name="center_dot">●</string>
     <string name="nickname_hint">닉네임 입력</string>
     <string name="nick_name_rule_msg">2~10자 이내 한글 혹은 영문, 공백,특수부호 불가능</string>
     <string name="pwd_rule_msg">6~20자 이내</string>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.concordiatec.vic"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_shadow"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
+    android:paddingTop="@dimen/mni_layout_border_width">
+
+    <LinearLayout
+        android:id="@+id/main_coupon_img_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical" 
+        >
+        <!-- 이미지 -->
+        <com.concordiatec.vic.widget.CircleImageView
+            android:id="@+id/main_coupon_img"
+            android:layout_width="@dimen/cp_img_width"
+            android:layout_height="@dimen/cp_img_height"
+            android:contentDescription="@string/coupon_img"
+             />
+    </LinearLayout>
+    <!-- 쿠폰과 가게 정보 -->
+
+    <LinearLayout
+        android:id="@+id/main_coupon_info"
+        android:layout_toRightOf="@id/main_coupon_img_layout"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <!-- 가게테마 -->
+        
+        <!-- 가게이름 -->
+        <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:maxHeight="40dp"
+            android:gravity="center_vertical"
+            android:text="@string/demo_shop_name"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <!-- 주소 -->
+        <TextView
+            android:id="@+id/coupon_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/demo_coupon_title"
+            android:textSize="@dimen/text_14" />
+
+        <!-- 평점 -->
+        <FrameLayout
+            android:id="@+id/store_starts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical">
+        	<TextView
+		        android:id="@+id/shop_stars"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="@dimen/text_12"
+		        android:textColor="@color/coupon_normal_ctrl_text" 
+		        android:text="평점"
+		        />
+        </FrameLayout>
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+	        <!-- 거리 -->
+		    <TextView
+		        android:id="@+id/shop_group_name"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:drawableLeft="@drawable/ic_store_type_coffee_16"
+		        android:drawablePadding="5dp"
+		        android:textSize="@dimen/text_12"
+		        android:textColor="@color/coupon_normal_ctrl_text" 
+		        android:text="중식"
+		        />
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textColor="@color/deep_light_font" 
+		        android:layout_marginRight="3dp"
+		        android:layout_marginLeft="3dp"
+		        android:text="|"
+		        />
+		    <TextView
+		        android:id="@+id/shop_distance"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:drawableLeft="@drawable/ic_action_room_16"
+		        android:drawablePadding="5dp"
+		        android:textColor="@color/coupon_normal_ctrl_text" 
+		        android:textSize="@dimen/text_12"
+		        android:text="500m"
+		        />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 가격 정보 끝 -->
+    
+</RelativeLayout>

@@ -3,7 +3,7 @@ package com.concordiatec.vic.adapter;
 import java.util.List;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Coupon;
-import com.concordiatec.vic.util.LogUtil;
+import com.concordiatec.vic.service.CouponService;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.widget.TagView;
@@ -17,12 +17,12 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class EventsAdapter extends VicBaseAdapter {
+public class CouponsAdapter extends VicBaseAdapter {
 	private List<Coupon> data;
 	private Context context;
 	private LayoutInflater inflater;
 	
-	public EventsAdapter(Context context , List<Coupon> data) {
+	public CouponsAdapter(Context context , List<Coupon> data) {
 		this.data = data;
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
@@ -115,7 +115,7 @@ public class EventsAdapter extends VicBaseAdapter {
 		
 		Glide.with(context).load(apData.getImage()).crossFade().into(holder.couponImage);
 		
-		TagView.Tag tag = new TagView.Tag(apData.getKindName(), getTagColor( apData.getKind() ) );
+		TagView.Tag tag = new TagView.Tag(apData.getKindName(), CouponService.getTagColor( context, apData.getKind() ) );
 		holder.couponTag.setSingleTag(tag);
 				
 		holder.price.setText( apData.getPrice() + context.getString(R.string.unit_won) );
@@ -123,9 +123,9 @@ public class EventsAdapter extends VicBaseAdapter {
 		
 		holder.listPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 		
-		holder.endTime.setText( apData.getEndTime() + context.getString(R.string.event_end_label) );
+		holder.endTime.setText( apData.getEndTime() + " " + context.getString(R.string.event_end_label) );
 		
-		holder.shopName.setText( apData.getShopName() );
+		holder.shopName.setText( apData.getShop().getShopUserName() );
 		holder.couponName.setText( apData.getName() );
 		holder.likeButton.setText( apData.getLikeCount()+"" );
 		
@@ -134,6 +134,7 @@ public class EventsAdapter extends VicBaseAdapter {
 		}
 		holder.likeButton.setOnClickListener( new LikeButtonClickListener() );
 		
+		//need edit************
 		holder.distance.setText( "50" + context.getString(R.string.meter) );
 		
 		
@@ -147,18 +148,7 @@ public class EventsAdapter extends VicBaseAdapter {
 		}
 	}
 	
-	private int getTagColor(int kind){
-		int color;
-		switch ( kind ) {
-			case 1:
-				color = context.getResources().getColor(R.color.theme_color);
-				break;
-			default:
-				color = context.getResources().getColor(R.color.effect_color);
-				break;
-		}
-		return color;
-	}
+	
 
 	
 	static class CouponHolder {

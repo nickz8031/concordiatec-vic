@@ -28,7 +28,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentTop="true"
-	        layout="@layout/frag_articles_sortbar" />
+	        layout="@layout/frag_coupons_sortbar" />
 	</uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout>
         
 </RelativeLayout>

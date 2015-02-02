@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="coupon_use_info_title">쿠폰사용정보</string>
+    <string name="use_period">사용시간 : </string>
+    <string name="coupon_period_use_notice">(표기된 사용시간 안에 제시하셔야 쿠폰 사용이 가능합니다.)</string>
+    <string name="coupon_use_notice_title">쿠폰사용 주의사항</string>
+    <string name="shop_guide">매장안내</string>
+    <string name="download_coupon_btn">쿠폰받기</string>
+</resources>

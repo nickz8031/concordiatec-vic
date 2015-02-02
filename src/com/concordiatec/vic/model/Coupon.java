@@ -8,6 +8,7 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class Coupon extends VicModel implements Serializable {
+	
 	private int id;
 	private int shopId;
 	private int userId;
@@ -29,14 +30,9 @@ public class Coupon extends VicModel implements Serializable {
 	private String kindName;
 	private int likeCount;
 	private int shareCount;
-	private int groupId;
-	private String groupName;
-	private String shopName;
-	private String shopPhoto;
-	private String shopAddr1;
-	private String shopAddr2;
-	private double shopLongitude;
-	private double shopLatitude;
+	
+	private Shop shop;
+	
 	private boolean isKeep;
 	private boolean isLike;
 
@@ -207,69 +203,12 @@ public class Coupon extends VicModel implements Serializable {
 	public void setShareCount(int shareCount) {
 		this.shareCount = shareCount;
 	}
-
-	public int getGroupId() {
-		return groupId;
+	public Shop getShop() {
+		return shop;
 	}
 
-	public void setGroupId(int groupId) {
-		this.groupId = groupId;
-	}
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-
-	public String getShopName() {
-		return shopName;
-	}
-
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-
-	public String getShopPhoto() {
-		return shopPhoto;
-	}
-
-	public void setShopPhoto(String shopPhoto) {
-		this.shopPhoto = shopPhoto;
-	}
-
-	public String getShopAddr1() {
-		return shopAddr1;
-	}
-
-	public void setShopAddr1(String shopAddr1) {
-		this.shopAddr1 = shopAddr1;
-	}
-
-	public String getShopAddr2() {
-		return shopAddr2;
-	}
-
-	public void setShopAddr2(String shopAddr2) {
-		this.shopAddr2 = shopAddr2;
-	}
-
-	public double getShopLongitude() {
-		return shopLongitude;
-	}
-
-	public void setShopLongitude(double shopLongitude) {
-		this.shopLongitude = shopLongitude;
-	}
-
-	public double getShopLatitude() {
-		return shopLatitude;
-	}
-
-	public void setShopLatitude(double shopLatitude) {
-		this.shopLatitude = shopLatitude;
+	public void setShop(Shop shop) {
+		this.shop = shop;
 	}
 
 	public boolean isKeep() {

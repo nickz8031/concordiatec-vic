@@ -8,7 +8,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.util.LogUtil;
 
-public class StoreFragment extends SherlockFragment{
+public class ShopsFragment extends SherlockFragment{
 	private View rootView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

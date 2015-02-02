@@ -1,22 +1,21 @@
 package com.concordiatec.vic.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.http.Header;
 import android.content.Context;
+import com.concordiatec.vic.R;
 import com.concordiatec.vic.constant.ApiURL;
 import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Coupon;
+import com.concordiatec.vic.model.Shop;
+import com.concordiatec.vic.model.ShopGroup;
 import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
-import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class CouponService extends HttpUtil implements IVicService  {
@@ -24,6 +23,22 @@ public class CouponService extends HttpUtil implements IVicService  {
 	public CouponService( Context context ) {
 		this.context = context;
 	}
+	
+	public void getCouponDetail( int id , VicResponseListener listener ){
+		RequestParams params = new RequestParams();
+		User loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			params.put("user", loginUser.usrId);
+		}
+		params.put("id", id);
+		post(ApiURL.COUPON_DETAIL, params, new VicResponseHandler(listener));
+	}
+	
+	/**
+	 * get coupon list
+	 * @param p
+	 * @param listener
+	 */
 	public void getCoupons(Map<String, String> p , VicResponseListener listener) {
 		RequestParams params = new RequestParams();
 		User loginUser = new UserService(context).getLoginUser();
@@ -41,6 +56,9 @@ public class CouponService extends HttpUtil implements IVicService  {
 	public void getCoupons(VicResponseListener listener) {
 		getCoupons(null , listener);
 	}
+	
+	
+	
 	@Override
 	public List<Coupon> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
 		List<Coupon> models = new ArrayList<Coupon>();
@@ -52,7 +70,8 @@ public class CouponService extends HttpUtil implements IVicService  {
 	@Override
 	public Coupon mapToModel(LinkedTreeMap<String, Object> map) {
 		Coupon coupon = new Coupon();
-		if( map.get("id") != null ) coupon.setId( getIntValue(map.get("coupon_id")) );
+		if( map.get("coupon_id") != null ) coupon.setId( getIntValue(map.get("coupon_id")) );
+		if( map.get("shop_id") != null ) coupon.setShopId( getIntValue(map.get("shop_id")) );
 		if( map.get("user_id") != null ) coupon.setUserId( getIntValue(map.get("user_id")) );
 		if( map.get("name") != null ) coupon.setName( map.get("name").toString() );
 		if( map.get("image") != null ){
@@ -75,20 +94,25 @@ public class CouponService extends HttpUtil implements IVicService  {
 		if( map.get("kind_name") != null ) coupon.setKindName( map.get("kind_name").toString() );
 		if( map.get("like_count") != null ) coupon.setLikeCount( getIntValue(map.get("like_count")) );
 		if( map.get("share_count") != null ) coupon.setShareCount( getIntValue(map.get("share_count")) );
-		if( map.get("group_id") != null ) coupon.setGroupId( getIntValue(map.get("group_id")) );
-		if( map.get("group_name") != null ) coupon.setGroupName( map.get("group_name").toString() );
-
-		if( map.get("shop_id") != null ) coupon.setShopId( getIntValue(map.get("shop_id")) );
-		coupon.setShopName( map.get("shop_name").toString() );
+		if( map.get("notice") != null ) coupon.setNotice( (List<String>) map.get("notice") );
+		
+		Shop shop = new Shop();
+		ShopGroup sGroup = new ShopGroup();
+		if( map.get("group_id") != null ) sGroup.setId( getIntValue(map.get("group_id")) );
+		if( map.get("group_name") != null ) sGroup.setName( map.get("group_name").toString() );
+		
+		shop.setGroup(sGroup);
+		if( map.get("shop_name") != null ) shop.setShopUserName( map.get("shop_name").toString() );
 		if( map.get("shop_photo") != null ){
 			String imgUrl = getServerImgPath(coupon.getUserId() , map.get("shop_photo").toString());
-			coupon.setShopPhoto( imgUrl );
+			shop.setShopUserPhoto( imgUrl );
 		}
-		if( map.get("notice") != null ) coupon.setNotice( (List<String>) map.get("notice") );
-		if( map.get("shop_addr1") != null ) coupon.setShopAddr1( map.get("shop_addr1").toString() );
-		if( map.get("shop_addr2") != null ) coupon.setShopAddr2( map.get("shop_addr2").toString() );
-		if( map.get("lng") != null ) coupon.setShopLongitude( Tools.getDoubleValue(map.get("lng")) );
-		if( map.get("lat") != null ) coupon.setShopLatitude( Tools.getDoubleValue(map.get("lat")) );
+		if( map.get("shop_addr1") != null ) shop.setShopAddr1( map.get("shop_addr1").toString() );
+		if( map.get("shop_addr2") != null ) shop.setShopAddr2( map.get("shop_addr2").toString() );
+		if( map.get("lng") != null ) shop.setShopLng( Tools.getDoubleValue(map.get("lng")) );
+		if( map.get("lat") != null ) shop.setShopLat( Tools.getDoubleValue(map.get("lat")) );
+		if( map.get("shop_intro") != null ) shop.setShopIntro( (List<String>) map.get("shop_intro") );
+		coupon.setShop(shop);
 		
 		boolean flag = false;
 		if( map.get("have") != null && getIntValue(map.get("have")) == 1 ){
@@ -104,6 +128,17 @@ public class CouponService extends HttpUtil implements IVicService  {
 		
 	}
 	
-	
+	public static int getTagColor(Context context ,int kind){
+		int color;
+		switch ( kind ) {
+			case 1:
+				color = context.getResources().getColor(R.color.theme_color);
+				break;
+			default:
+				color = context.getResources().getColor(R.color.effect_color);
+				break;
+		}
+		return color;
+	}
 	
 }

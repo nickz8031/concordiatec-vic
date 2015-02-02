@@ -19,6 +19,7 @@ public class ApiURL {
 	public static final String SIGNUP = "/?r=site/join";
 	
 	public static final String COUPON_LIST = "/?r=coupon";
+	public static final String COUPON_DETAIL = "/?r=coupon/view";
 	
 	public static final String USER_INFO = "/?r=user/info";
 	

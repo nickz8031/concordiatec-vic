@@ -9,8 +9,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.base.BaseSherlockFragmentActivity;
-import com.concordiatec.vic.fragment.EventFragment;
-import com.concordiatec.vic.fragment.StoreFragment;
+import com.concordiatec.vic.fragment.CouponsFragment;
+import com.concordiatec.vic.fragment.ShopsFragment;
 import com.concordiatec.vic.fragment.ArticlesFragment;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.NotifyUtil;
@@ -44,8 +44,8 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	// tab
 	private int[] tabIds = { R.id.main_tab_select_1, R.id.main_tab_select_2, R.id.main_tab_select_3 };
 	private ArticlesFragment articlesFragment;
-	private EventFragment eventFragment;
-	private StoreFragment storeFragment;
+	private CouponsFragment eventFragment;
+	private ShopsFragment storeFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +111,8 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	private void initPages() {
 		
 		articlesFragment = new ArticlesFragment();
-		eventFragment = new EventFragment();
-		storeFragment = new StoreFragment();
+		eventFragment = new CouponsFragment();
+		storeFragment = new ShopsFragment();
 		viewPagerViews = new ArrayList<Fragment>();
 		viewPagerViews.add(articlesFragment);
 		viewPagerViews.add(eventFragment);
