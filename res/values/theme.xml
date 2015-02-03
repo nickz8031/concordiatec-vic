@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  entrance theme -->
     <style name="EntranceTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen"></style>
     
+    <!-- main theme -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Customactionbar</item>
         <item name="android:actionOverflowButtonStyle">@style/OverflowActionButton</item>
@@ -9,10 +11,13 @@
         <item name="ptrHeaderBackground">@color/theme_color</item>
         <item name="tagViewStyle">@style/Widget.TagView</item>
     </style>
+    
+    <!-- sub page default theme -->
     <style name="SubTheme" parent="AppTheme">
         <item name="android:homeAsUpIndicator">@drawable/ic_action_navigation_arrow_back</item>
     </style>
     
+    <!-- sub page default theme -->
     <style name="ActionbarOverflowSubTheme"  parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.CustomactionbarAlpha</item>
         <item name="android:actionOverflowButtonStyle">@style/OverflowActionButton</item>
@@ -22,29 +27,61 @@
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
+    <!-- white actionbar font -->
     <style name="ActionBarTitle" parent="@android:style/TextAppearance.Holo.Large">
         <item name="android:textColor">@android:color/white</item>
     	<item name="android:textSize">@dimen/text_18</item>
     </style>
     
+    <!-- dark actionbar font  -->
     <style name="ActionBarTitleDark" parent="@android:style/TextAppearance.Holo.Large">
         <item name="android:textColor">@android:color/darker_gray</item>
     	<item name="android:textSize">@dimen/text_18</item>
     </style>
     
+    <!-- default actionbar -->
     <style name="ActionBar.Solid.Customactionbar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/theme_color</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
     </style>
+    
+    <!-- actionbar alpha -->
     <style name="ActionBar.Solid.CustomactionbarAlpha" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/alpha_0</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
     </style>
     
+    <!-- actionbar overlay style -->
     <style name="ActionBar.Solid.fullActionbar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/alpha_3_theme_color</item>
     </style>
     
+    <!-- rating bar -->
+    <style name="Ratingbar_12" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_12</item>    
+        <item name="android:minHeight">14dip</item>    
+        <item name="android:maxHeight">14dip</item>    
+    </style>
+    <style name="Ratingbar_16" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_16</item>    
+        <item name="android:minHeight">18dip</item>    
+        <item name="android:maxHeight">18dip</item>    
+    </style>
+    <style name="Ratingbar_24" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_24</item>    
+        <item name="android:minHeight">26dip</item>    
+        <item name="android:maxHeight">26dip</item>    
+    </style>
+    <style name="Ratingbar_30" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_30</item>    
+        <item name="android:minHeight">32dip</item>    
+        <item name="android:maxHeight">32dip</item>    
+    </style>
+    <style name="Ratingbar_36" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_36</item>    
+        <item name="android:minHeight">38dip</item>    
+        <item name="android:maxHeight">38dip</item>    
+    </style>
     <!-- overflow actionbar menu icon (more icon) -->
     <style name="OverflowActionButton">
         <item name="android:src">@drawable/ic_action_navigation_more_vert</item>

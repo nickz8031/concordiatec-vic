@@ -7,13 +7,6 @@
     android:paddingTop="@dimen/mni_layout_border_width"
     android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
     android:background="@drawable/list_item_shadow">
-    <ScrollView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ar_d_content_scroll"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/detail_comment_input"
-        android:scrollbars="none" />
     <ListView 
         android:layout_alignParentTop="true"
         android:id="@+id/ar_d_comment_list"

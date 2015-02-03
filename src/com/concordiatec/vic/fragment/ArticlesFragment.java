@@ -63,7 +63,8 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	private int clickedPosition;
 	private Article clickedArticle;
 	private boolean isRefresh = false;
-	public boolean isLoadingNow = false;
+	private boolean isLoadingNow = false;
+	private boolean isFirst = true;
 
 	/**
 	 * 데이타 로드 시작
@@ -73,7 +74,11 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
         	aService = new ArticleListService(getActivity());
-        	getArticles();
+        	if( isFirst ){
+        		getArticles();
+        		isFirst = false;
+        	}
+        	
         }
     }
 	

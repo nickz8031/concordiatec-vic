@@ -24,6 +24,7 @@ public class Constant {
 	//detail page request
 	public final static int DETAIL_ACTIVITY_REQUEST = 0; //article detail
 	public final static int COUPON_DETAIL_ACTIVITY_REQUEST = 10; //coupon detail
+	public final static int SHOP_DETAIL_ACTIVITY_REQUEST = 100; //shop detail
 	//result & request code end;
 	
 	public static void initSurplus(){

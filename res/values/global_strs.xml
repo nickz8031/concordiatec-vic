@@ -45,6 +45,7 @@
     
     <!-- login & register words -->
     <string name="center_dot">●</string>
+    <string name="text_cut_line">|</string>
     <string name="nickname_hint">닉네임 입력</string>
     <string name="nick_name_rule_msg">2~10자 이내 한글 혹은 영문, 공백,특수부호 불가능</string>
     <string name="pwd_rule_msg">6~20자 이내</string>
@@ -102,8 +103,8 @@
     <string name="content_not_changed">수정된 내용이 없습니다.</string>
     
 	<!-- demo strings -->
-	<string name="demo_store_name">가게명</string>
-	<string name="demo_store_addr">주소</string>
+	<string name="demo_store_name">카페베네 잠실루터회관점</string>
+	<string name="demo_store_addr">서울특별시 송파구 신천동 7-20</string>
 	<string name="demo_writer_name">글쓴 이</string>
 	<string name="demo_write_time">시간</string>
 	<string name="demo_news_content">내용</string>

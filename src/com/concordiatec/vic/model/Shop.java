@@ -3,6 +3,7 @@ package com.concordiatec.vic.model;
 import java.io.Serializable;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class Shop extends VicModel implements Serializable {
 	private int id;
 	private int areaId;
@@ -24,6 +25,9 @@ public class Shop extends VicModel implements Serializable {
 	private int shareCount;
 	private double distance;
 	private boolean isLike;
+	private ShopScore score;
+	private ShopImage coverImage;
+	private List<ShopImage> images;
 	public int getId() {
 		return id;
 	}
@@ -143,6 +147,24 @@ public class Shop extends VicModel implements Serializable {
 	}
 	public void setGroup(ShopGroup group) {
 		this.group = group;
+	}
+	public ShopScore getScore() {
+		return score;
+	}
+	public void setScore(ShopScore score) {
+		this.score = score;
+	}
+	public ShopImage getCoverImage() {
+		return coverImage;
+	}
+	public void setCoverImage(ShopImage coverImage) {
+		this.coverImage = coverImage;
+	}
+	public List<ShopImage> getImages() {
+		return images;
+	}
+	public void setImages(List<ShopImage> images) {
+		this.images = images;
 	}
 	
 }

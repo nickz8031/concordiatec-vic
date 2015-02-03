@@ -2,8 +2,6 @@ package com.concordiatec.vic.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -18,7 +16,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -27,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-import com.concordiatec.vic.adapter.ArticlesAdapter;
 import com.concordiatec.vic.adapter.CouponsAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.constant.Constant;
@@ -40,14 +36,13 @@ import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
-import com.concordiatec.vic.ArticleDetailActivity;
 import com.concordiatec.vic.CouponDetailActivity;
 import com.concordiatec.vic.R;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class CouponsFragment extends BaseSherlockFragment implements OnRefreshListener {
 	private View rootView;
-	private ListView eventListView;
+	private ListView couponsListView;
 	private List<Coupon> listData;
 	private CouponService couponService;
 	private TextView listHeaderPaddingView;
@@ -61,6 +56,9 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 	public int clickedPosition;
 	public Coupon clickedCoupon;
 	public boolean isLoadingNow;
+	
+	private boolean isFirst = true;
+	private View noDataView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +82,11 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
-			initData();
+			if( isFirst ) {
+				initData();
+				isFirst = false;
+			}
+			
 		}
 	}
 
@@ -102,14 +104,14 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 	private void initListView() {
 		ptrLayout = (PullToRefreshLayout) rootView.findViewById(R.id.ptr_layout);
 		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable().listener(this).setup(ptrLayout);
-		eventListView = (ListView) rootView.findViewById(R.id.news_list);
+		couponsListView = (ListView) rootView.findViewById(R.id.coupons_list);
 		listHeaderPaddingView = new TextView(getActivity());
 		int height = (int) getResources().getDimension(R.dimen.sort_display_height);
 		AbsListView.LayoutParams params = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, height);
 		listHeaderPaddingView.setLayoutParams(params);
-		eventListView.addHeaderView(listHeaderPaddingView);
-		eventListView.setOnScrollListener(new ListViewScrollListener());
-		eventListView.setOnItemClickListener(new ListViewItemClickListener());
+		couponsListView.addHeaderView(listHeaderPaddingView);
+		couponsListView.setOnScrollListener(new ListViewScrollListener());
+		couponsListView.setOnItemClickListener(new ListViewItemClickListener());
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 		listData = couponService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
 		if (!isRefresh || adapter == null) {
 			adapter = new CouponsAdapter(getActivity(), listData);
-			eventListView.setAdapter(adapter);
+			couponsListView.setAdapter(adapter);
 		} else {
 			adapter.setData(listData);
 		}
@@ -162,6 +164,14 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 				}
 				ProgressUtil.dismiss();
 			}
+			
+			@Override
+			public void onEmptyResponse() {
+				if( Constant.DEBUG ){
+					super.onEmptyResponse();
+				}
+				setNullView();
+			}
 
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
@@ -170,12 +180,32 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 					LogUtil.show("Response Body : " + responseBody);
 				}
 				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
-				ProgressUtil.dismiss();
-				ptrLayout.setRefreshComplete();
+				setNullView();
 			}
 		});
 	}
-
+	private void setNullView(){
+		if( noDataView == null ){
+			noDataView = LayoutInflater.from(getActivity()).inflate(R.layout.li_no_data, null);
+			couponsListView.addHeaderView(noDataView);
+			couponsListView.setAdapter(null);
+			View retryBtn = noDataView.findViewById(R.id.no_data_retry_btn);
+			retryBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					refreshList();
+				}
+			});
+		}
+		isNoMoreData = true;
+		if( ptrLayout.isRefreshing() ){
+			ptrLayout.setRefreshComplete();
+		}
+		
+		if( ProgressUtil.isShowing() ){
+			ProgressUtil.dismiss();
+		}
+	}
 	/**
 	 * 더 보기
 	 */
@@ -186,6 +216,10 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 	 * 새로 고침
 	 */
 	private void refreshList() {
+		if( noDataView != null ){
+			couponsListView.removeHeaderView( noDataView );
+			noDataView = null;
+		}
 		if (adapter != null) {
 			adapter.clear();
 		}

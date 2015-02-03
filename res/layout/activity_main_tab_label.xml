@@ -62,7 +62,8 @@
 	                />
 	        </LinearLayout>
 	        
-	        <!-- tab3 -->
+	        <!-- tab2 -->
+	        
 	        <LinearLayout 
 	            android:layout_toRightOf="@id/main_tab_select_2"
 	            android:id="@+id/main_tab_select_3"
@@ -77,8 +78,8 @@
 		            android:paddingLeft="@dimen/tab_menu_label_padding"
 		            android:paddingRight="@dimen/tab_menu_label_padding"
 	                android:layout_height="@dimen/tab_menu_height"
-	                android:paddingTop="@dimen/tab_menu_padding_top"
 	                android:gravity="center"
+	                android:paddingTop="@dimen/tab_menu_padding_top"
 	                android:textSize="@dimen/text_16"
 	                android:text="@string/tab_menu_3" />
 				<TextView 

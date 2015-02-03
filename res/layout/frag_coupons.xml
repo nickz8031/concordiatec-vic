@@ -11,7 +11,7 @@
 	    android:background="@color/background_color"
 	    >
 	    <ListView
-	        android:id="@+id/news_list"
+	        android:id="@+id/coupons_list"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:layout_marginLeft="@dimen/mni_layout_margin_horizontal"

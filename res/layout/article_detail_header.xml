@@ -170,7 +170,7 @@
         	android:id="@+id/news_content_image_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/detail_multi_img_title_height"
-            android:background="@color/detail_multi_img_title_overlay"
+            android:background="@drawable/dark_gradiant"
             android:paddingLeft="@dimen/detail_multi_img_title_padding_left"
             android:gravity="center_vertical"
             android:layout_alignParentBottom="true"

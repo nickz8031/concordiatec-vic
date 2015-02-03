@@ -19,7 +19,6 @@ import com.concordiatec.vic.service.CommentService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.ImageViewPreload;
 import com.concordiatec.vic.tools.Tools;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.util.StringUtil;
@@ -56,7 +55,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ArticleDetailActivity extends SubPageSherlockActivity {
@@ -71,7 +69,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 	private ListView commentList;
 	private EditText commentContent;
 	private View contentView;
-	private ScrollView contentScroll;
 	private View sendCommentBtn;
 	private TextView content;
 	protected TextView commentCount;
@@ -103,7 +100,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 		detailService = null;
 		commentService = null;
 		aService = null;
-		contentScroll = null;
 		sendCommentBtn = null;
 		clickedComment = null;
 		content = null;
@@ -115,7 +111,6 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_detail);
-		contentScroll = (ScrollView) findViewById(R.id.ar_d_content_scroll);
 		contentView = LayoutInflater.from(this).inflate(R.layout.article_detail_header, null);
 		commentList = (ListView) findViewById(R.id.ar_d_comment_list);
 		commentContent = (EditText) findViewById(R.id.ar_d_comment_input);
@@ -147,9 +142,13 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 				
 				commentService.writeComment(comment, lastId, new SimpleVicResponseListener() {
 					@Override
-					public void onSuccess(ResData data) {
-						List<Comment> cmts = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
-						adapter.addData(cmts);
+					public void onSuccess(ResData data) {						
+						if( adapter != null ){
+							List<Comment> cmts = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
+							adapter.addData(cmts);
+						}else{
+							setCommentsAdapterData(data.getData());
+						}
 						commentContent.clearFocus();
 						commentContent.setText(null);
 						currentCommentCount++;
@@ -240,15 +239,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 		registerForContextMenu(commentList);
 		// get detail contents
 		getArticleContents();
-		// get article comments
-		getComments();
-	}
 
-	private void refreshComments() {
-		if (adapter != null) {
-			adapter.clear();
-		}
-		this.isRefresh = true;
+		// get article comments
 		getComments();
 	}
 
@@ -368,6 +360,17 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 				}
 				commentCount.setOnClickListener(new CommentBtnClickListener());
 				likeCount.setOnClickListener(new LikeButtonClickListener());
+				
+				commentList.addHeaderView(contentView);
+				commentList.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+						clickedPosition = position - 1;
+						clickedComment = adapter.getItem(clickedPosition);
+						ArticleDetailActivity.this.openContextMenu(parent);
+					}
+				});
+				
 				ProgressUtil.dismiss();
 			}
 		});
@@ -410,35 +413,25 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 
 			@Override
 			public void onEmptyResponse() {
-				if (commentList != null && contentScroll != null) {
-					commentList.setVisibility(View.GONE);
-					contentScroll.setVisibility(View.VISIBLE);
-					contentScroll.addView(contentView);
-				}
+				setCommentsAdapterData(null);
 			}
 		});
 	}
 
 	private void setCommentsAdapterData(Object data) {
-		LogUtil.show(data.toString());
-		comments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
-		if (comments != null && comments.size() > 0) {
-			if (isRefresh) {
-				adapter.setData(comments);
-				isRefresh = false;
-				return;
-			}
-			adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this, comments);
-			commentList.addHeaderView(contentView);
-			commentList.setAdapter(adapter);
-			commentList.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					clickedPosition = position - 1;
-					clickedComment = adapter.getItem(clickedPosition);
-					ArticleDetailActivity.this.openContextMenu(parent);
+		if( data == null ){
+			commentList.setAdapter(null);
+		}else{
+			comments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
+			if (comments != null && comments.size() > 0) {
+				if (isRefresh) {
+					adapter.setData(comments);
+					isRefresh = false;
+					return;
 				}
-			});
+				adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this, comments);
+				commentList.setAdapter(adapter);
+			}
 		}
 	}
 
