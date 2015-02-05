@@ -1,7 +1,7 @@
 package com.concordiatec.vic.model;
 
 import java.io.Serializable;
-
+@SuppressWarnings("serial")
 public class ShopGroup extends VicModel implements Serializable {
 	
 	private int id;

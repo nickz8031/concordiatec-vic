@@ -1,8 +1,7 @@
 package com.concordiatec.vic.model;
 
 import java.io.Serializable;
-import java.util.List;
-
+@SuppressWarnings("serial")
 public class ShopScore extends VicModel implements Serializable {
 	private int id;
 	private int shopId;

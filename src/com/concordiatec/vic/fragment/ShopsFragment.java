@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-import com.concordiatec.vic.CouponDetailActivity;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.ShopDetailActivity;
 import com.concordiatec.vic.adapter.ShopsAdapter;
@@ -34,6 +33,7 @@ import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.listener.VicSimpleAnimationListener;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.Shop;
+import com.concordiatec.vic.service.ShopListService;
 import com.concordiatec.vic.service.ShopService;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -54,6 +54,7 @@ public class ShopsFragment extends BaseSherlockFragment implements OnRefreshList
 	private LinearLayout sortCurrentLayout;
 	private TextView sortCurrentSelect;
 	private RelativeLayout sortContentLayout;
+	private ShopListService shopListService;
 	private ShopService shopService;
 	private boolean isRefresh;
 	private List<Shop> listData;
@@ -72,6 +73,7 @@ public class ShopsFragment extends BaseSherlockFragment implements OnRefreshList
 		sortContentLayout = null;
 		sortCurrentSelect = null;
 		sortCurrentLayout = null;
+		shopListService = null;
 		shopService = null;
 		listData = null;
 		super.onDestroy();
@@ -80,6 +82,7 @@ public class ShopsFragment extends BaseSherlockFragment implements OnRefreshList
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.frag_stores, container, false);
+		shopListService = new ShopListService(getActivity());
 		shopService = new ShopService(getActivity());
 		initViews();
 		return rootView;
@@ -100,7 +103,7 @@ public class ShopsFragment extends BaseSherlockFragment implements OnRefreshList
 	 * 페이지에 필요한 데이타 최기화, 서보통신 부분
 	 */
 	private void initData() {
-		shopService = new ShopService(getActivity());
+		shopListService = new ShopListService(getActivity());
 		getShops();
 	}
 	
@@ -151,7 +154,7 @@ public class ShopsFragment extends BaseSherlockFragment implements OnRefreshList
 	
 	public void getShops(){
 		ProgressUtil.show(getActivity());
-		shopService.getShops(new SimpleVicResponseListener() {
+		shopListService.getShops(new SimpleVicResponseListener() {
 			@Override
 			public void onSuccess(ResData data) {
 				if (data == null || data.getData() == null) {

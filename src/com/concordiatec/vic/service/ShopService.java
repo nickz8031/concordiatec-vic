@@ -2,55 +2,36 @@ package com.concordiatec.vic.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import android.content.Context;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.model.Shop;
 import com.concordiatec.vic.model.ShopGroup;
 import com.concordiatec.vic.model.ShopImage;
 import com.concordiatec.vic.model.ShopScore;
-import com.concordiatec.vic.model.User;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
-import com.nhn.android.maps.opt.i;
 
-public class ShopService extends HttpUtil implements IVicService {
+public class ShopService extends HttpUtil {
 	private Context context;
-
 	public ShopService(Context context) {
 		this.context = context;
 	}
-
-	/**
-	 * get coupon list
-	 * 
-	 * @param p
-	 * @param listener
-	 */
-	public void getShops(Map<String, String> p, VicResponseListener listener) {
-		RequestParams params = new RequestParams();
-		User loginUser = new UserService(context).getLoginUser();
-		if (loginUser != null) {
-			params.put("user", loginUser.usrId);
+	
+	public void likeShop(int shopId, VicResponseListener listener) {
+		if (shopId > 0) {
+			RequestParams params = new RequestParams();
+			params.put("id", shopId);
+			params.put("user", new UserService(context).getLoginUser().usrId);
+			post(ApiURL.SHOP_LIKE, params, new VicResponseHandler(listener));
 		}
-		if (p != null && p.size() > 0) {
-			for (Map.Entry<String, String> entry : p.entrySet()) {
-				params.put(entry.getKey(), entry.getValue());
-			}
-		}
-		post(ApiURL.SHOP_LIST, params, new VicResponseHandler(listener));
 	}
-
-	public void getShops(VicResponseListener listener) {
-		getShops(null, listener);
-	}
-
+	
 	@Override
 	public List<Shop> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
 		List<Shop> models = new ArrayList<Shop>();
@@ -77,7 +58,7 @@ public class ShopService extends HttpUtil implements IVicService {
 		}
 		if (map.get("user_id") != null) s.setShopUserId(getIntValue(map.get("user_id")));
 		if (map.get("shop_fee") != null) s.setShopFee(getIntValue(map.get("shop_fee")));
-		if (map.get("shop_phone") != null) s.setShopPhone(getIntValue(map.get("shop_phone")));
+		if (map.get("shop_phone") != null) s.setShopPhone(map.get("shop_phone").toString());
 		if (map.get("shop_intro") != null) s.setShopIntro((List<String>) map.get("shop_intro"));
 		if (map.get("shop_working") != null) s.setShopWorking(map.get("shop_working").toString());
 		if (map.get("shop_addr1") != null) s.setShopAddr1(map.get("shop_addr1").toString());

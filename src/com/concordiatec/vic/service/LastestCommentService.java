@@ -3,13 +3,11 @@ package com.concordiatec.vic.service;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.util.HttpUtil;
-import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class LastestCommentService extends HttpUtil implements IVicService {
+public class LastestCommentService extends HttpUtil {
 	public static LastestCommentService lcs;
 	private Context context;
 	

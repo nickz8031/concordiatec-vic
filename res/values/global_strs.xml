@@ -15,11 +15,17 @@
 	<string name="meter">m</string>
     <string name="kilometer">km</string>
     
+    <string name="news">소식</string>
+    <string name="event">이벤트</string>
+    <string name="store">가게</string>
+    <string name="information">정보</string>
+    
 	<string name="event_end_label">마감</string>
 	<string name="period_link_string"> ~ </string>
 	<string name="coupon_detail_title">쿠폰정보</string>
 	<string name="user_panel">유저정보</string>
     <string name="setting">설정</string>
+    <string name="category_select">업종선택</string>
     <string name="login">로그인</string>
     <string name="signup">회원가입</string>
     <string name="findpwd">비밀번호 찾기</string>

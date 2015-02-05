@@ -14,7 +14,7 @@ import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.LogUtil;
@@ -58,7 +58,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 	private Article clickedArticle;
 	private int targetUserId;
 	private HashMap<String, String> articleParams;
-	protected User userData;
+	protected LocalUser userData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -18,7 +18,7 @@ import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.LastestComment;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -30,7 +30,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 
 @SuppressWarnings("unused")
-public class ArticleListService extends HttpUtil implements IVicService{
+public class ArticleListService extends HttpUtil{
 	public static ArticleListService ars;
 	private Context context;
 	
@@ -44,7 +44,7 @@ public class ArticleListService extends HttpUtil implements IVicService{
 	 */
 	public void getArticles(Map<String, String> p , VicResponseListener listener) {
 		RequestParams params = new RequestParams();
-		User loginUser = new UserService(context).getLoginUser();
+		LocalUser loginUser = new UserService(context).getLoginUser();
 		if( loginUser != null ){
 			params.put("user", loginUser.usrId);
 		}

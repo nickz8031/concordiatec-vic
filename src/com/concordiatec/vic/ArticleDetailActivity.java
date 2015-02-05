@@ -12,7 +12,7 @@ import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.model.Comment;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.ArticleDetailService;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.CommentService;
@@ -127,7 +127,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 					NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.comment_cannot_be_null));
 					return;
 				}
-				User loginUser = checkLogin(ArticleDetailActivity.this);
+				LocalUser loginUser = checkLogin(ArticleDetailActivity.this);
 				if (loginUser == null) { return; }
 				ProgressUtil.show(ArticleDetailActivity.this);
 				Comment comment = new Comment();
@@ -268,7 +268,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 				TextView likeCount = (TextView) contentView.findViewById(R.id.news_like_btn);
 				RelativeLayout contentImgWrap = (RelativeLayout) contentView.findViewById(R.id.news_content_image_layout);
 				ImageView contentImg = (ImageView) contentView.findViewById(R.id.news_content_img);
-				User loginUser = new UserService(ArticleDetailActivity.this).getLoginUser();
+				LocalUser loginUser = new UserService(ArticleDetailActivity.this).getLoginUser();
 				if (loginUser == null || loginUser.usrId != detail.getWriterId()) {
 					editArticleMenu.setVisible(false);
 					deleteArticleMenu.setVisible(false);
@@ -579,7 +579,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		menu.setHeaderTitle(R.string.comment_context_title);
-		User loginUser = new UserService(this).getLoginUser();
+		LocalUser loginUser = new UserService(this).getLoginUser();
 		if (loginUser != null) {
 			// 공감 혹은 취소
 			if (clickedComment.isPlus()) {
@@ -611,7 +611,7 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		final User loginUser = checkLogin(ArticleDetailActivity.this);
+		final LocalUser loginUser = checkLogin(ArticleDetailActivity.this);
 		final int ctrlId = item.getItemId();
 		switch (ctrlId) {
 		case CONTEXT_COMMENT_PLUS:

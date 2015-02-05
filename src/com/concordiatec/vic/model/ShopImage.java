@@ -5,7 +5,6 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class ShopImage extends VicModel implements Serializable {
 	private int id;
-	private int shopId;
 	private String name;
 	private int width;
 	private int height;
@@ -14,12 +13,6 @@ public class ShopImage extends VicModel implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getShopId() {
-		return shopId;
-	}
-	public void setShopId(int shopId) {
-		this.shopId = shopId;
 	}
 	public String getName() {
 		return name;

@@ -57,25 +57,35 @@
     </style>
     
     <!-- rating bar -->
+    <style name="Ratingbar_8" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_8</item>    
+        <item name="android:minHeight">8dip</item>
+        <item name="android:maxHeight">8dip</item>
+    </style>
+    <style name="Ratingbar_10" parent="@android:style/Widget.RatingBar">    
+        <item name="android:progressDrawable">@drawable/rating_bar_10</item>    
+        <item name="android:minHeight">12dip</item>
+        <item name="android:maxHeight">12dip</item>
+    </style>
     <style name="Ratingbar_12" parent="@android:style/Widget.RatingBar">    
         <item name="android:progressDrawable">@drawable/rating_bar_12</item>    
-        <item name="android:minHeight">14dip</item>    
-        <item name="android:maxHeight">14dip</item>    
+        <item name="android:minHeight">12dip</item>
+        <item name="android:maxHeight">12dip</item>
     </style>
     <style name="Ratingbar_16" parent="@android:style/Widget.RatingBar">    
         <item name="android:progressDrawable">@drawable/rating_bar_16</item>    
-        <item name="android:minHeight">18dip</item>    
-        <item name="android:maxHeight">18dip</item>    
+        <item name="android:minHeight">16dip</item>    
+        <item name="android:maxHeight">16dip</item>    
     </style>
     <style name="Ratingbar_24" parent="@android:style/Widget.RatingBar">    
         <item name="android:progressDrawable">@drawable/rating_bar_24</item>    
-        <item name="android:minHeight">26dip</item>    
-        <item name="android:maxHeight">26dip</item>    
+        <item name="android:minHeight">24dip</item>    
+        <item name="android:maxHeight">24dip</item>    
     </style>
     <style name="Ratingbar_30" parent="@android:style/Widget.RatingBar">    
         <item name="android:progressDrawable">@drawable/rating_bar_30</item>    
-        <item name="android:minHeight">32dip</item>    
-        <item name="android:maxHeight">32dip</item>    
+        <item name="android:minHeight">30dip</item>    
+        <item name="android:maxHeight">30dip</item>    
     </style>
     <style name="Ratingbar_36" parent="@android:style/Widget.RatingBar">    
         <item name="android:progressDrawable">@drawable/rating_bar_36</item>    

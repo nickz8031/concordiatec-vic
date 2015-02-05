@@ -4,27 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ArticleImages;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
 
-public class ArticleDetailService extends HttpUtil implements IVicService {
+public class ArticleDetailService extends HttpUtil{
 	private Context context;
 
 	public ArticleDetailService(Context context) {
 		this.context = context;
-	}
-
-	@Override
-	public List<Article> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
-		return null;
 	}
 
 	/**
@@ -95,7 +89,7 @@ public class ArticleDetailService extends HttpUtil implements IVicService {
 			LogUtil.show("error request[ no detail article id.]");
 			return;
 		}
-		User loginUser = new UserService(context).getLoginUser();
+		LocalUser loginUser = new UserService(context).getLoginUser();
 		if (loginUser != null) {
 			params.put("user", loginUser.usrId);
 		}

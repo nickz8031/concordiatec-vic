@@ -12,10 +12,10 @@ import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import com.concordiatec.vic.base.SubPageAlphaSherlockActivity;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.UniversalUtil;
+import com.concordiatec.vic.widget.ZoomableImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -44,7 +44,7 @@ public class ArticleImagesActivity extends SubPageAlphaSherlockActivity implemen
 				for (int i = 0; i < imagesList.size(); i++) {
 					
 					View v = LayoutInflater.from(this).inflate(R.layout.article_image_activity, null);
-					ImageView iv = (ImageView) v.findViewById(R.id.vp_iv);
+					ZoomableImageView iv = (ZoomableImageView) v.findViewById(R.id.galleryImg);
 					ImageLoader.getInstance().displayImage( imagesList.get(i) , iv , imageOptions );
 					iv.setOnClickListener(new OnClickListener() {
 						@Override

@@ -3,19 +3,16 @@ package com.concordiatec.vic.service;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.model.ArticleImages;
 import com.concordiatec.vic.util.HttpUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class ArticleDetailImageService extends HttpUtil implements IVicService {
+public class ArticleDetailImageService extends HttpUtil{
 	
 	private static ArticleDetailImageService adis;
 	private String serverPath;
-//	private Context context;
 	public ArticleDetailImageService(Context context , String serverPath) {
 		this.serverPath = serverPath;
-//		this.context = context;
 	}
 
 	@Override

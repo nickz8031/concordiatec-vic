@@ -3,9 +3,9 @@ package com.concordiatec.vic;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
-import com.concordiatec.vic.model.LoginAccount;
+import com.concordiatec.vic.model.LocalLoginAccount;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -60,7 +60,7 @@ public class LoginActivity extends SubPageSherlockActivity {
 		
 		// create ArrayAdapter
 		
-		ArrayAdapter<String> av = new ArrayAdapter<String>(this, R.layout.li_auto_complete_drop, LoginAccount.getAll());
+		ArrayAdapter<String> av = new ArrayAdapter<String>(this, R.layout.li_auto_complete_drop, LocalLoginAccount.getAll());
 		email.setAdapter(av);
 		email.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
@@ -152,8 +152,8 @@ public class LoginActivity extends SubPageSherlockActivity {
 					@Override
 					public void onSuccess(ResData data) {
 						//save email if it did not exist in local database
-						LoginAccount.addData(email.getText().toString());
-						User usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
+						LocalLoginAccount.addData(email.getText().toString());
+						LocalUser usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 						lService.login(usr);
 						LoginActivity.this.setResult(Constant.ONLINE_BROAD_RESULT_CODE);
 						LoginActivity.this.finish();

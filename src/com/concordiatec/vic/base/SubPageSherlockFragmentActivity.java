@@ -11,7 +11,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
@@ -68,8 +68,8 @@ public class SubPageSherlockFragmentActivity extends SherlockFragmentActivity {
 		}).start();
 	}
 
-	protected User checkLogin(Activity activity) {
-		User loginUser = new UserService(activity).getLoginUser();
+	protected LocalUser checkLogin(Activity activity) {
+		LocalUser loginUser = new UserService(activity).getLoginUser();
 		if (loginUser == null) {
 			Intent intent = new Intent(activity, LoginActivity.class);
 			startActivityForResult(intent, 0);

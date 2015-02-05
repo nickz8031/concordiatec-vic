@@ -1,13 +1,17 @@
 package com.concordiatec.vic.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.tools.Tools;
+import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class HttpUtil {
+public class HttpUtil implements IVicService {
 
 	public static final String API_SIGN = "9d9e4b192895dd26a8ac6258294c3443";
 	public static final String API_URL = "http://demo1.remyjell.com";
@@ -55,5 +59,15 @@ public class HttpUtil {
 	}
 	public int getIntValue( Object object ){
 		return Tools.getIntValue(object);
+	}
+
+	@Override
+	public List<?> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
+		return null;
+	}
+
+	@Override
+	public Object mapToModel(LinkedTreeMap<String, Object> map) {
+		return null;
 	}
 }

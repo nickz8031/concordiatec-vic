@@ -8,15 +8,15 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.concordiatec.vic.util.StringUtil;
 @Table(name="vic_laccount")
-public class LoginAccount extends Model {
+public class LocalLoginAccount extends Model {
 	@Column(name="email")
 	public String email;
 	
-	public LoginAccount() {
+	public LocalLoginAccount() {
 		super();
 	}
 	
-	public LoginAccount(String email){
+	public LocalLoginAccount(String email){
 		super();
 		this.email = email;
 	}
@@ -24,9 +24,9 @@ public class LoginAccount extends Model {
 	
 	public static void addData( String data ){
 		if( StringUtil.isEmpty(data) ) return;
-		LoginAccount account = new Select().from(LoginAccount.class).where("email=?" , data).executeSingle();
+		LocalLoginAccount account = new Select().from(LocalLoginAccount.class).where("email=?" , data).executeSingle();
 		if( account == null ){
-			account = new LoginAccount();
+			account = new LocalLoginAccount();
 			account.email = data;
 			account.save();
 		}
@@ -34,9 +34,9 @@ public class LoginAccount extends Model {
 	
 	public static List<String> getAll(){
 		List<String> datas = new ArrayList<String>();
-		List<LoginAccount> items = new Select().from(LoginAccount.class).orderBy("Id DESC").execute();
+		List<LocalLoginAccount> items = new Select().from(LocalLoginAccount.class).orderBy("Id DESC").execute();
 		if( items != null && items.size() > 0 ){
-			for ( LoginAccount account : items ) {
+			for ( LocalLoginAccount account : items ) {
 				datas.add(account.email);
 			}
 		}

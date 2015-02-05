@@ -3,12 +3,11 @@ package com.concordiatec.vic.service;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.model.ShopImage;
 import com.concordiatec.vic.util.HttpUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class ShopImageService extends HttpUtil implements IVicService {
+public class ShopImageService extends HttpUtil{
 	@SuppressWarnings("unused")
 	private Context context;
 	public ShopImageService( Context context ) {
@@ -28,10 +27,9 @@ public class ShopImageService extends HttpUtil implements IVicService {
 	@Override
 	public ShopImage mapToModel(LinkedTreeMap<String, Object> map) {
 		ShopImage s = new ShopImage();
-		if( map.get("img_id") != null ) s.setId( getIntValue(map.get("img_id")) );
-		if( map.get("shop_id") != null ) s.setShopId( getIntValue( map.get("shop_id") ) );
-		if( map.get("img_height") != null ) s.setHeight( getIntValue( map.get("img_height") ) );
-		if( map.get("img_width") != null ) s.setWidth( getIntValue( map.get("img_width") ) );
-		if( map.get("img_name") != null ) s.setName( map.get("img_name").toString() );
+		if( map.get("id") != null ) s.setId( getIntValue(map.get("id")) );
+		if( map.get("height") != null ) s.setHeight( getIntValue( map.get("height") ) );
+		if( map.get("width") != null ) s.setWidth( getIntValue( map.get("width") ) );
+		if( map.get("name") != null ) s.setName( map.get("name").toString() );
 		return s;
 	}}

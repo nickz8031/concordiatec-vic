@@ -3,11 +3,13 @@
  */
 package com.concordiatec.vic.model;
 
+import java.io.Serializable;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+@SuppressWarnings("serial")
 @Table(name="vic_usr")
-public class User extends Model {
+public class LocalUser extends Model implements Serializable {
 	@Column(name="usrId")
 	public int usrId;
 	@Column(name="email")
@@ -52,7 +54,7 @@ public class User extends Model {
 	public String shopCreated;
 	@Column(name="sex")
 	public int sex;
-	public User() {
+	public LocalUser() {
 		super();
 	}
 	

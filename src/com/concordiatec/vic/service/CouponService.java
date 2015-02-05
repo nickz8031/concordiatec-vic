@@ -6,19 +6,18 @@ import java.util.Map;
 import android.content.Context;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Coupon;
 import com.concordiatec.vic.model.Shop;
 import com.concordiatec.vic.model.ShopGroup;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
 
-public class CouponService extends HttpUtil implements IVicService  {
+public class CouponService extends HttpUtil{
 	private Context context;
 	public CouponService( Context context ) {
 		this.context = context;
@@ -26,7 +25,7 @@ public class CouponService extends HttpUtil implements IVicService  {
 	
 	public void getCouponDetail( int id , VicResponseListener listener ){
 		RequestParams params = new RequestParams();
-		User loginUser = new UserService(context).getLoginUser();
+		LocalUser loginUser = new UserService(context).getLoginUser();
 		if( loginUser != null ){
 			params.put("user", loginUser.usrId);
 		}
@@ -41,7 +40,7 @@ public class CouponService extends HttpUtil implements IVicService  {
 	 */
 	public void getCoupons(Map<String, String> p , VicResponseListener listener) {
 		RequestParams params = new RequestParams();
-		User loginUser = new UserService(context).getLoginUser();
+		LocalUser loginUser = new UserService(context).getLoginUser();
 		if( loginUser != null ){
 			params.put("user", loginUser.usrId);
 		}

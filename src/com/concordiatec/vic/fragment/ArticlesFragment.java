@@ -36,7 +36,7 @@ import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.util.AniUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -394,7 +394,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	private final class WriteButtonClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			User loginUser = getLoginUser();
+			LocalUser loginUser = getLoginUser();
 			if (loginUser == null) {
 				Intent intent = new Intent(getActivity(), LoginActivity.class);
 				startActivity(intent);

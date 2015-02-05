@@ -23,6 +23,7 @@ public class ApiURL {
 	
 	public static final String SHOP_LIST = "/?r=shop";
 	public static final String SHOP_DETAIL = "/?r=shop/view";
+	public static final String SHOP_LIKE = "/?r=shop/like";
 	
 	public static final String USER_INFO = "/?r=user/info";
 	

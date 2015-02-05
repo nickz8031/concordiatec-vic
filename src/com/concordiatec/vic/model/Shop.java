@@ -13,7 +13,7 @@ public class Shop extends VicModel implements Serializable {
 	private String shopUserName;
 	private String shopUserPhoto;
 	private int shopFee;
-	private int shopPhone;
+	private String shopPhone;
 	private List<String> shopIntro;
 	private String shopWorking;
 	private String shopAddr1;
@@ -70,10 +70,10 @@ public class Shop extends VicModel implements Serializable {
 	public void setShopFee(int shopFee) {
 		this.shopFee = shopFee;
 	}
-	public int getShopPhone() {
+	public String getShopPhone() {
 		return shopPhone;
 	}
-	public void setShopPhone(int shopPhone) {
+	public void setShopPhone(String shopPhone) {
 		this.shopPhone = shopPhone;
 	}
 	public List<String> getShopIntro() {

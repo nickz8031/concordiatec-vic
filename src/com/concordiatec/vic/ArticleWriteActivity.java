@@ -22,7 +22,7 @@ import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.ArticleService;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.tools.Route;
@@ -47,7 +47,7 @@ public class ArticleWriteActivity extends SubPageSherlockActivity{
 	private CircleImageView profilePhoto;
 	
 	private PhotoShowGridAdapter adapter;
-	private User loginUser;
+	private LocalUser loginUser;
 	private TextView userName;
 	
 	@Override

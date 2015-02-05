@@ -15,6 +15,7 @@
     <!-- GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -104,16 +105,52 @@
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         
+        <!-- 가게 상세 -->
+        <activity
+            android:name=".ShopDetailActivity"
+            android:theme="@style/SubTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- 가게 평점-->
+        <activity
+            android:name=".ShopScoreActivity"
+            android:theme="@style/SubTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- 가게 이미지 -->
+        <activity
+            android:name=".ShopGridActivity"
+            android:theme="@style/SubTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- 가게 이미지 갤러리 -->
+        <activity
+            android:name=".ShopGalleryActivity"
+            android:theme="@style/ActionbarOverflowSubTheme"
+            android:windowSoftInputMode="adjustResize" />
+        
+        <!-- 가게 위치 -->
+        <activity
+            android:name=".ShopGpsActivity"
+            android:theme="@style/SubTheme"
+            android:windowSoftInputMode="adjustResize" />
+        
+        <!-- 카테고리 선택 -->
+        <activity
+            android:name=".MultiCategoryActivity"
+            android:theme="@style/SubTheme"
+            android:windowSoftInputMode="adjustResize" >
+            </activity>
+        
         <!-- ActiveAndroid -->
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="vic" />
+            android:value="vic_local" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="2" />
+            android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.concordiatec.vic.model.User,com.concordiatec.vic.model.LoginAccount" />
+            android:value="com.concordiatec.vic.model.LocalUser
+            ,com.concordiatec.vic.model.LocalLoginAccount
+            ,com.concordiatec.vic.model.LocalSelectedCategory" />
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import com.concordiatec.vic.constant.ApiURL;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Article;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -23,7 +23,7 @@ public class ArticleService extends HttpUtil {
 	}
 	
 	public void deleteArticle( int articleId , VicResponseListener listener ){
-		User loginUser = uService.getLoginUser();
+		LocalUser loginUser = uService.getLoginUser();
 		if( loginUser != null ){
 			RequestParams params = new RequestParams();
 			params.put("id", articleId);
@@ -33,7 +33,7 @@ public class ArticleService extends HttpUtil {
 	}
 	
 	public void editArticle(Article article , VicResponseListener listener){
-		User loginUser = uService.getLoginUser();
+		LocalUser loginUser = uService.getLoginUser();
 		if( loginUser != null ){
 			RequestParams params = new RequestParams();
 			params.put("id", article.getId());
@@ -44,7 +44,7 @@ public class ArticleService extends HttpUtil {
 	}
 	
 	public void writeArticle( Article article , List<String> files , VicResponseListener listener ){
-		User loginUser = uService.getLoginUser();
+		LocalUser loginUser = uService.getLoginUser();
 		if( files != null && files.size() > 0 && loginUser != null ){
 			RequestParams params = new RequestParams();
 			int d = 0;
@@ -81,7 +81,7 @@ public class ArticleService extends HttpUtil {
 	 * @param listener
 	 */
 	public void likeArticle( int articleId , VicResponseListener listener ){
-		User loginUser = uService.getLoginUser();		
+		LocalUser loginUser = uService.getLoginUser();		
 		if( loginUser!=null && articleId > 0  ){
 			RequestParams params = new RequestParams();
 			params.put("user", loginUser.usrId);

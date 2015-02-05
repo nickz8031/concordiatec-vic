@@ -2,32 +2,29 @@ package com.concordiatec.vic.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.http.Header;
 import android.content.Context;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.HttpUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.google.gson.internal.LinkedTreeMap;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class UserService extends HttpUtil implements IVicService {
+public class UserService extends HttpUtil{
 	private Context context;
 	
 	public UserService( Context context ){
 		this.context = context;
 	}
 	
-	public void signup( User user , VicResponseListener listener ){
+	public void signup( LocalUser user , VicResponseListener listener ){
 		if( user != null ){
 			RequestParams params = new RequestParams();
 			params.put("email", user.email);
@@ -68,11 +65,11 @@ public class UserService extends HttpUtil implements IVicService {
 	 * login user information from location
 	 * @return
 	 */
-	public User getLoginUser(){
-		return new Select().from(User.class).executeSingle();
+	public LocalUser getLoginUser(){
+		return new Select().from(LocalUser.class).executeSingle();
 	}
 	
-	public void login( User usr ){
+	public void login( LocalUser usr ){
 		clearData();
 		usr.save();
 	}
@@ -83,16 +80,12 @@ public class UserService extends HttpUtil implements IVicService {
 	}
 	
 	private void clearData(){
-		new Delete().from(User.class).where("Id > ?", 0).execute();
+		new Delete().from(LocalUser.class).where("Id > ?", 0).execute();
 	}
-	
+
 	@Override
-	public List<User> mapListToModelList(ArrayList<LinkedTreeMap<String, Object>> list) {
-		return null;
-	}
-	@Override
-	public User mapToModel(LinkedTreeMap<String, Object> map) {
-		User user = new User();
+	public LocalUser mapToModel(LinkedTreeMap<String, Object> map) {
+		LocalUser user = new LocalUser();
 		user.name = map.get("name").toString();
 		user.sex = getIntValue(map.get("sex"));
 		if( map.get("photo") != null && map.get("photo").toString().length() > 0 ){

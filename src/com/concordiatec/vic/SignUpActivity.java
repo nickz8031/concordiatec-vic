@@ -10,9 +10,9 @@ import android.widget.RadioButton;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.constant.Constant;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
-import com.concordiatec.vic.model.LoginAccount;
+import com.concordiatec.vic.model.LocalLoginAccount;
 import com.concordiatec.vic.model.ResData;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.LogUtil;
@@ -96,7 +96,7 @@ public class SignUpActivity extends SubPageSherlockActivity {
 				return;
 			}
 			
-			User user = new User();
+			LocalUser user = new LocalUser();
 			user.email = emailString;
 			user.pwd = EncryptUtil.EncPwd(pwdString);
 			user.name = nickNameString;
@@ -105,8 +105,8 @@ public class SignUpActivity extends SubPageSherlockActivity {
 			userService.signup(user, new SimpleVicResponseListener(){
 				@Override
 				public void onSuccess(ResData data) {
-					LoginAccount.addData(emailString);
-					User usr = userService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
+					LocalLoginAccount.addData(emailString);
+					LocalUser usr = userService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 					userService.login(usr);
 					SignUpActivity.this.setResult(Constant.ONLINE_BROAD_RESULT_CODE);
 					SignUpActivity.this.finish();

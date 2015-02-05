@@ -12,7 +12,7 @@ import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.UserActivity;
 import com.concordiatec.vic.constant.Constant;
-import com.concordiatec.vic.model.User;
+import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.StringUtil;
@@ -41,7 +41,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 		userName = (TextView) profileLayout.findViewById(R.id.main_actionbar_custom_title);
 		
 		lService = new UserService(this);
-		final User usr = lService.getLoginUser();
+		final LocalUser usr = lService.getLoginUser();
 		
 		if( usr != null && usr.getId() > 0 ){
 			setIcon(usr.photo);
@@ -92,7 +92,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 	}
 	
 	private void restoreActionbar(){
-		User usr = lService.getLoginUser();
+		LocalUser usr = lService.getLoginUser();
 		if( usr != null && usr.getId() > 0 ){
 			setIcon(usr.photo);
 			setTitle(usr.name);
@@ -117,7 +117,7 @@ public class BaseSherlockFragmentActivity extends SherlockFragmentActivity {
 	protected final class ActionbarAvatarClick implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			User usr = lService.getLoginUser();
+			LocalUser usr = lService.getLoginUser();
 			Intent intent = new Intent( getApplicationContext() , UserActivity.class );
 			intent.putExtra("user_id", usr.usrId);
 			startActivity(intent);
