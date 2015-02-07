@@ -1,6 +1,8 @@
 package com.concordiatec.vic.tools;
 
+import com.concordiatec.vic.LoginActivity;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 public class Route {
@@ -11,7 +13,16 @@ public class Route {
 		Intent intent = new Intent(from , to);
 		from.startActivity(intent);
 		if( closeThis ){
-			from.finish();
+			((Activity)from).finish();
 		}
+	}
+	
+	public static void goLogin(Activity from , boolean isClose){
+		moveTo(from, LoginActivity.class, isClose);
+	}
+	
+	public static void goLogin(Context from){
+		Intent intent = new Intent(from , LoginActivity.class);
+		from.startActivity(intent);
 	}
 }

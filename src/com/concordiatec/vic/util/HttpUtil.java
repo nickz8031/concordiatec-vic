@@ -14,8 +14,8 @@ import com.loopj.android.http.RequestParams;
 public class HttpUtil implements IVicService {
 
 	public static final String API_SIGN = "9d9e4b192895dd26a8ac6258294c3443";
-	public static final String API_URL = "http://demo1.remyjell.com";
-	public static final String API_IMG_URL = "http://image.remyjell.com";
+	public static final String API_URL = "http://211.253.8.102";
+	public static final String API_IMG_URL = "http://211.253.8.102/images";
 	
 	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		AsyncHttpClient httpClient = new AsyncHttpClient();

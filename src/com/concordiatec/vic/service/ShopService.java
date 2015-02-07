@@ -6,14 +6,12 @@ import android.content.Context;
 import com.concordiatec.vic.constant.ApiURL;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
-import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.model.Shop;
 import com.concordiatec.vic.model.ShopGroup;
 import com.concordiatec.vic.model.ShopImage;
 import com.concordiatec.vic.model.ShopScore;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.HttpUtil;
-import com.concordiatec.vic.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.loopj.android.http.RequestParams;
 

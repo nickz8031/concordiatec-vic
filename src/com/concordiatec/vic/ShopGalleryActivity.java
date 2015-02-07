@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.concordiatec.vic.base.SubPageSherlockActivity;
+import com.concordiatec.vic.base.SubPageAlphaSherlockActivity;
 import com.concordiatec.vic.model.Shop;
 import com.concordiatec.vic.model.ShopImage;
 import com.concordiatec.vic.widget.ZoomableImageView;
 
-public class ShopGalleryActivity extends SubPageSherlockActivity  implements OnPageChangeListener{
+public class ShopGalleryActivity extends SubPageAlphaSherlockActivity  implements OnPageChangeListener{
 	
 	private int current = 0;
 	

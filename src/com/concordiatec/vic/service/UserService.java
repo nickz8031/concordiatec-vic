@@ -1,11 +1,10 @@
 package com.concordiatec.vic.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.content.Context;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.concordiatec.vic.constant.ApiURL;
+import com.concordiatec.vic.helper.BroadHelper;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.LocalUser;
@@ -72,11 +71,13 @@ public class UserService extends HttpUtil{
 	public void login( LocalUser usr ){
 		clearData();
 		usr.save();
+		BroadHelper.sendOnlineBroad(context , true);
 	}
 	
 	
 	public void logout(){
 		clearData();
+		BroadHelper.sendOnlineBroad(context , false);
 	}
 	
 	private void clearData(){
@@ -97,20 +98,17 @@ public class UserService extends HttpUtil{
 		
 		if(user.isShop){
 			user.shopId = Tools.getIntValue(map.get("shop_id"));
-			user.shopGroupId = Tools.getIntValue(map.get("group_id"));
-			user.areaId = Tools.getIntValue(map.get("area_id"));
-			user.shopFee = Tools.getIntValue(map.get("shop_fee"));
 			user.shopPhone = map.get("shop_phone").toString();
-			user.shopIntro = map.get("shop_intro").toString();
 			user.shopAddr1 = map.get("shop_addr1").toString();
 			user.shopAddr2 = map.get("shop_addr2").toString();
 			user.shopLng = Tools.getDoubleValue( map.get("shop_lng") );
 			user.shopLat = Tools.getDoubleValue( map.get("shop_lat") );
-			user.shopScores = Tools.getIntValue( map.get("shop_scores") );
 			user.shopLikeCount = Tools.getIntValue( map.get("shop_likes") );
 			user.shopShareCount = Tools.getIntValue( map.get("shop_shares") );
-			user.shopStatus = Tools.getIntValue( map.get("shop_status") );
-			user.shopCreated = map.get("shop_created").toString();
+			user.shopScoreCount = Tools.getIntValue( map.get("score_count") );
+			user.isOpen = getIntValue(map.get("shop_open")) == 1 ? true:false;
+			user.isPause = getIntValue(map.get("shop_pause")) == 1 ? true:false;
+			user.groupName = map.get("group_name").toString();
 		}
 		return user;
 	}

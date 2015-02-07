@@ -4,16 +4,26 @@ import java.util.List;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.model.Coupon;
 import com.concordiatec.vic.service.CouponService;
+import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.Route;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.concordiatec.vic.widget.TagView;
+import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,10 +31,14 @@ public class CouponsAdapter extends VicBaseAdapter {
 	private List<Coupon> data;
 	private Context context;
 	private LayoutInflater inflater;
+	private Resources res;
+	private CouponService couponService;
 	
 	public CouponsAdapter(Context context , List<Coupon> data) {
 		this.data = data;
 		this.context = context;
+		this.res = context.getResources();
+		this.couponService = new CouponService(context);
 		this.inflater = LayoutInflater.from(context);
 	}
 
@@ -102,10 +116,9 @@ public class CouponsAdapter extends VicBaseAdapter {
 			holder.couponName = (TextView) convertView.findViewById(R.id.coupon_title);
 			holder.price = (TextView) convertView.findViewById(R.id.coupon_price);
 			holder.listPrice = (TextView) convertView.findViewById(R.id.coupon_list_price);
-			holder.endTime = (TextView) convertView.findViewById(R.id.coupon_end_time);
 			holder.distance = (TextView) convertView.findViewById(R.id.shop_distance);
 			holder.getCouponBtn = (TextView) convertView.findViewById(R.id.coupon_ctrl_btn);
-			holder.likeButton = (TextView) convertView.findViewById(R.id.coupon_like_btn);
+			holder.likeButton = (ImageButton) convertView.findViewById(R.id.coupon_like_btn);
 			holder.shareButton = (ImageButton) convertView.findViewById(R.id.coupon_share_btn);
 			
 			convertView.setTag(holder);
@@ -122,17 +135,14 @@ public class CouponsAdapter extends VicBaseAdapter {
 		holder.listPrice.setText( apData.getListPrice() + context.getString(R.string.unit_won) );
 		
 		holder.listPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-		
-		holder.endTime.setText( apData.getEndTime() + " " + context.getString(R.string.event_end_label) );
-		
+				
 		holder.shopName.setText( apData.getShop().getShopUserName() );
 		holder.couponName.setText( apData.getName() );
-		holder.likeButton.setText( apData.getLikeCount()+"" );
 		
 		if( apData.isLike() ){
-			holder.likeButton.setCompoundDrawablesWithIntrinsicBounds( context.getResources().getDrawable(R.drawable.ic_action_favorite) , null, null, null);
+			holder.likeButton.setImageResource(R.drawable.ic_action_favorite);
 		}
-		holder.likeButton.setOnClickListener( new LikeButtonClickListener() );
+		holder.likeButton.setOnClickListener( new ClickListener(apData.getId()) );
 		
 		//need edit************
 		holder.distance.setText( "50" + context.getString(R.string.meter) );
@@ -141,13 +151,86 @@ public class CouponsAdapter extends VicBaseAdapter {
 		return convertView;
 	}
 	
-	private final class LikeButtonClickListener implements OnClickListener{
+	private final class ClickListener implements OnClickListener{
+		private int id;
+		public ClickListener( int id ) {
+			this.id = id;
+		}
 		@Override
 		public void onClick(View v) {
-			NotifyUtil.toast(context, "aaaaaaaaaaaaaaaaaa");
+			switch (v.getId()) {
+			case R.id.coupon_like_btn:
+				if (new UserService(context).getLoginUser() == null) {
+					Route.goLogin(context);
+					return;
+				}
+				if(v.getTag() == null){
+					activeLikeAnimation(v);
+				}
+				likeCoupon(v , id);
+				break;
+			default:
+				break;
+			}
 		}
+		
 	}
 	
+	/**
+	 * like action
+	 * 
+	 * @param v
+	 */
+	private void likeCoupon(View v, int id) {
+		
+		final View view = v;
+		final boolean isLike = (v.getTag() == null);
+		if (isLike) {
+			setLike(view);
+			view.setTag(true);
+		} else {
+			setDislike(view);
+			view.setTag(null);
+		}
+		couponService.likeCoupon(id);
+	}
+	
+	/**
+	 * start animation with like action
+	 * 
+	 * @param v
+	 */
+	private void activeLikeAnimation(View v) {
+		final View target = v;
+		final Animation toBig = AnimationUtils.loadAnimation(context, R.anim.big_scale);
+		final Animation toNormal = AnimationUtils.loadAnimation(context, R.anim.small_scale);
+		target.setAnimation(toBig);
+		toBig.start();
+		toBig.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				target.clearAnimation();
+				target.setAnimation(toNormal);
+				toNormal.start();
+			}
+		});
+	}
+
+	private void setLike(View v) {
+		((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
+	}
+
+	private void setDislike(View v) {
+		((ImageButton) v).setImageResource(R.drawable.ic_action_favorite_outline);
+	}
 	
 
 	
@@ -159,9 +242,8 @@ public class CouponsAdapter extends VicBaseAdapter {
 		TextView distance;
 		TextView listPrice;
 		TextView price;
-		TextView endTime;
 		TextView getCouponBtn;
 		ImageButton shareButton;
-		TextView likeButton;
+		ImageButton likeButton;
 	}
 }

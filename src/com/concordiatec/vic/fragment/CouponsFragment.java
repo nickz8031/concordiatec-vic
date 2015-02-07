@@ -243,6 +243,8 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 		refreshList();
 	}
 
+	
+	
 	/**
 	 * back button pressed
 	 */

@@ -81,8 +81,10 @@
         <TextView
             android:id="@+id/coupon_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="34dp"
             android:gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="@string/demo_coupon_title"
             android:textSize="@dimen/text_14" />
 
@@ -116,17 +118,6 @@
                 android:textSize="@dimen/text_16"
                 android:textStyle="bold" />
         </LinearLayout>
-        <!-- 마감 시간 -->
-
-        <TextView
-            android:id="@+id/coupon_end_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_device_access_time"
-            android:drawablePadding="3dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/cp_time_color"
-            android:textSize="@dimen/text_14" />
     </LinearLayout>
     <!-- 가격 정보 끝 -->
 
@@ -142,16 +133,45 @@
         android:layout_marginRight="@dimen/cp_img_margin_h"
         android:layout_marginTop="@dimen/cp_ctrl_margin_top"
         android:background="@drawable/top_bgcolor_border_1_dp" >
-
-        <TextView
-            android:id="@+id/coupon_ctrl_btn"
+        
+        <ImageButton
+            android:id="@+id/coupon_like_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/news_ctrl_btn_selector"
+            android:paddingBottom="5dp"
+            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
+            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_action_favorite_outline" />
+        
+        <ImageButton
+            android:id="@+id/coupon_share_btn"
+            android:layout_toRightOf="@id/coupon_like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/news_ctrl_btn_selector"
+            android:paddingBottom="5dp"
+            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
+            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_share_26_gray" />
+        
+        <TextView
+            android:id="@+id/coupon_ctrl_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/news_ctrl_btn_selector"
             android:clickable="true"
-            android:drawableLeft="@drawable/ic_maps_local_offer"
+            android:drawableLeft="@drawable/ic_coupon_down_24"
             android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
             android:gravity="center_vertical"
             android:paddingBottom="5dp"
@@ -161,42 +181,7 @@
             android:text="@string/get_coupon"
             android:textColor="@color/coupon_normal_ctrl_text"
             android:textSize="@dimen/text_14" />
-
-        <ImageButton
-            android:id="@+id/coupon_share_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/coupon_ctrl_btn"
-            android:background="@drawable/news_ctrl_btn_selector"
-            android:paddingBottom="5dp"
-            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
-            android:paddingTop="5dp"
-            android:src="@drawable/ic_share_26_gray" />
-
-        <TextView
-            android:id="@+id/coupon_like_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/news_ctrl_btn_selector"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_action_favorite_outline"
-            android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
-            android:gravity="center_vertical"
-            android:paddingBottom="5dp"
-            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-            android:paddingRight="@dimen/cp_ctrl_btn_padding_right"
-            android:paddingTop="5dp"
-            android:text="@string/demo_comment_count"
-            android:textColor="@color/coupon_normal_ctrl_text"
-            android:textSize="@dimen/text_14"
-            android:textStyle="bold" />
+        
     </RelativeLayout>
 
 </RelativeLayout>

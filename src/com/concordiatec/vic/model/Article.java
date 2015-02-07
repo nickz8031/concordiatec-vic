@@ -33,6 +33,14 @@ public class Article extends VicModel implements Serializable {
 	 */
 	private int writerId;
 	/**
+	 * writer is shop account
+	 */
+	private boolean writerIsShop;
+	/**
+	 * writer shop id
+	 */
+	private int writerShopId;
+	/**
 	 * writer name
 	 */
 	private String writerName;
@@ -94,7 +102,19 @@ public class Article extends VicModel implements Serializable {
 	
 	private int minHeight;
 	
-	
+
+	public int getWriterShopId() {
+		return writerShopId;
+	}
+	public boolean getWriterIsShop() {
+		return writerIsShop;
+	}
+	public void setWriterIsShop(boolean writerIsShop) {
+		this.writerIsShop = writerIsShop;
+	}
+	public void setWriterShopId(int writerShopId) {
+		this.writerShopId = writerShopId;
+	}
 	public boolean isAllowComment() {
 		return allowComment;
 	}

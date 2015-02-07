@@ -1,13 +1,13 @@
 package com.concordiatec.vic;
 
+import java.util.regex.Pattern;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
-import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.constant.RegPattern;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.LocalLoginAccount;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.UserService;
-import com.concordiatec.vic.util.EncryptUtil;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
@@ -137,9 +137,12 @@ public class LoginActivity extends SubPageSherlockActivity {
 	private final class loginClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			String emailPattern = "[a-zA-Z0-9]?[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+.[a-z]{2,5}";
-			boolean emailFalseFlag = (!email.getText().toString().matches(emailPattern) || email.getText().length() < 1);
-			boolean pwdFalseFlag = (pwd.getText().length() < 1);
+			final String emailString = email.getText().toString();
+			String pwdString = pwd.getText().toString();
+			boolean emailFalseFlag = (!Pattern.matches(RegPattern.EMAIL, emailString));
+			boolean pwdFalseFlag = (!Pattern.matches(RegPattern.PASSWORD, pwdString));
+			LogUtil.show(String.valueOf(pwdFalseFlag));
+			
 			if (emailFalseFlag) {
 				email.requestFocus();
 				showErrorNotify();
@@ -148,14 +151,13 @@ public class LoginActivity extends SubPageSherlockActivity {
 				showErrorNotify();
 			} else {
 				ProgressUtil.show(LoginActivity.this);
-				lService.doLogin(email.getText().toString(), pwd.getText().toString().trim(), new SimpleVicResponseListener() {
+				lService.doLogin(emailString, pwdString, new SimpleVicResponseListener() {
 					@Override
 					public void onSuccess(ResData data) {
 						//save email if it did not exist in local database
-						LocalLoginAccount.addData(email.getText().toString());
+						LocalLoginAccount.addData(emailString);
 						LocalUser usr = lService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 						lService.login(usr);
-						LoginActivity.this.setResult(Constant.ONLINE_BROAD_RESULT_CODE);
 						LoginActivity.this.finish();
 					}
 					
@@ -174,7 +176,7 @@ public class LoginActivity extends SubPageSherlockActivity {
 			}
 		}
 	}
-
+	
 	/**
 	 * show notify toast
 	 * 

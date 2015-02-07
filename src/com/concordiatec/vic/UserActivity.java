@@ -7,28 +7,36 @@ import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.adapter.ArticlesAdapter;
 import com.concordiatec.vic.base.SubPageSherlockFragmentActivity;
 import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.helper.BroadHelper;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.ArticleListService;
 import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.Route;
 import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.util.StringUtil;
 import com.concordiatec.vic.widget.CircleImageView;
 import com.google.gson.internal.LinkedTreeMap;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
@@ -44,7 +52,6 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 	private int[] tabLines = { R.id.user_tab_line_1, R.id.user_tab_line_2, R.id.user_tab_line_3, R.id.user_tab_line_4 };
 	private int[] tabs = { R.id.user_tab_label_1, R.id.user_tab_label_2, R.id.user_tab_label_3, R.id.user_tab_label_4 };
 	private CircleImageView profilePhoto;
-	private TextView userName;
 	private TextView userIntro;
 	private TextView userArticleCount;
 	private TextView userAttentionCount;
@@ -59,14 +66,35 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 	private int targetUserId;
 	private HashMap<String, String> articleParams;
 	protected LocalUser userData;
+	private Button followBtn;
+	private LocalUser loginUser;
+	
 
+
+	@Override
+	protected void onDestroy() {
+		headerView = null;
+		listView = null;
+		articleListService = null;
+		ptrLayout = null;
+		listData = null;
+		articlesAdapter = null;
+		clickedArticle = null;
+		tabLines = null;
+		tabs = null;
+		profilePhoto = null;
+		userIntro = null;
+		followBtn = null;
+		userArticleCount = null;
+		userAttentionCount = null;
+		setContentView(R.layout.null_layout);
+		super.onDestroy();
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user);
-		
-		setTitle(getString(R.string.user_panel));
 		
 		// initialize services
 		initServices();
@@ -77,10 +105,57 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 		// initialize extra options
 		initExtra();
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.user, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		LocalUser user = new UserService(this).getLoginUser();
+		if( user== null || user.usrId!=targetUserId ) menu.findItem(R.id.menu_my_info).setVisible(false);
+		if( user== null ) menu.findItem(R.id.logout).setVisible(false);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		// 새로 고침
+		case R.id.menu_refresh:
+			recreate();
+			break;
+		case R.id.menu_my_info:
+			Route.moveTo(this, AccountActivity.class , false);
+			break;
+		case R.id.menu_help:
+			break;
+		case R.id.logout:
+			userService.logout();
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+	
 
 	private void initServices() {
 		articleListService = new ArticleListService(this);
 		userService = new UserService(this);
+		loginUser = userService.getLoginUser();
+		// sign in/out broadcast receiver register
+		BroadHelper.initOnlineBroadReciever(getApplicationContext(), new BroadcastReceiver(){
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if( userData!=null ){
+					recreate();
+				}
+			}
+		});
 	}
 
 	private void initViews() {
@@ -89,10 +164,11 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 		headerView = getLayoutInflater().inflate(R.layout.user_header_wallpaper, null);
 		
 		profilePhoto = (CircleImageView) headerView.findViewById(R.id.user_profile_photo);
-		userName = (TextView) headerView.findViewById(R.id.user_name);
 		userIntro = (TextView) headerView.findViewById(R.id.user_intro);
 		userArticleCount = (TextView) headerView.findViewById(R.id.user_article_count);
 		userAttentionCount = (TextView) headerView.findViewById(R.id.user_attention_store_count);
+		
+		followBtn = (Button) headerView.findViewById(R.id.follow_btn);
 		
 		listView.addHeaderView(headerView);
 		listView.setOnScrollListener(new ListViewScrollListener());
@@ -108,6 +184,10 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			NotifyUtil.toast(this, getString(R.string.error_request));
 			finish();
 		}
+		if( loginUser.usrId == targetUserId ){
+			followBtn.setVisibility(View.GONE);
+		}
+		
 		ProgressUtil.show(this);
 		userService.getUserInfo(targetUserId, new SimpleVicResponseListener() {
 			@Override
@@ -118,16 +198,19 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 				}else{
 					Glide.with(UserActivity.this).load(userData.photo).into(profilePhoto);
 				}
-				userName.setText( userData.name );
+				setTitle(userData.name);
 				userIntro.setText( String.format(getString(R.string.default_user_introduce), userData.name) );
 				ProgressUtil.dismiss();
 //				userArticleCount.setText("0");
 //				userAttentionCount.setText("0");
-				initArticleData();
+				
 			}
 		});
 	}
 	
+	/**
+	 * 소식 리스트 뽑기
+	 */
 	private void initArticleData(){
 		articleParams = new HashMap<String, String>();
 		articleParams.put("t_user", targetUserId + "");
@@ -140,6 +223,19 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			findViewById(tabs[i]).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					switch (index) {
+					case 0:
+						initArticleData();
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					default:
+						break;
+					}
 					activeTabLine(index);
 				}
 			});
@@ -153,28 +249,9 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			if (i == position) {
 				findViewById(tabLines[i]).setVisibility(View.VISIBLE);
 			} else {
-				findViewById(tabLines[i]).setVisibility(View.GONE);
+				findViewById(tabLines[i]).setVisibility(View.INVISIBLE);
 			}
 		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		headerView = null;
-		listView = null;
-		articleListService = null;
-		ptrLayout = null;
-		listData = null;
-		articlesAdapter = null;
-		clickedArticle = null;
-		tabLines = null;
-		tabs = null;
-		profilePhoto = null;
-		userName = null;
-		userIntro = null;
-		userArticleCount = null;
-		userAttentionCount = null;
 	}
 
 	/**

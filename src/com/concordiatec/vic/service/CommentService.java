@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.constant.ApiURL;
-import com.concordiatec.vic.inf.IVicService;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Comment;
@@ -137,18 +136,17 @@ public class CommentService extends HttpUtil{
 		Comment cmt = new Comment();
 		cmt.setId( getIntValue(map.get("comment_id")) );
 		cmt.setWriterId( getIntValue(map.get("user_id")) );
-		if( map.get("user_name") != null ) cmt.setWriterName( map.get("user_name").toString() );
-		if( map.get("user_photo") != null ) cmt.setWriterPhotoURL( getServerImgPath( getIntValue(map.get("user_id")) , map.get("user_photo").toString()) );
-		if( map.get("comment") != null ) cmt.setContent( map.get("comment").toString() );
-		cmt.setPastTime( getIntValue(map.get("created")) );
+		if( map.get("user_name")!=null ) cmt.setWriterName( map.get("user_name").toString() );
+		if( map.get("user_photo")!=null ) cmt.setWriterPhotoURL( getServerImgPath( getIntValue(map.get("user_id")) , map.get("user_photo").toString()) );
+		if( map.get("comment")!=null ) cmt.setContent( map.get("comment").toString() );
+		if( map.get("pasttime")!=null ) cmt.setPastTime( getIntValue(map.get("pasttime")) );
 		
-		cmt.setReplyWhose(getIntValue(map.get("replied_user")));
-		if( map.get("replied_username") != null ) cmt.setReplyWhoseName(map.get("replied_username").toString());
-		
-		cmt.setPlusCount(getIntValue(map.get("plus_count")));
+		if( map.get("replied_user")!=null ) cmt.setReplyWhose(getIntValue(map.get("replied_user")));
+		if( map.get("replied_username")!=null ) cmt.setReplyWhoseName(map.get("replied_username").toString());
+		if( map.get("plus_count")!=null ) cmt.setPlusCount(getIntValue(map.get("plus_count")));
 		
 		boolean isPlus = false;
-		if( map.containsKey("is_plus") && getIntValue(map.get("is_plus")) == 1 ){
+		if( map.get("is_plus")!=null && getIntValue(map.get("is_plus")) == 1 ){
 			isPlus = true;
 		}
 		cmt.setPlus(isPlus);

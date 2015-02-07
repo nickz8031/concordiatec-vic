@@ -182,15 +182,21 @@ public class ArticleDetailActivity extends SubPageSherlockActivity {
 			break;
 		// 글 삭제
 		case R.id.ar_d_menu_delete:
-			ProgressUtil.show(this);
-			aService.deleteArticle(detail.getId(), new SimpleVicResponseListener() {
+			NotifyUtil.showDialogWithPositive(this, getString(R.string.sure_to_delete),new DialogInterface.OnClickListener() {
 				@Override
-				public void onSuccess(ResData data) {
-					NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.delete_succed));
-					setResult(Constant.ARTICLE_DELETE_SUCCED);
-					finish();
+				public void onClick(DialogInterface dialog, int which) {
+					ProgressUtil.show(ArticleDetailActivity.this);
+					aService.deleteArticle(detail.getId(), new SimpleVicResponseListener() {
+						@Override
+						public void onSuccess(ResData data) {
+							NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.delete_succed));
+							setResult(Constant.ARTICLE_DELETE_SUCCED);
+							finish();
+						}
+					});
 				}
 			});
+			
 			break;
 		case R.id.ar_d_menu_ignore:
 			break;

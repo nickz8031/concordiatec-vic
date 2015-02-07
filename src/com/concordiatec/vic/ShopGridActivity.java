@@ -1,7 +1,5 @@
 package com.concordiatec.vic;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,6 +31,7 @@ public class ShopGridActivity extends SubPageSherlockActivity {
 		init();
 		if (shop.getImages() == null || shop.getImages().size() == 0) {
 			Toast.makeText(this, "No images", Toast.LENGTH_SHORT).show();
+			finish();
 		}
 		
 		gridView = (GridView) findViewById(R.id.gridView);

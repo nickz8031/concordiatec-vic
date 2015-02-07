@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <!-- account start -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:padding="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:text="@string/profile"
+                android:textColor="@color/light_font"
+                android:textSize="12sp" />
+
+            <!-- 메일 -->
+
+            <RelativeLayout
+                android:id="@+id/showEmailPop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius_top_5_gray"
+                android:paddingBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_top_5_white"
+                    android:padding="15dp"
+                    android:text="@string/email"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/textEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="15dp"
+                    android:textColor="@color/normal_light_font"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- 이름 -->
+
+            <RelativeLayout
+                android:id="@+id/showNamePop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:paddingBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="15dp"
+                    android:text="@string/nick_name"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="15dp"
+                    android:textColor="@color/normal_light_font"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- 성별 -->
+
+            <RelativeLayout
+                android:id="@+id/showSexPop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:paddingBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="15dp"
+                    android:text="@string/gender"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/textSex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="15dp"
+                    android:text="@string/male"
+                    android:textColor="@color/normal_light_font"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- 비밀번호 -->
+
+            <RelativeLayout
+                android:id="@+id/shopPwdPop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_bottom_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/password_edit"
+                    android:textColor="@color/normal_font" />
+            </RelativeLayout>
+
+            <!-- social start -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:text="@string/social"
+                android:textColor="@color/light_font"
+                android:textSize="12sp" />
+
+            <!-- facebook -->
+
+            <RelativeLayout
+                android:id="@+id/showFacebookPop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_top_5_white"
+                    android:padding="15dp"
+                    android:text="@string/facebook_connect"
+                    android:textColor="@color/normal_font" />
+
+                <CheckBox
+                    android:id="@+id/inFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="9dp" />
+            </RelativeLayout>
+
+            <!-- google -->
+
+            <RelativeLayout
+                android:id="@+id/showGooglePop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="15dp"
+                    android:text="@string/google_connect"
+                    android:textColor="@color/normal_font" />
+
+                <CheckBox
+                    android:id="@+id/inGoogle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="9dp" />
+            </RelativeLayout>
+
+            <!-- google -->
+
+            <RelativeLayout
+                android:id="@+id/showTwitterPop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_bottom_5_white"
+                    android:padding="15dp"
+                    android:text="@string/twitter_connect"
+                    android:textColor="@color/normal_font" />
+
+                <CheckBox
+                    android:id="@+id/inTwitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="9dp" />
+            </RelativeLayout>
+
+            <!-- /social end -->
+
+
+            <!-- base start -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:text="@string/normal"
+                android:textColor="@color/light_font"
+                android:textSize="12sp" />
+
+            <!-- push -->
+
+            <RelativeLayout
+                android:id="@+id/setPush"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_top_5_white"
+                    android:padding="15dp"
+                    android:text="@string/push_notice"
+                    android:textColor="@color/normal_font" />
+            </RelativeLayout>
+
+            <!-- email send -->
+
+            <RelativeLayout
+                android:id="@+id/setSendEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:padding="15dp"
+                    android:text="@string/email_notice"
+                    android:textColor="@color/normal_font" />
+            </RelativeLayout>
+
+            <!-- cash -->
+
+            <RelativeLayout
+                android:id="@+id/clearCache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_bottom_5_white"
+                    android:padding="15dp"
+                    android:text="@string/cache_clear"
+                    android:textColor="@color/normal_font" />
+            </RelativeLayout>
+            <!-- /base end -->
+
+
+            <!-- about start -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:text="@string/information"
+                android:textColor="@color/light_font"
+                android:textSize="12sp" />
+
+            <!-- push -->
+
+            <RelativeLayout
+                android:id="@+id/showVersionPop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_5_white"
+                    android:padding="15dp"
+                    android:text="@string/version"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/textVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="15dp"
+                    android:textColor="@color/normal_light_font"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- /about end -->
+        </LinearLayout>
+        <!-- / account end -->
+
+    </ScrollView>
+    <!-- pop name -->
+    <LinearLayout
+        android:id="@+id/popName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/alpha_0"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/wrapName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/radius_top_5_gray" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_top_5_white"
+                    android:padding="15dp"
+                    android:text="@string/nick_name_edit"
+                    android:textColor="@color/light_font"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="15dp" >
+
+                <EditText
+                    android:id="@+id/editName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/normal_font" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius_bottom_5_gray"
+                android:orientation="horizontal"
+                android:paddingTop="1dp" >
+
+                <TextView
+                    android:id="@+id/closePopName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_bottom_left_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/cancel_str"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/submitPopName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_bottom_right_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/confirm"
+                    android:textColor="@color/normal_font" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- pop sex -->
+
+    <LinearLayout
+        android:id="@+id/popSex"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/alpha_0"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/wrapSex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/radius_top_5_gray" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_top_5_white"
+                    android:padding="15dp"
+                    android:text="@string/gender_edit"
+                    android:textColor="@color/light_font"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="15dp" >
+
+                <RadioGroup
+                    android:id="@+id/radioSex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/female"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/female" />
+
+                    <RadioButton
+                        android:id="@+id/male"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/male" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius_bottom_5_gray"
+                android:orientation="horizontal"
+                android:paddingTop="1dp" >
+
+                <TextView
+                    android:id="@+id/closePopSex"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_bottom_left_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/cancel_str"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/submitPopSex"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_bottom_right_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/confirm"
+                    android:textColor="@color/normal_font" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- pop pwd -->
+
+    <LinearLayout
+        android:id="@+id/popPwd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/alpha_0"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/wrapPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/radius_top_5_gray" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_top_5_white"
+                    android:padding="15dp"
+                    android:text="@string/nick_name_edit"
+                    android:textColor="@color/light_font"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="15dp" >
+
+                <EditText
+                    android:id="@+id/editOldPwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/old_password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/normal_font"
+                    android:textSize="@dimen/text_14" />
+
+                <EditText
+                    android:id="@+id/editNewPwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:hint="@string/new_password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/normal_font"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius_bottom_5_gray"
+                android:orientation="horizontal"
+                android:paddingTop="1dp" >
+
+                <TextView
+                    android:id="@+id/closePopPwd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_bottom_left_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/cancel_str"
+                    android:textColor="@color/normal_font" />
+
+                <TextView
+                    android:id="@+id/submitPopPwd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_bottom_right_5_white"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/confirm"
+                    android:textColor="@color/normal_font" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

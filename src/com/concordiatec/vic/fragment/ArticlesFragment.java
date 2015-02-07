@@ -10,7 +10,6 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,6 +32,7 @@ import android.widget.AbsListView.OnScrollListener;
 import com.concordiatec.vic.adapter.ArticlesAdapter;
 import com.concordiatec.vic.base.BaseSherlockFragment;
 import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.helper.BroadHelper;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.Article;
 import com.concordiatec.vic.model.ResData;
@@ -65,7 +65,27 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	private boolean isRefresh = false;
 	private boolean isLoadingNow = false;
 	private boolean isFirst = true;
-
+	public boolean isNoMoreData;
+	private BroadcastReceiver receiver;
+	
+	@Override
+	public void onDestroy() {
+		newsListView = null;
+		listData = null;
+		ptrLayout = null;
+		listHeaderPaddingView = null;
+		sortContentLayout = null;
+		sortContentLayout = null;
+		sortCurrentSelect = null;
+		adapter = null;
+		aService = null;
+		writeButton = null;
+		clickedArticle = null;
+		BroadHelper.destoryReceiver(getActivity(), receiver);
+		receiver = null;
+		
+		super.onDestroy();
+	}
 	/**
 	 * 데이타 로드 시작
 	 */
@@ -89,22 +109,17 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 		rootView = inflater.inflate(R.layout.frag_articles, container, false);
 		
 		// sign in/out broadcast receiver register
-		IntentFilter filter = new IntentFilter(Constant.ONLINE_BROAD_ACTION);
-		getActivity().registerReceiver(onlineReceiver, filter);
+		receiver = BroadHelper.initOnlineBroadReciever(getActivity(), new BroadcastReceiver(){
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				refreshList();
+			}
+		});
 		
 		this.initViews();
 		return rootView;
 	}
-	/**
-	 * login & logout broadcast receiver
-	 */
-	BroadcastReceiver onlineReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			refreshList();
-		}
-	};
-	public boolean isNoMoreData;
+	
 
 	/**
 	 * initialize views in fragment

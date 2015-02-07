@@ -139,10 +139,20 @@
             android:windowSoftInputMode="adjustResize" >
             </activity>
         
+        <!-- 계정설정 -->
+        <activity
+            android:name=".AccountActivity"
+            android:theme="@style/SubTheme"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" >
+            </activity>
+            
+        
+        
         <!-- ActiveAndroid -->
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="vic_local" />
+            android:value="dongnet" />
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />

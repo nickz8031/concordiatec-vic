@@ -1,8 +1,12 @@
 package com.concordiatec.vic;
 
 import java.util.List;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
@@ -12,7 +16,6 @@ import com.concordiatec.vic.model.Coupon;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.service.CouponService;
 import com.concordiatec.vic.tools.Tools;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.concordiatec.vic.util.ProgressUtil;
 import com.concordiatec.vic.widget.CircleImageView;
@@ -24,28 +27,31 @@ public class CouponDetailActivity extends SubPageSherlockActivity {
 	private CouponService couponService;
 	private Coupon detailData;
 	//가게명
-	protected TextView shopNameView;
+	private TextView shopNameView;
 	//쿠폰명
-	protected TextView couponNameView;
+	private TextView couponNameView;
 	//원가
-	protected TextView listPriceView;
+	private TextView listPriceView;
 	//가격
-	protected TextView priceView;
+	private TextView priceView;
 	//마감시간
-	protected TextView couponEndView;
+	private TextView couponEndView;
 	//사용시간
-	protected TextView usePeriodView;
+	private TextView usePeriodView;
 	//쿠폰주의사항
-	protected LinearLayout couponNoticeLayout;
+	private LinearLayout couponNoticeLayout;
+	
+	//아래측 가게 레이아웃
+	private RelativeLayout storeInfoLayout;
 	//아래측 가게이름
-	protected TextView storeNameView;
+	private TextView storeNameView;
 	//아래측 가게 주소
-	protected TextView storeAddrView;
+	private TextView storeAddrView;
 	//가게 소개
-	protected LinearLayout shopIntroLayout;
-	protected CircleImageView couponImage;
+	private LinearLayout shopIntroLayout;
+	private CircleImageView couponImage;
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		couponService = null;
 		detailData = null;
 		shopNameView = null;
@@ -55,13 +61,14 @@ public class CouponDetailActivity extends SubPageSherlockActivity {
 		couponEndView = null;
 		usePeriodView = null;
 		couponNoticeLayout = null;
+		storeInfoLayout = null;
 		storeNameView = null;
 		storeAddrView = null;
 		shopIntroLayout = null;
 		super.onDestroy();
 	}
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		couponId = getIntent().getIntExtra("coupon_id", 0);
@@ -74,17 +81,12 @@ public class CouponDetailActivity extends SubPageSherlockActivity {
 		couponService = new CouponService(this);
 		
 		getDetail();
-		
-		
-//		TagView couponTag = (TagView) findViewById(R.id.coupon_tag);
-//		TagView.Tag tag = Tools.getTagLabel( "실시간상품" , getResources().getColor(R.color.theme_color));
-//		
-//		couponTag.setSingleTag(tag);
 	}
 	
 	private void getDetail(){
 		ProgressUtil.show(this);
 		couponService.getCouponDetail( couponId , new SimpleVicResponseListener(){
+			
 			@Override
 			public void onSuccess(ResData data) {
 				detailData = couponService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
@@ -103,9 +105,19 @@ public class CouponDetailActivity extends SubPageSherlockActivity {
 				couponEndView = (TextView) findViewById(R.id.coupon_end_time);
 				usePeriodView = (TextView) findViewById(R.id.use_period);
 				couponNoticeLayout = (LinearLayout) findViewById(R.id.coupon_notice_layout);
+				storeInfoLayout = (RelativeLayout) findViewById(R.id.store_info_layout);
 				storeNameView = (TextView) findViewById(R.id.store_name);
 				storeAddrView = (TextView) findViewById(R.id.store_addr);
 				shopIntroLayout = (LinearLayout) findViewById(R.id.shop_intro_layout);
+				
+				storeInfoLayout.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(CouponDetailActivity.this , ShopDetailActivity.class);
+						intent.putExtra("shop_id", detailData.getShopId() );
+						startActivity( intent );
+					}
+				});
 				
 				shopNameView.setText(detailData.getShop().getShopUserName());
 				Glide.with(CouponDetailActivity.this).load(detailData.getImage()).crossFade().into(couponImage);

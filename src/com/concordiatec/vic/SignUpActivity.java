@@ -1,5 +1,6 @@
 package com.concordiatec.vic;
 
+import java.util.regex.Pattern;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.view.View;
@@ -8,14 +9,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
-import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.constant.RegPattern;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.LocalLoginAccount;
 import com.concordiatec.vic.model.ResData;
 import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.service.UserService;
 import com.concordiatec.vic.util.EncryptUtil;
-import com.concordiatec.vic.util.LogUtil;
 import com.concordiatec.vic.util.NotifyUtil;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -61,8 +61,7 @@ public class SignUpActivity extends SubPageSherlockActivity {
 		public void onClick(View v) {
 			//닉네임 입력
 			String nickNameString = nickName.getText().toString();
-			String nickNamePattern = "[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-z0-9]{2,10}";
-			boolean nickNameFalseFlag = (!nickNameString.matches(nickNamePattern) || nickNameString.length() < 2);
+			boolean nickNameFalseFlag = (!Pattern.matches(RegPattern.NICK_NAME, nickNameString));
 			if( nickNameFalseFlag ){
 				nickName.requestFocus();
 				NotifyUtil.toast(SignUpActivity.this, getString(R.string.please_enter_nickname));
@@ -70,8 +69,7 @@ public class SignUpActivity extends SubPageSherlockActivity {
 			}
 			//이메일 입력
 			final String emailString = email.getText().toString();
-			String emailPattern = "[a-zA-Z0-9]?[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+.[a-z]{2,5}";
-			boolean emailFalseFlag = (!emailString.matches(emailPattern) || emailString.length() < 1);
+			boolean emailFalseFlag = (!Pattern.matches(RegPattern.EMAIL, emailString));
 			if( emailFalseFlag ){
 				email.requestFocus();
 				NotifyUtil.toast(SignUpActivity.this, getString(R.string.please_enter_email));
@@ -80,7 +78,8 @@ public class SignUpActivity extends SubPageSherlockActivity {
 
 			//비밀번호 입력
 			String pwdString = pwd.getText().toString();
-			if( pwdString.length() < 6 || pwdString.length() > 20 ){
+			boolean pwdFalseFlag = (pwdString.length()>20 || pwdString.length() < 6);
+			if( pwdFalseFlag ){
 				pwd.requestFocus();
 				NotifyUtil.toast(SignUpActivity.this, getString(R.string.please_enter_pwd));
 				return;
@@ -108,7 +107,6 @@ public class SignUpActivity extends SubPageSherlockActivity {
 					LocalLoginAccount.addData(emailString);
 					LocalUser usr = userService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
 					userService.login(usr);
-					SignUpActivity.this.setResult(Constant.ONLINE_BROAD_RESULT_CODE);
 					SignUpActivity.this.finish();
 				}
 			});

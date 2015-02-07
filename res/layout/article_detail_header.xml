@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/mni_store_layout_height"
         android:gravity="center_vertical"
-        android:background="@drawable/news_store_info_border"
+        android:background="@drawable/news_store_info"
 	    android:layout_marginLeft="16dp"
 	    android:layout_marginRight="16dp">
 	    

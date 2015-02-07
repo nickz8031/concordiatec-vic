@@ -94,7 +94,7 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.logout:
-			logout();
+			new UserService(this).logout();
 			break;
 		default:
 			break;

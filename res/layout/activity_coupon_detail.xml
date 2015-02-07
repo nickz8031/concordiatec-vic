@@ -123,7 +123,6 @@
 		                android:textStyle="bold" />
 		        </LinearLayout>
 		        <!-- 마감 시간 -->
-		
 		        <TextView
 		            android:id="@+id/coupon_end_time"
 		            android:layout_width="match_parent"
@@ -132,14 +131,15 @@
 		            android:drawablePadding="3dp"
 		            android:gravity="center_vertical"
 		            android:textColor="@color/cp_time_color"
+		            android:visibility="gone"
 		            android:textSize="@dimen/text_14" />
+		        
 		    </LinearLayout>
 		    <!-- 가격 정보 끝 -->
 		
 		
 		    <!-- 아래 측 버튼 -->
-		
-		    <LinearLayout
+			<RelativeLayout
 		        android:layout_below="@id/main_coupon_img_layout"
 		        android:id="@+id/coupon_ctrl_layout"
 		        android:layout_width="match_parent"
@@ -147,12 +147,11 @@
 		        android:layout_marginTop="@dimen/cp_ctrl_margin_top"
 		        android:layout_marginLeft="16dp"
 		        android:layout_marginRight="16dp"
-		        android:background="@drawable/top_bgcolor_border_1_dp"
-		        android:orientation="horizontal">
+		        android:background="@drawable/top_bgcolor_border_1_dp" >
+		        
 		        <ImageButton
-		            android:id="@+id/coupon_share_btn"
-		            android:layout_width="0dp"
-		            android:layout_weight="1"
+		            android:id="@+id/coupon_like_btn"
+		            android:layout_width="wrap_content"
 		            android:layout_height="match_parent"
 		            android:layout_marginBottom="8dp"
 		            android:layout_marginTop="8dp"
@@ -163,32 +162,42 @@
 		            android:paddingTop="5dp"
 		            android:src="@drawable/ic_action_favorite_outline" />
 		        
-		        <Button 
-		            android:layout_width="0dp"
-		            android:layout_weight="4"
-		            android:layout_height="match_parent"
-		            android:layout_marginBottom="8dp"
-		            android:layout_marginTop="8dp"
-		            android:layout_marginLeft="16dp"
-		            android:layout_marginRight="16dp"
-		            android:text="@string/download_coupon_btn"
-		            android:textColor="@android:color/white"
-		            android:layout_gravity="center"
-		            android:background="@drawable/btn_primary"/>
-		        
 		        <ImageButton
-		            android:layout_width="0dp"
-		            android:layout_weight="1"
+		            android:id="@+id/coupon_share_btn"
+		            android:layout_toRightOf="@id/coupon_like_btn"
+		            android:layout_width="wrap_content"
 		            android:layout_height="match_parent"
 		            android:layout_marginBottom="8dp"
+		            android:layout_marginLeft="16dp"
 		            android:layout_marginTop="8dp"
+		            android:background="@drawable/news_ctrl_btn_selector"
 		            android:paddingBottom="5dp"
 		            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
 		            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
 		            android:paddingTop="5dp"
-		            android:src="@drawable/ic_share_26_gray"
-		            android:background="@drawable/news_ctrl_btn_selector" />
-		    </LinearLayout>
+		            android:src="@drawable/ic_share_26_gray" />
+		        
+		        <TextView
+		            android:id="@+id/coupon_ctrl_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="match_parent"
+		            android:layout_alignParentRight="true"
+		            android:layout_marginBottom="8dp"
+		            android:layout_marginTop="8dp"
+		            android:background="@drawable/news_ctrl_btn_selector"
+		            android:clickable="true"
+		            android:drawableLeft="@drawable/ic_coupon_down_24"
+		            android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
+		            android:gravity="center_vertical"
+		            android:paddingBottom="5dp"
+		            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
+		            android:paddingRight="@dimen/cp_ctrl_btn_padding_right"
+		            android:paddingTop="5dp"
+		            android:text="@string/get_coupon"
+		            android:textColor="@color/coupon_normal_ctrl_text"
+		            android:textSize="@dimen/text_14" />
+		    </RelativeLayout>
+		    
 		</RelativeLayout>
 	    <LinearLayout
 	        android:layout_below="@id/coupon_detail_top"
@@ -289,6 +298,8 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="56dp"
 		        android:gravity="center_vertical"
+		        android:clickable="true"
+		        android:background="@drawable/clickable_bg_selector"
 		        >
 		        
 		        <!-- right -->

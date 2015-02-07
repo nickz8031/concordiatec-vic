@@ -2,6 +2,8 @@ package com.concordiatec.vic;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.concordiatec.vic.LoginActivity;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.base.SubPageSherlockActivity;
 import com.concordiatec.vic.constant.Constant;
+import com.concordiatec.vic.helper.BroadHelper;
 import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.model.LocalUser;
 import com.concordiatec.vic.model.ResData;
@@ -26,6 +29,7 @@ import com.concordiatec.vic.model.ShopImage;
 import com.concordiatec.vic.service.ShopDetailService;
 import com.concordiatec.vic.service.ShopService;
 import com.concordiatec.vic.service.UserService;
+import com.concordiatec.vic.tools.Route;
 import com.concordiatec.vic.tools.Tools;
 import com.concordiatec.vic.util.Converter;
 import com.concordiatec.vic.util.NotifyUtil;
@@ -62,7 +66,7 @@ public class ShopDetailActivity extends SubPageSherlockActivity implements OnCli
 	private LinearLayout shopScore;
 	private ShopDetailService detailService;
 	private ShopService shopService;
-
+	private BroadcastReceiver receiver;
 	@Override
 	protected void onDestroy() {
 		shop = null;
@@ -85,6 +89,8 @@ public class ShopDetailActivity extends SubPageSherlockActivity implements OnCli
 		shopScore = null;
 		detailService = null;
 		shopService = null;
+		BroadHelper.destoryReceiver( this , receiver);
+		receiver = null;
 		setContentView(R.layout.null_layout);
 		super.onDestroy();
 	}
@@ -103,6 +109,14 @@ public class ShopDetailActivity extends SubPageSherlockActivity implements OnCli
 		init();
 		getShop();
 		initClick();
+		receiver = BroadHelper.initOnlineBroadReciever(this, new BroadcastReceiver(){
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				//refresh user data
+				user = new UserService(ShopDetailActivity.this).getLoginUser();
+				userId = user.usrId;
+			}
+		});
 	}
 
 	private void init() {
@@ -176,10 +190,10 @@ public class ShopDetailActivity extends SubPageSherlockActivity implements OnCli
 				shopAddr.setText(shop.getShopAddr2());
 				// set is like
 				if (shop.isLike()) {
-					textFav.setText("소식끊기");
+					textFav.setText(getString(R.string.disconnect_news));
 					favImg.setImageResource(R.drawable.icon_unfav_128);
 				} else {
-					textFav.setText("소식받기");
+					textFav.setText(getString(R.string.get_news));
 					favImg.setImageResource(R.drawable.icon_fav_128);
 				}
 				// set distance
@@ -241,8 +255,7 @@ public class ShopDetailActivity extends SubPageSherlockActivity implements OnCli
 			break;
 		case R.id.shopFav:
 			if (userId == 0) {
-				Intent i = new Intent(this, LoginActivity.class);
-				startActivity(i);
+				Route.goLogin(this);
 			} else {
 				doFav();
 			}

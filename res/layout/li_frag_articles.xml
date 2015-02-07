@@ -19,10 +19,13 @@
 	        android:layout_alignParentTop="true"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/mni_store_layout_height"
-		    android:layout_marginLeft="@dimen/tab_menu_margin_left"
-		    android:layout_marginRight="@dimen/tab_menu_margin_left"
+		    android:paddingLeft="@dimen/tab_menu_margin_left"
+		    android:paddingRight="@dimen/tab_menu_margin_left"
+		    android:layout_marginLeft="1dp"
+		    android:layout_marginRight="1dp"
 	        android:gravity="center_vertical"
-	        android:background="@drawable/news_store_info_border"
+	        android:background="@drawable/news_store_info_selector"
+	        android:clickable="true"
 	        >
 	        
 	        <!-- right -->
@@ -87,8 +90,8 @@
 	        android:layout_below="@+id/store_info_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/mni_store_layout_height"
-		    android:layout_marginLeft="@dimen/tab_menu_margin_left"
-		    android:layout_marginRight="@dimen/tab_menu_margin_left" >
+		    android:paddingLeft="@dimen/tab_menu_margin_left"
+		    android:paddingRight="@dimen/tab_menu_margin_left" >
 	
 	        <LinearLayout
 	            android:id="@+id/news_writer_photo_layout"
@@ -101,7 +104,8 @@
 	            <com.concordiatec.vic.widget.CircleImageView
 	                android:id="@+id/news_writer_photo"
 	                android:layout_width="@dimen/mni_writer_photo_width"
-	                android:layout_height="@dimen/mni_writer_photo_height" />
+	                android:layout_height="@dimen/mni_writer_photo_height"
+	        		android:clickable="true" />
 	        </LinearLayout>
 	
 	        <LinearLayout

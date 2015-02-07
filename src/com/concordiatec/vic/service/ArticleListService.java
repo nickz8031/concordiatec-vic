@@ -82,6 +82,8 @@ public class ArticleListService extends HttpUtil{
 		if( map.get("content") != null ) article.setContent(map.get("content").toString());
 		if( map.get("pasttime") != null ) article.setPastTime( getIntValue(map.get("pasttime")) );
 		if( map.get("writer_id") != null ) article.setWriterId( getIntValue(map.get("writer_id")) );
+		if( map.get("writer_is_shop") != null ) article.setWriterIsShop( getIntValue(map.get("writer_is_shop"))>0 ? true : false );
+		if( map.get("writer_shop_id") != null ) article.setWriterShopId( getIntValue(map.get("writer_shop_id")) );
 		if( map.get("writer_name") != null ) article.setWriterName( map.get("writer_name").toString() );
 		
 		

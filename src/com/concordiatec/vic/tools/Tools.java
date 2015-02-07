@@ -177,11 +177,10 @@ public class Tools {
 		return inSampleSize;
 	}
 
-	// 如果是放大图片，filter决定是否平滑，如果是缩小图片，filter无影响
 	public static Bitmap createScaleBitmap(Bitmap src, int dstWidth, int dstHeight) {
 		Bitmap dst = Bitmap.createScaledBitmap(src, dstWidth, dstHeight, false);
-		if (src != dst) { // 如果没有缩放，那么不回收
-			src.recycle(); // 释放Bitmap的native像素数组
+		if (src != dst) { 
+			src.recycle(); 
 		}
 		return dst;
 	}
@@ -199,11 +198,11 @@ public class Tools {
 	public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeResource(res, resId, options); // 读取图片长款
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight); // 计算inSampleSize
+		BitmapFactory.decodeResource(res, resId, options); // read image size
+		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight); // calculate inSampleSize
 		options.inJustDecodeBounds = false;
-		Bitmap src = BitmapFactory.decodeResource(res, resId, options); // 载入一个稍大的缩略图
-		return createScaleBitmap(src, reqWidth, reqHeight); // 进一步得到目标大小的缩略图
+		Bitmap src = BitmapFactory.decodeResource(res, resId, options); 
+		return createScaleBitmap(src, reqWidth, reqHeight); 
 	}
 
 	/**

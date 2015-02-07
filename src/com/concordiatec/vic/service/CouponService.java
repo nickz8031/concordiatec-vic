@@ -6,6 +6,7 @@ import java.util.Map;
 import android.content.Context;
 import com.concordiatec.vic.R;
 import com.concordiatec.vic.constant.ApiURL;
+import com.concordiatec.vic.listener.SimpleVicResponseListener;
 import com.concordiatec.vic.listener.VicResponseHandler;
 import com.concordiatec.vic.listener.VicResponseListener;
 import com.concordiatec.vic.model.Coupon;
@@ -56,6 +57,15 @@ public class CouponService extends HttpUtil{
 		getCoupons(null , listener);
 	}
 	
+	public void likeCoupon( int id ){
+		LocalUser loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			RequestParams params = new RequestParams();
+			params.put("user", loginUser.usrId);
+			params.put("id", id);
+			post(ApiURL.COUPON_LIKE, params, new VicResponseHandler(new SimpleVicResponseListener()));
+		}
+	}
 	
 	
 	@Override
