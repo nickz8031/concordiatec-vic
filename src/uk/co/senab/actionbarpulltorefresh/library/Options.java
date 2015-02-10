@@ -22,7 +22,7 @@ package uk.co.senab.actionbarpulltorefresh.library;
 public final class Options {
 
     /* Default configuration values */
-    private static final int DEFAULT_HEADER_LAYOUT = com.concordiatec.vic.R.layout.smooth_progress_header;
+    private static final int DEFAULT_HEADER_LAYOUT = com.concordiatec.vilnet.R.layout.smooth_progress_header;
     private static final float DEFAULT_REFRESH_SCROLL_DISTANCE = 0.5f;
     private static final boolean DEFAULT_REFRESH_ON_UP = false;
     private static final int DEFAULT_REFRESH_MINIMIZED_DELAY = 1 * 1000;

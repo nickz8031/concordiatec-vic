@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
         
-        <com.concordiatec.vic.widget.CircleImageView
+        <com.concordiatec.vilnet.widget.CircleImageView
 	        android:id="@+id/main_actionbar_profile_photo"
 	        android:layout_width="32dp"
 	        android:layout_height="32dp"

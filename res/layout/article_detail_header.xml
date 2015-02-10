@@ -83,7 +83,7 @@
             android:orientation="vertical"
         	android:gravity="center_vertical" >
 
-            <com.concordiatec.vic.widget.CircleImageView
+            <com.concordiatec.vilnet.widget.CircleImageView
                 android:id="@+id/news_writer_photo"
                 android:layout_width="@dimen/mni_writer_photo_width"
                 android:layout_height="@dimen/mni_writer_photo_height"

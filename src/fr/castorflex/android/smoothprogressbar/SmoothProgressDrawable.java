@@ -1,7 +1,7 @@
 package fr.castorflex.android.smoothprogressbar;
 
 
-import com.concordiatec.vic.R;
+import com.concordiatec.vilnet.R;
 
 import android.content.Context;
 import android.content.res.Resources;

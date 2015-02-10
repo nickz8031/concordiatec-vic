@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     >
 
-    <com.concordiatec.vic.widget.CustomProgressBar
+    <com.concordiatec.vilnet.widget.CustomProgressBar
         xmlns:widget="http://schemas.android.com/apk/res-auto"
         android:id="@+id/loadingImageView"
         android:layout_width="60dp"

@@ -38,7 +38,7 @@
 				    android:paddingRight="@dimen/ar_w_content_padding"
 				    android:background="@drawable/ar_write_store_selector_bg"
 					android:clickable="true">
-				    <com.concordiatec.vic.widget.CircleImageView 
+				    <com.concordiatec.vilnet.widget.CircleImageView 
 					    android:id="@+id/article_store_img"
 					    android:layout_width="@dimen/ar_w_profile_photo_width"
 					    android:layout_height="@dimen/ar_w_profile_photo_height"
@@ -98,7 +98,7 @@
 				    android:layout_marginRight="@dimen/ar_w_content_padding"
 				    android:gravity="center_vertical">
 				    
-				    <com.concordiatec.vic.widget.CircleImageView
+				    <com.concordiatec.vilnet.widget.CircleImageView
 				        android:id="@+id/profile_photo" 
 				        android:layout_width="@dimen/ar_w_profile_photo_width"
 				        android:layout_height="@dimen/ar_w_profile_photo_height"

@@ -6,7 +6,7 @@
     android:background="#000"
     android:orientation="vertical" >
     
-	<com.concordiatec.vic.widget.ZoomableImageView
+	<com.concordiatec.vilnet.widget.ZoomableImageView
 	    android:id="@+id/galleryImg"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"

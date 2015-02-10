@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.concordiatec.vic"
+    xmlns:app="http://schemas.android.com/apk/res/com.concordiatec.vilnet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item_shadow"
@@ -20,7 +20,7 @@
         >
 
         <!-- 쿠폰 이미지 -->
-        <com.concordiatec.vic.widget.CircleImageView
+        <com.concordiatec.vilnet.widget.CircleImageView
             android:id="@+id/main_coupon_img"
             android:layout_width="@dimen/cp_img_width"
             android:layout_height="@dimen/cp_img_height"
@@ -57,7 +57,7 @@
 
         <!-- 쿠폰 태그 -->
 
-        <com.concordiatec.vic.widget.TagView
+        <com.concordiatec.vilnet.widget.TagView
             android:id="@+id/coupon_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,11 +129,16 @@
         android:id="@+id/coupon_ctrl_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/cp_ctrl_btn_layout_height"
-        android:layout_marginLeft="@dimen/cp_img_margin_h"
-        android:layout_marginRight="@dimen/cp_img_margin_h"
-        android:layout_marginTop="@dimen/cp_ctrl_margin_top"
-        android:background="@drawable/top_bgcolor_border_1_dp" >
-        
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginTop="@dimen/cp_ctrl_margin_top">
+        <TextView
+            android:layout_height="1dp"
+            android:layout_width="match_parent" 
+            android:layout_marginLeft="@dimen/cp_img_margin_h"
+            android:layout_marginRight="@dimen/cp_img_margin_h"
+            android:background="@color/background_color_wrapper"
+            />
         <ImageButton
             android:id="@+id/coupon_like_btn"
             android:layout_width="wrap_content"
@@ -142,6 +147,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/news_ctrl_btn_selector"
             android:paddingBottom="5dp"
+            android:layout_marginLeft="@dimen/cp_img_margin_h"
             android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
             android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
             android:paddingTop="5dp"
@@ -167,6 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/cp_img_margin_h"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/news_ctrl_btn_selector"

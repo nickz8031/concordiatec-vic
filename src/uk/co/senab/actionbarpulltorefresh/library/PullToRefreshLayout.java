@@ -28,7 +28,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 
-import com.concordiatec.vic.R;
+import com.concordiatec.vilnet.R;
 
 
 import uk.co.senab.actionbarpulltorefresh.library.listeners.HeaderViewListener;

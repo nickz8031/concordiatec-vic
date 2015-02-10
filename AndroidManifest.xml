@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.concordiatec.vic"
+    package="com.concordiatec.vilnet"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -22,7 +22,7 @@
 
     <!-- application -->
     <application
-        android:name=".VicApplication"
+        android:name="com.concordiatec.vilnet.VicApplication"
         android:allowBackup="false"
         android:configChanges="orientation|screenSize"
         android:icon="@drawable/ic_launcher"
@@ -31,7 +31,7 @@
         <!-- activities -->
         <!-- 입구 -->
         <activity
-            android:name=".SplashActivity"
+            android:name="com.concordiatec.vilnet.SplashActivity"
             android:noHistory="true"
             android:theme="@style/EntranceTheme" >
             <intent-filter>
@@ -42,106 +42,106 @@
         </activity>
         <!-- 메인 -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.concordiatec.vilnet.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme" />
 
         <!-- 쓰기 -->
         <activity
-            android:name=".ArticleWriteActivity"
+            android:name="com.concordiatec.vilnet.ArticleWriteActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 사진선택 -->
         <activity
-            android:name=".ChoosePicListActivity"
+            android:name="com.concordiatec.vilnet.ChoosePicListActivity"
             android:theme="@style/SubTheme" />
         <!-- 글 수정 -->
         <activity
-            android:name=".ArticleEditActivity"
+            android:name="com.concordiatec.vilnet.ArticleEditActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 글 상세 -->
         <activity
-            android:name=".ArticleDetailActivity"
+            android:name="com.concordiatec.vilnet.ArticleDetailActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 댓글 수정 -->
         <activity
-            android:name=".ArticleCommentEditActivity"
+            android:name="com.concordiatec.vilnet.ArticleCommentEditActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 로그인 -->
         <activity
-            android:name=".LoginActivity"
+            android:name="com.concordiatec.vilnet.LoginActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 회원가입 -->
         <activity
-            android:name=".SignUpActivity"
+            android:name="com.concordiatec.vilnet.SignUpActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 사용자정보 -->
         <activity
-            android:name=".UserActivity"
+            android:name="com.concordiatec.vilnet.UserActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 사진 찍은 즉시 넘어가는 페이지 -->
         <activity
-            android:name=".CameraShowActivity"
+            android:name="com.concordiatec.vilnet.CameraShowActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="false"
             android:theme="@style/ActionbarOverflowSubTheme" />
         <!-- 글에 있는 이미지 상세 보기 -->
         <activity
-            android:name=".ArticleImagesActivity"
+            android:name="com.concordiatec.vilnet.ArticleImagesActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/ActionbarOverflowSubTheme" />
 
         <!-- 쿠폰상세 -->
         <activity
-            android:name=".CouponDetailActivity"
+            android:name="com.concordiatec.vilnet.CouponDetailActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         
         <!-- 가게 상세 -->
         <activity
-            android:name=".ShopDetailActivity"
+            android:name="com.concordiatec.vilnet.ShopDetailActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 가게 평점-->
         <activity
-            android:name=".ShopScoreActivity"
+            android:name="com.concordiatec.vilnet.ShopScoreActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 가게 이미지 -->
         <activity
-            android:name=".ShopGridActivity"
+            android:name="com.concordiatec.vilnet.ShopGridActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         <!-- 가게 이미지 갤러리 -->
         <activity
-            android:name=".ShopGalleryActivity"
+            android:name="com.concordiatec.vilnet.ShopGalleryActivity"
             android:theme="@style/ActionbarOverflowSubTheme"
             android:windowSoftInputMode="adjustResize" />
         
         <!-- 가게 위치 -->
         <activity
-            android:name=".ShopGpsActivity"
+            android:name="com.concordiatec.vilnet.ShopGpsActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" />
         
         <!-- 카테고리 선택 -->
         <activity
-            android:name=".MultiCategoryActivity"
+            android:name="com.concordiatec.vilnet.MultiCategoryActivity"
             android:theme="@style/SubTheme"
             android:windowSoftInputMode="adjustResize" >
             </activity>
         
         <!-- 계정설정 -->
         <activity
-            android:name=".AccountActivity"
+            android:name="com.concordiatec.vilnet.AccountActivity"
             android:theme="@style/SubTheme"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustResize" >
@@ -158,9 +158,9 @@
             android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.concordiatec.vic.model.LocalUser
-            ,com.concordiatec.vic.model.LocalLoginAccount
-            ,com.concordiatec.vic.model.LocalSelectedCategory" />
+            android:value="com.concordiatec.vilnet.model.LocalUser
+            ,com.concordiatec.vilnet.model.LocalLoginAccount
+            ,com.concordiatec.vilnet.model.LocalSelectedCategory" />
     </application>
 
 </manifest>

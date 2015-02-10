@@ -29,7 +29,7 @@
 		        >
 		
 		        <!-- 쿠폰 이미지 -->
-		        <com.concordiatec.vic.widget.CircleImageView
+		        <com.concordiatec.vilnet.widget.CircleImageView
 		            android:id="@+id/coupon_img"
 		            android:layout_width="@dimen/cp_img_width"
 		            android:layout_height="@dimen/cp_img_height"
@@ -65,7 +65,7 @@
 		
 		        <!-- 쿠폰 태그 -->
 		
-		        <com.concordiatec.vic.widget.TagView
+		        <com.concordiatec.vilnet.widget.TagView
 		            android:id="@+id/coupon_tag"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
@@ -213,47 +213,54 @@
 	        android:background="@drawable/list_item_shadow">
 		    
 	        
-	        <TextView 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="8dp"
-	            android:textSize="@dimen/text_18"
-	            android:text="@string/coupon_use_info_title"
-	            />
-	        <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal">
-	            <TextView
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:textSize="@dimen/text_14" 
-		            android:text="@string/use_period"
-		            />
+	       <LinearLayout 
+	           android:id="@+id/end_time_layout"
+	           android:layout_width="match_parent"
+	           android:layout_height="wrap_content"
+	           android:orientation="vertical"
+	           android:visibility="gone">
 	            <TextView 
-	                android:id="@+id/use_period"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="@dimen/text_14"/>
-	        </LinearLayout>
-	        <TextView
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:textSize="@dimen/text_12"
-	            android:textColor="@color/normal_light_font"
-	            android:text="@string/coupon_period_use_notice" 
-	            />
-	        
-	        <!-- cut line -->
-	        <TextView 
-	            android:layout_width="match_parent"
-	            android:layout_height="1dp"
-	            android:layout_marginTop="16dp"
-	            android:layout_marginBottom="16dp"
-	            android:background="@color/background_color"
-	            />
-	        <!-- /cut line -->
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="8dp"
+		            android:textSize="@dimen/text_18"
+		            android:text="@string/coupon_use_info_title"
+		            />
+		        <LinearLayout 
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal">
+		            <TextView
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:textSize="@dimen/text_14" 
+			            android:text="@string/use_period"
+			            />
+		            <TextView 
+		                android:id="@+id/use_period"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="5dp"
+	                    android:textSize="@dimen/text_14"/>
+		        </LinearLayout>
+		        <TextView
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:textSize="@dimen/text_12"
+		            android:textColor="@color/normal_light_font"
+		            android:text="@string/coupon_period_use_notice" 
+		            />
+		        
+		        <!-- cut line -->
+		        <TextView 
+		            android:layout_width="match_parent"
+		            android:layout_height="1dp"
+		            android:layout_marginTop="16dp"
+		            android:layout_marginBottom="16dp"
+		            android:background="@color/background_color"
+		            />
+		        <!-- /cut line -->
+	       </LinearLayout>
 	        
 	        <TextView 
 	            android:layout_width="match_parent"
