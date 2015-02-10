@@ -6,7 +6,6 @@ import java.util.Map;
 import android.content.Context;
 import com.concordiatec.vilnet.R;
 import com.concordiatec.vilnet.constant.ApiURL;
-import com.concordiatec.vilnet.listener.SimpleVicResponseListener;
 import com.concordiatec.vilnet.listener.VicResponseHandler;
 import com.concordiatec.vilnet.listener.VicResponseListener;
 import com.concordiatec.vilnet.model.Coupon;
@@ -24,6 +23,27 @@ public class CouponService extends HttpUtil{
 		this.context = context;
 	}
 	
+	public void getMyCoupons( int lastId , VicResponseListener listener ){
+		LocalUser loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			RequestParams params = new RequestParams();
+			params.put("user", loginUser.usrId);
+			if( lastId > 0  ){
+				params.put("id", lastId);
+			}
+			post(ApiURL.COUPON_MYCOUPON, params, new VicResponseHandler(listener));
+		}
+	}
+	
+	public void getMyCoupons( VicResponseListener listener ){
+		getMyCoupons( 0 , listener);
+	}
+	
+	/**
+	 * 쿠폰 상세
+	 * @param id
+	 * @param listener
+	 */
 	public void getCouponDetail( int id , VicResponseListener listener ){
 		RequestParams params = new RequestParams();
 		LocalUser loginUser = new UserService(context).getLoginUser();
@@ -35,7 +55,7 @@ public class CouponService extends HttpUtil{
 	}
 	
 	/**
-	 * get coupon list
+	 * get coupon list 리스트
 	 * @param p
 	 * @param listener
 	 */
@@ -57,6 +77,42 @@ public class CouponService extends HttpUtil{
 		getCoupons(null , listener);
 	}
 	
+	
+	/**
+	 * 사용
+	 * @param id
+	 * @param listener
+	 */
+	public void useCoupon( int id , VicResponseListener listener ){
+		LocalUser loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			RequestParams params = new RequestParams();
+			params.put("user", loginUser.usrId);
+			params.put("id", id);
+			post(ApiURL.COUPON_USE, params, new VicResponseHandler(listener));
+		}
+	}
+	
+	/**
+	 * 반납
+	 * @param id
+	 * @param listener
+	 */
+	public void returnCoupon( int id , VicResponseListener listener ){
+		LocalUser loginUser = new UserService(context).getLoginUser();
+		if( loginUser != null ){
+			RequestParams params = new RequestParams();
+			params.put("user", loginUser.usrId);
+			params.put("id", id);
+			post(ApiURL.COUPON_RETURN, params, new VicResponseHandler(listener));
+		}
+	}
+	
+	/**
+	 * 받기
+	 * @param id
+	 * @param listener
+	 */
 	public void downCoupon( int id , VicResponseListener listener ){
 		LocalUser loginUser = new UserService(context).getLoginUser();
 		if( loginUser != null ){
@@ -67,6 +123,11 @@ public class CouponService extends HttpUtil{
 		}
 	}
 	
+	/**
+	 * 좋아요
+	 * @param id
+	 * @param listener
+	 */
 	public void likeCoupon( int id , VicResponseListener listener ){
 		LocalUser loginUser = new UserService(context).getLoginUser();
 		if( loginUser != null ){
@@ -146,7 +207,12 @@ public class CouponService extends HttpUtil{
 		return coupon;
 		
 	}
-	
+	/**
+	 * 쿠폰 태그
+	 * @param context
+	 * @param kind
+	 * @return
+	 */
 	public static int getTagColor(Context context ,int kind){
 		int color;
 		switch ( kind ) {

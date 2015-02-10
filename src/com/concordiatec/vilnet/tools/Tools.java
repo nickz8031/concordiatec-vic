@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.concordiatec.vilnet.R;
+import com.concordiatec.vilnet.listener.VicSimpleAnimationListener;
 import com.concordiatec.vilnet.util.EncryptUtil;
 import com.concordiatec.vilnet.util.LogUtil;
 import com.concordiatec.vilnet.util.StringUtil;
@@ -27,6 +28,8 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 
 public class Tools {
@@ -334,5 +337,26 @@ public class Tools {
 			LogUtil.show(e.getMessage());
 		}
 		return false;
+	}
+	
+	/**
+	 * start animation with like action
+	 * 
+	 * @param v
+	 */
+	public static void bigToNormalAnimation(Context context , View v) {
+		final View target = v;
+		final Animation toBig = AnimationUtils.loadAnimation(context, R.anim.big_scale);
+		final Animation toNormal = AnimationUtils.loadAnimation(context, R.anim.small_scale);
+		target.setAnimation(toBig);
+		toBig.start();
+		toBig.setAnimationListener(new VicSimpleAnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				target.clearAnimation();
+				target.setAnimation(toNormal);
+				toNormal.start();
+			}
+		});
 	}
 }

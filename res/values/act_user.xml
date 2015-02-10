@@ -12,7 +12,7 @@
     <dimen name="user_name_margin_vert">5dp</dimen>
     
     <string name="user_news">소식</string>
-    <string name="user_stores">가게</string>
+    <string name="user_stores">관심 가게</string>
     <string name="user_follower">팔로어</string>
     <string name="user_following">팔로잉</string>  
     

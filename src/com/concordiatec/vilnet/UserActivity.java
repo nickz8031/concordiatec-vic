@@ -18,12 +18,12 @@ import com.concordiatec.vilnet.constant.Constant;
 import com.concordiatec.vilnet.helper.BroadHelper;
 import com.concordiatec.vilnet.listener.SimpleVicResponseListener;
 import com.concordiatec.vilnet.model.Article;
+import com.concordiatec.vilnet.model.Comment;
 import com.concordiatec.vilnet.model.LocalUser;
 import com.concordiatec.vilnet.model.ResData;
 import com.concordiatec.vilnet.service.ArticleListService;
 import com.concordiatec.vilnet.service.UserService;
 import com.concordiatec.vilnet.tools.Route;
-import com.concordiatec.vilnet.util.LogUtil;
 import com.concordiatec.vilnet.util.NotifyUtil;
 import com.concordiatec.vilnet.util.ProgressUtil;
 import com.concordiatec.vilnet.util.StringUtil;
@@ -31,14 +31,12 @@ import com.concordiatec.vilnet.widget.CircleImageView;
 import com.google.gson.internal.LinkedTreeMap;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
@@ -68,8 +66,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 	private int targetUserId;
 	private HashMap<String, String> articleParams;
 	protected LocalUser userData;
-	private Button followBtn;
-	private LocalUser loginUser;
+//	private Button followBtn;
 	private BroadcastReceiver receiver;
 	
 
@@ -87,10 +84,11 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 		tabs = null;
 		profilePhoto = null;
 		userIntro = null;
-		followBtn = null;
+//		followBtn = null;
 		userArticleCount = null;
 		userAttentionCount = null;
 		setContentView(R.layout.null_layout);
+		BroadHelper.destoryReceiver(this, receiver);
 		super.onDestroy();
 	}
 	@Override
@@ -117,7 +115,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		LocalUser user = new UserService(this).getLoginUser();
+		LocalUser user = userService.getLoginUser();
 		if( user== null || user.usrId!=targetUserId ) menu.findItem(R.id.menu_my_info).setVisible(false);
 		if( user== null ) menu.findItem(R.id.logout).setVisible(false);
 		
@@ -149,17 +147,29 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 	private void initServices() {
 		articleListService = new ArticleListService(this);
 		userService = new UserService(this);
-		loginUser = userService.getLoginUser();
-		// sign in/out broadcast receiver register
-
+		
+		// broadcast receiver register
 		receiver = new BroadcastReceiver(){
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if( intent.hasExtra(BroadKeys.ARTICLE_CHANGE) ){
+				if( intent.hasExtra(BroadKeys.ARTICLE_CHANGE) ){ //글 수정
 					Article article = (Article) intent.getSerializableExtra(BroadKeys.ARTICLE_CHANGE);
 					articlesAdapter.articleStateChange(article);
-				}else if( intent.hasExtra(BroadKeys.ARTICLE_DELETE) ){
+					
+				}else if( intent.hasExtra(BroadKeys.ARTICLE_DELETE) ){ //글 삭제
 					articlesAdapter.deleteData(clickedArticlePosition);
+					
+				}else if( intent.hasExtra(BroadKeys.COMMENT_CHANGE) ){ //댓글 수정
+					Comment c = (Comment) intent.getSerializableExtra(BroadKeys.COMMENT_CHANGE);
+					articlesAdapter.commentStateChanged( c );
+					
+				}else if( intent.hasExtra(BroadKeys.COMMENT_DELETE) ){ //댓글 삭제
+					Comment c = (Comment) intent.getSerializableExtra(BroadKeys.COMMENT_DELETE);
+					articlesAdapter.commentStateChanged( c , true );
+					
+				}else if( intent.hasExtra(BroadKeys.COMMENT_ADD) ){//댓글 추가
+					Comment c = (Comment) intent.getSerializableExtra(BroadKeys.COMMENT_ADD);
+					articlesAdapter.commentAdd( c );					
 				}else{
 					if( userData!=null ){
 						recreate();
@@ -167,8 +177,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 				}
 			}
 		};
-		
-		BroadHelper.initBroadReceiver(getApplicationContext(), receiver);
+		BroadHelper.initBroadReceiver(this, receiver);
 	}
 
 	private void initViews() {
@@ -181,7 +190,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 		userArticleCount = (TextView) headerView.findViewById(R.id.user_article_count);
 		userAttentionCount = (TextView) headerView.findViewById(R.id.user_attention_store_count);
 		
-		followBtn = (Button) headerView.findViewById(R.id.follow_btn);
+//		followBtn = (Button) headerView.findViewById(R.id.follow_btn);
 		
 		listView.addHeaderView(headerView);
 		listView.setOnScrollListener(new ListViewScrollListener());
@@ -197,15 +206,15 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			NotifyUtil.toast(this, getString(R.string.error_request));
 			finish();
 		}
-		if( loginUser.usrId == targetUserId ){
-			followBtn.setVisibility(View.GONE);
-		}
+//		if( loginUser.usrId == targetUserId ){
+//			followBtn.setVisibility(View.GONE);
+//		}
 		
 		ProgressUtil.show(this);
 		userService.getUserInfo(targetUserId, new SimpleVicResponseListener() {
 			@Override
 			public void onSuccess(ResData data) {
-				userData = userService.mapToModel((LinkedTreeMap<String, Object>) data.getData());
+				userData = userService.mapToModel((LinkedTreeMap<String, Object>) data.getData());				
 				if( StringUtil.isEmpty(userData.photo) ){
 					Glide.with(UserActivity.this).load(R.drawable.ic_default_avatar).into(profilePhoto);
 				}else{
@@ -216,6 +225,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 				ProgressUtil.dismiss();
 //				userArticleCount.setText("0");
 //				userAttentionCount.setText("0");
+				initArticleData();
 				
 			}
 		});
@@ -291,8 +301,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				if (Constant.DEBUG) {
-					LogUtil.show("Status : " + httpResponseCode);
-					LogUtil.show("Response Body : " + responseBody);
+					super.onFailure(httpResponseCode, responseBody);
 				}
 				NotifyUtil.toast(UserActivity.this, getString(R.string.failed_to_request_data));
 				ProgressUtil.dismiss();
@@ -361,7 +370,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				if (Constant.DEBUG) {
-					LogUtil.show(responseBody);
+					super.onFailure(httpResponseCode, responseBody);
 				}
 				isArticlesLoadingNow = false;
 			}
@@ -416,7 +425,7 @@ public class UserActivity extends SubPageSherlockFragmentActivity implements OnR
 			clickedArticle = articlesAdapter.getItem(id);
 			Intent intent = new Intent(UserActivity.this, ArticleDetailActivity.class);
 			intent.putExtra("article_id", clickedArticle.getId());
-			startActivityForResult(intent, Constant.DETAIL_ACTIVITY_REQUEST);
+			startActivity(intent);
 		}
 	}
 

@@ -8,13 +8,14 @@ import com.concordiatec.vilnet.ArticleDetailActivity;
 import com.concordiatec.vilnet.LoginActivity;
 import com.concordiatec.vilnet.ShopDetailActivity;
 import com.concordiatec.vilnet.UserActivity;
-import com.concordiatec.vilnet.listener.VicSimpleAnimationListener;
+import com.concordiatec.vilnet.constant.Constant;
 import com.concordiatec.vilnet.model.Article;
 import com.concordiatec.vilnet.model.Comment;
 import com.concordiatec.vilnet.model.LastestComment;
 import com.concordiatec.vilnet.service.ArticleService;
 import com.concordiatec.vilnet.service.UserService;
 import com.concordiatec.vilnet.tools.ImageViewPreload;
+import com.concordiatec.vilnet.tools.Tools;
 import com.concordiatec.vilnet.util.LogUtil;
 import com.concordiatec.vilnet.util.StringUtil;
 import com.concordiatec.vilnet.util.TimeUtil;
@@ -32,8 +33,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,8 +76,9 @@ public class ArticlesAdapter extends VicBaseAdapter {
 		for (int i = 0; i < data.size(); i++) {
 			Article article = getItem(i);
 			if( comment.getArticleId() == article.getId() ){
+				List<LastestComment> lastestComment = article.getLatestComments();
+				LogUtil.show(lastestComment.size()+"");
 				for (int j = 0; j < article.getLatestComments().size(); j++) {
-					List<LastestComment> lastestComment = article.getLatestComments();
 					if( comment.getId() == lastestComment.get(j).getCommentId() ){
 						if( isDelete ){
 							lastestComment.remove(j);
@@ -105,6 +105,31 @@ public class ArticlesAdapter extends VicBaseAdapter {
 			}
 		}
 	}
+	
+	public void commentAdd( Comment comment ){
+		for (int i = 0; i < data.size(); i++) {
+			Article article = getItem(i);
+			if( comment.getArticleId() == article.getId() ){
+				List<LastestComment> lastestComment = article.getLatestComments();
+				LogUtil.show(lastestComment.size()+"");
+				LastestComment tmp = new LastestComment();
+				tmp.setCommentId( comment.getId() );
+				tmp.setCommentText( comment.getContent() );
+				tmp.setPlusCount( comment.getPlusCount() );
+				tmp.setReplyWhose( comment.getReplyWhose() );
+				tmp.setReplyWhoseName( comment.getReplyWhoseName() );
+				tmp.setUserId( comment.getWriterId() );
+				tmp.setUserName( comment.getWriterName() );
+				tmp.setUserPhoto( comment.getWriterPhotoURL() );
+				lastestComment.add(tmp);
+				article.setLatestComments( lastestComment );
+				data.set(i, article);
+				notifyDataSetChanged();
+				break;
+			}
+		}
+	}
+	
 	public void clear() {
 		this.data.clear();
 		notifyDataSetChanged();
@@ -342,7 +367,7 @@ public class ArticlesAdapter extends VicBaseAdapter {
 					}
 					final TextView t = (TextView) v;
 					if (v.getTag() == null) {
-						activeLikeAnimation(t);
+						Tools.bigToNormalAnimation( context , t);
 					}
 					likeArticle(t, id);
 					break;
@@ -411,27 +436,6 @@ public class ArticlesAdapter extends VicBaseAdapter {
 	}
 
 	/**
-	 * start animation with like action
-	 * 
-	 * @param v
-	 */
-	private void activeLikeAnimation(View v) {
-		final View target = v;
-		final Animation toBig = AnimationUtils.loadAnimation(context, R.anim.big_scale);
-		final Animation toNormal = AnimationUtils.loadAnimation(context, R.anim.small_scale);
-		target.setAnimation(toBig);
-		toBig.start();
-		toBig.setAnimationListener(new VicSimpleAnimationListener() {
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				target.clearAnimation();
-				target.setAnimation(toNormal);
-				toNormal.start();
-			}
-		});
-	}
-
-	/**
 	 * set commenter photo border with comment text flip
 	 * 
 	 * @param wrap
@@ -448,18 +452,6 @@ public class ArticlesAdapter extends VicBaseAdapter {
 			}
 		}
 	}
-
-	// private void clearAnimation(int viewPos){
-	// if( viewMap == null ) return;
-	// for (int i = 0; i < viewMap.size(); i++) {
-	// if( i == viewPos ){
-	// continue;
-	// }
-	// if( viewMap.get(i) != null ){
-	// viewMap.get(i).clearAnimation();
-	// }
-	// }
-	// }
 	/**
 	 * get content cover image height
 	 * 

@@ -14,6 +14,7 @@ import com.concordiatec.vilnet.fragment.ArticlesFragment;
 import com.concordiatec.vilnet.fragment.CouponsFragment;
 import com.concordiatec.vilnet.fragment.ShopsFragment;
 import com.concordiatec.vilnet.service.UserService;
+import com.concordiatec.vilnet.tools.Route;
 import com.concordiatec.vilnet.util.NotifyUtil;
 import android.content.Intent;
 import android.os.Bundle;
@@ -95,6 +96,9 @@ public class MainActivity extends BaseSherlockFragmentActivity {
 		switch (item.getItemId()) {
 		case R.id.logout:
 			new UserService(this).logout();
+			break;
+		case R.id.menu_mycoupon:
+			Route.moveTo(this, MyCouponActivity.class);
 			break;
 		default:
 			break;

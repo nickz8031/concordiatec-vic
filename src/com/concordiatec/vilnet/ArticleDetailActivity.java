@@ -23,7 +23,6 @@ import com.concordiatec.vilnet.service.CommentService;
 import com.concordiatec.vilnet.service.UserService;
 import com.concordiatec.vilnet.tools.ImageViewPreload;
 import com.concordiatec.vilnet.tools.Tools;
-import com.concordiatec.vilnet.util.LogUtil;
 import com.concordiatec.vilnet.util.NotifyUtil;
 import com.concordiatec.vilnet.util.ProgressUtil;
 import com.concordiatec.vilnet.util.StringUtil;
@@ -53,6 +52,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -343,18 +343,32 @@ public class ArticleDetailActivity extends SubPageSherlockActivity implements On
 				likeCount.setOnClickListener(ArticleDetailActivity.this);
 				
 				commentList.addHeaderView(contentView);
-				commentList.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-						clickedPosition = position - 1;
-						clickedComment = adapter.getItem(clickedPosition);
-						ArticleDetailActivity.this.openContextMenu(parent);
-					}
-				});
+				commentList.setOnItemLongClickListener(new CommentItemClickListener());
+				commentList.setOnItemClickListener(new CommentItemClickListener());
 				
 				ProgressUtil.dismiss();
 			}
 		});
+	}
+	
+	private final class CommentItemClickListener implements OnItemClickListener,OnItemLongClickListener{
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+			click(position, parent);
+			return true;
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			click(position, parent);
+		}
+		private void click(int position , AdapterView<?> parent){
+			clickedPosition = position - 1;
+			clickedComment = adapter.getItem(clickedPosition);
+			ArticleDetailActivity.this.openContextMenu(parent);
+		}
+		
 	}
 	/**
 	 * get content imageView height
@@ -372,7 +386,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity implements On
 		commentService.getComments(articleId, new SimpleVicResponseListener() {
 			@Override
 			public void onSuccess(ResData data) {
-				setCommentsAdapterData(data.getData());
+				List<Comment> cmts = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
+				setCommentsAdapterData( cmts );
 			}
 
 			@Override
@@ -387,20 +402,17 @@ public class ArticleDetailActivity extends SubPageSherlockActivity implements On
 		});
 	}
 
-	private void setCommentsAdapterData(Object data) {
-		if( data == null ){
-			commentList.setAdapter(null);
-		}else{
-			comments = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data);
-			if (comments != null && comments.size() > 0) {
-				if (isRefresh) {
-					adapter.setData(comments);
-					isRefresh = false;
-					return;
-				}
-				adapter = new ArticleDetailCommentAdapter(ArticleDetailActivity.this, comments);
-				commentList.setAdapter(adapter);
+	private void setCommentsAdapterData(List<Comment> data) {
+		if (data != null && data.size() > 0) {
+			if (isRefresh) {
+				adapter.setData(data);
+				isRefresh = false;
+				return;
 			}
+			adapter = new ArticleDetailCommentAdapter(this, data);
+			commentList.setAdapter(adapter);
+		}else{
+			commentList.setAdapter(null);
 		}
 	}
 
@@ -441,6 +453,8 @@ public class ArticleDetailActivity extends SubPageSherlockActivity implements On
 					setDislike(t);
 					t.setTag(null);
 				}
+				detail.setLike(isLike);
+				BroadHelper.sendSerializableBroad( ArticleDetailActivity.this , BroadKeys.ARTICLE_CHANGE, detail);
 				setLikeShareCount();
 			}
 		});
@@ -673,19 +687,27 @@ public class ArticleDetailActivity extends SubPageSherlockActivity implements On
 			
 			commentService.writeComment(comment, lastId, new SimpleVicResponseListener() {
 				@Override
-				public void onSuccess(ResData data) {						
+				public void onSuccess(ResData data) {			
+					List<Comment> cmts = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
 					if( adapter != null ){
-						List<Comment> cmts = commentService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
 						adapter.addData(cmts);
 					}else{
-						setCommentsAdapterData(data.getData());
-					}
+						setCommentsAdapterData(cmts);
+					}					
 					commentContent.clearFocus();
 					commentContent.setText(null);
 					currentCommentCount++;
 					commentCount.setText(currentCommentCount + "");
-					ProgressUtil.dismiss();
+					detail.setCommentCount( currentCommentCount );
+					BroadHelper.sendSerializableBroad( ArticleDetailActivity.this , BroadKeys.ARTICLE_CHANGE, detail);
+					
+					//돌려받은 코멘트에서 첨에 코멘트가 자신이 쓴 코멘트
+					if( cmts != null && cmts.size() > 0 ){
+						BroadHelper.sendSerializableBroad( ArticleDetailActivity.this , BroadKeys.COMMENT_ADD,  cmts.get(0));
+					}
+					
 					NotifyUtil.toast(ArticleDetailActivity.this, getString(R.string.comment_succed));
+					ProgressUtil.dismiss();
 				}
 			});
 			break;

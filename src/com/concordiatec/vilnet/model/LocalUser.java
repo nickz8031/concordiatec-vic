@@ -12,6 +12,11 @@ import com.activeandroid.annotation.Table;
 @SuppressWarnings("serial")
 @Table(name = "dong_usr")
 public class LocalUser extends Model implements Serializable {
+	@Override
+	public String toString() {
+		return "LocalUser [usrId=" + usrId + ", email=" + email + ", pwd=" + pwd + ", name=" + name + ", sex=" + sex + ", photo=" + photo + ", isShop=" + isShop + ", shopId=" + shopId + ", shopPhone=" + shopPhone + ", shopAddr1=" + shopAddr1 + ", shopAddr2=" + shopAddr2 + ", shopLng=" + shopLng + ", shopLat=" + shopLat + ", shopScoreCount=" + shopScoreCount + ", shopLikeCount=" + shopLikeCount + ", shopShareCount=" + shopShareCount + ", isOpen=" + isOpen + ", isPause=" + isPause + ", groupName=" + groupName + "]";
+	}
+
 	@Column(name = "usrId")
 	public int usrId;
 	@Column(name = "email")

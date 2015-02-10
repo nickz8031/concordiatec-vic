@@ -20,7 +20,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,7 +31,6 @@ import android.widget.AbsListView.OnScrollListener;
 import com.concordiatec.vilnet.R;
 import com.concordiatec.vilnet.ArticleDetailActivity;
 import com.concordiatec.vilnet.ArticleWriteActivity;
-import com.concordiatec.vilnet.LoginActivity;
 import com.concordiatec.vilnet.adapter.ArticlesAdapter;
 import com.concordiatec.vilnet.base.BaseSherlockFragment;
 import com.concordiatec.vilnet.constant.BroadKeys;
@@ -47,7 +45,6 @@ import com.concordiatec.vilnet.model.ResData;
 import com.concordiatec.vilnet.service.ArticleListService;
 import com.concordiatec.vilnet.tools.Route;
 import com.concordiatec.vilnet.util.AniUtil;
-import com.concordiatec.vilnet.util.LogUtil;
 import com.concordiatec.vilnet.util.NotifyUtil;
 import com.concordiatec.vilnet.util.ProgressUtil;
 import com.google.gson.internal.LinkedTreeMap;
@@ -112,7 +109,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 		
 		rootView = inflater.inflate(R.layout.frag_articles, container, false);
 		
-		// sign in/out broadcast receiver register
+		// broadcast receiver register
 		receiver = new BroadcastReceiver(){
 			@Override
 			public void onReceive(Context context, Intent intent) { 
@@ -127,6 +124,9 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 				}else if( intent.hasExtra(BroadKeys.COMMENT_DELETE) ){ //댓글 삭제
 					Comment c = (Comment) intent.getSerializableExtra(BroadKeys.COMMENT_DELETE);
 					adapter.commentStateChanged( c , true );					
+				}else if( intent.hasExtra(BroadKeys.COMMENT_ADD) ){//댓글 추가
+					Comment c = (Comment) intent.getSerializableExtra(BroadKeys.COMMENT_ADD);
+					adapter.commentAdd( c );					
 				}else{
 					refreshList();
 				}
@@ -206,8 +206,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				if (Constant.DEBUG) {
-					LogUtil.show("Status : " + httpResponseCode);
-					LogUtil.show("Response Body : " + responseBody);
+					super.onFailure(httpResponseCode, responseBody);
 				}
 				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
 				ProgressUtil.dismiss();
@@ -273,7 +272,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				if (Constant.DEBUG) {
-					LogUtil.show(responseBody);
+					super.onFailure(httpResponseCode, responseBody);
 				}
 				isLoadingNow = false;
 			}
@@ -321,7 +320,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 	}
 	
 	private boolean isSortbarShowing(){
-		return ( sortContentLayout.getVisibility() == View.VISIBLE );
+		return ( sortContentLayout != null && sortContentLayout.getVisibility() == View.VISIBLE );
 	}
 	
 	private void toggleSortbar(){
@@ -356,7 +355,7 @@ public class ArticlesFragment extends BaseSherlockFragment implements OnRefreshL
 			clickedArticle = adapter.getItem(id);
 			Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
 			intent.putExtra("article_id", clickedArticle.getId());
-			startActivityForResult(intent, Constant.DETAIL_ACTIVITY_REQUEST);
+			startActivity(intent);
 		}
 	}
 

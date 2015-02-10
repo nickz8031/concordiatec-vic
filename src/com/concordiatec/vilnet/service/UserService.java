@@ -1,5 +1,6 @@
 package com.concordiatec.vilnet.service;
 
+import org.apache.http.Header;
 import android.content.Context;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
@@ -93,11 +94,11 @@ public class UserService extends HttpUtil{
 			user.photo = getServerImgPath(getIntValue(map.get("id"))) + map.get("photo").toString();
 		}
 		user.email = map.get("email").toString();
-		user.usrId = getIntValue(map.get("id").toString());
+		user.usrId = getIntValue(map.get("id"));
 		user.isShop = getIntValue(map.get("is_shop")) == 1 ? true:false;
 		
 		if(user.isShop){
-			user.shopId = Tools.getIntValue(map.get("shop_id"));
+			user.shopId = getIntValue(map.get("shop_id"));
 			user.shopPhone = map.get("shop_phone").toString();
 			user.shopAddr1 = map.get("shop_addr1").toString();
 			user.shopAddr2 = map.get("shop_addr2").toString();

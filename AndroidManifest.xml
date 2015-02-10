@@ -144,8 +144,15 @@
             android:name="com.concordiatec.vilnet.AccountActivity"
             android:theme="@style/SubTheme"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustResize" >
-            </activity>
+            android:windowSoftInputMode="adjustResize" />
+        
+        <!-- 내 쿠폰함 -->
+        <activity
+            android:name="com.concordiatec.vilnet.MyCouponActivity"
+            android:theme="@style/SubTheme"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+        
             
         
         

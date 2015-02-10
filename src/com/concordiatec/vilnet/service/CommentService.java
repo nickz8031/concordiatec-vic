@@ -2,6 +2,7 @@ package com.concordiatec.vilnet.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.http.Header;
 import android.content.Context;
 import com.concordiatec.vilnet.R;
 import com.concordiatec.vilnet.constant.ApiURL;
@@ -12,6 +13,7 @@ import com.concordiatec.vilnet.model.LocalUser;
 import com.concordiatec.vilnet.util.HttpUtil;
 import com.concordiatec.vilnet.util.LogUtil;
 import com.google.gson.internal.LinkedTreeMap;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class CommentService extends HttpUtil{

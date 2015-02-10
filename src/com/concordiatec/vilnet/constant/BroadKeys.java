@@ -11,6 +11,7 @@ public class BroadKeys {
 	
 	//comment
 	public final static String COMMENT_CHANGE = "vilnet_comment_change";
+	public final static String COMMENT_ADD = "vilnet_comment_add";
 	public final static String COMMENT_DELETE = "vilnet_comment_delete";
 	
 	//coupon

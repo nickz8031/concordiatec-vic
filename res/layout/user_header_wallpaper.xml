@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="@string/user_follower"
+                android:text="@string/user_stores"
                 android:textColor="@color/more_deep_light_font"
                 android:textSize="@dimen/text_14" />
 
@@ -117,7 +117,8 @@
         android:background="@drawable/btn_white_alpha_selector"
         android:text="@string/follow_btn_string"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/text_12" />
+        android:textSize="@dimen/text_12"
+        android:visibility="gone" />
 
     <!-- 탭 -->
 

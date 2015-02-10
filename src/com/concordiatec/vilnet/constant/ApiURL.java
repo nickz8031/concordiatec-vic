@@ -23,6 +23,9 @@ public class ApiURL {
 	public static final String COUPON_DETAIL = URL_PREFIX + "coupon/view";
 	public static final String COUPON_LIKE = URL_PREFIX + "coupon/like";
 	public static final String COUPON_DOWN = URL_PREFIX + "coupon/down";
+	public static final String COUPON_RETURN = URL_PREFIX + "mycoupon/return";
+	public static final String COUPON_USE = URL_PREFIX + "mycoupon/use";
+	public static final String COUPON_MYCOUPON = URL_PREFIX + "mycoupon";
 	
 	public static final String SHOP_LIST = URL_PREFIX + "shop";
 	public static final String SHOP_DETAIL = URL_PREFIX + "shop/view";

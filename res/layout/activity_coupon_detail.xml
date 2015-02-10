@@ -7,200 +7,288 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
 	    
-	    <RelativeLayout
-	        android:id="@+id/coupon_detail_top"
-	        android:layout_alignParentStart="true"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:background="@drawable/coupon_bot_shadow"
-		    android:descendantFocusability="blocksDescendants"
-		    android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
-		    android:paddingTop="@dimen/mni_layout_border_width">
-		
-		    <LinearLayout
-		        android:id="@+id/main_coupon_img_layout"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentStart="true"
-		        android:layout_marginLeft="@dimen/cp_img_margin_h"
-		        android:layout_marginRight="@dimen/cp_img_margin_rgt"
-		        android:layout_marginTop="@dimen/cp_img_margin_top"
-		        android:gravity="center_vertical" 
+	    <FrameLayout 
+	        android:id="@+id/coupon_top_info_frame"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+	        <!-- 쿠폰 이미지,이름 및 버튼 (앞면) -->
+		    <RelativeLayout
+		        android:id="@+id/coupon_top_front"
+			    android:layout_width="match_parent"
+			    android:layout_height="180dp"
+			    android:background="@drawable/coupon_bot_shadow"
+			    android:descendantFocusability="blocksDescendants"
+			    android:paddingBottom="@dimen/mni_layout_bottom_shadow_width"
+			    android:paddingTop="@dimen/mni_layout_border_width">
+			
+			    <LinearLayout
+			        android:id="@+id/main_coupon_img_layout"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_alignParentStart="true"
+			        android:layout_marginLeft="@dimen/cp_img_margin_h"
+			        android:layout_marginRight="@dimen/cp_img_margin_rgt"
+			        android:layout_marginTop="@dimen/cp_img_margin_top"
+			        android:gravity="center_vertical" 
+			        >
+			
+			        <!-- 쿠폰 이미지 -->
+			        <com.concordiatec.vilnet.widget.CircleImageView
+			            android:id="@+id/coupon_img"
+			            android:layout_width="@dimen/cp_img_width"
+			            android:layout_height="@dimen/cp_img_height"
+			            android:contentDescription="@string/coupon_img"
+			            android:src="@drawable/ic_editor_insert_photo"
+			             />
+			    </LinearLayout>
+			    <!-- 거리 -->
+			
+			    <TextView
+			        android:id="@+id/shop_distance"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_alignParentRight="true"
+			        android:layout_alignParentTop="true"
+			        android:layout_marginRight="10dp"
+			        android:layout_marginTop="@dimen/cp_distance_margin_top"
+			        android:drawableLeft="@drawable/ic_action_room"
+			        android:text="500m"
+			        android:textColor="@color/coupon_normal_ctrl_text" />
+			
+			    <!-- 쿠폰과 가게 정보 -->
+			
+			    <LinearLayout
+			        android:id="@+id/main_coupon_info"
+			        android:layout_toRightOf="@id/main_coupon_img_layout"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_marginLeft="@dimen/cp_info_margin_h"
+			        android:layout_marginRight="@dimen/cp_info_margin_h"
+			        android:layout_marginTop="@dimen/cp_info_margin_top"
+			        android:orientation="vertical" >
+			
+			        <!-- 쿠폰 태그 -->
+			
+			        <com.concordiatec.vilnet.widget.TagView
+			            android:id="@+id/coupon_tag"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_vertical" />
+			
+			        <!-- 가게이름 -->
+			
+			        <TextView
+			            android:id="@+id/shop_name"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:layout_marginTop="6dp"
+			            android:maxHeight="40dp"
+			            android:gravity="center_vertical"
+			            android:textSize="@dimen/text_18"
+			            android:textStyle="bold" />
+			
+			        <!-- 쿠폰 타이틀 -->
+			
+			        <TextView
+			            android:id="@+id/coupon_title"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_vertical"
+			            android:textSize="@dimen/text_14" />
+			
+			        <!-- 가격 레이아웃 -->
+			
+			        <LinearLayout
+			            android:id="@+id/price_layout"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:orientation="horizontal"
+			            android:visibility="gone" >
+			
+			            <!-- 상품 원가 -->
+			
+			            <TextView
+			                android:id="@+id/coupon_list_price"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_marginRight="@dimen/cp_info_price_margin"
+			                android:gravity="center_vertical"
+			                android:textColor="@color/coupon_list_price"
+			                android:textSize="@dimen/text_12" />
+			
+			            <!-- 쿠폰가격 -->
+			
+			            <TextView
+			                android:id="@+id/coupon_price"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_vertical"
+			                android:textSize="@dimen/text_16"
+			                android:textStyle="bold" />
+			        </LinearLayout>
+			        <!-- 마감 시간 -->
+			        <TextView
+			            android:id="@+id/coupon_end_time"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:drawableLeft="@drawable/ic_device_access_time"
+			            android:drawablePadding="3dp"
+			            android:gravity="center_vertical"
+			            android:textColor="@color/cp_time_color"
+			            android:visibility="gone"
+			            android:textSize="@dimen/text_14" />
+			        
+			    </LinearLayout>
+			    <!-- 가격 정보 끝 -->
+			
+			
+			    <!-- 아래 측 버튼 -->
+				<RelativeLayout
+			        android:layout_below="@id/main_coupon_img_layout"
+			        android:id="@+id/coupon_ctrl_layout"
+			        android:layout_width="match_parent"
+			        android:layout_height="@dimen/cp_ctrl_btn_layout_height"
+			        android:layout_marginTop="@dimen/cp_ctrl_margin_top"
+			        android:layout_marginLeft="16dp"
+			        android:layout_marginRight="16dp"
+			        android:background="@drawable/top_bgcolor_border_1_dp" >
+			        
+			        <ImageButton
+			            android:id="@+id/coupon_like_btn"
+			            android:layout_width="wrap_content"
+			            android:layout_height="match_parent"
+			            android:layout_marginBottom="8dp"
+			            android:layout_marginTop="8dp"
+			            android:background="@drawable/news_ctrl_btn_selector"
+			            android:paddingBottom="5dp"
+			            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
+			            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
+			            android:paddingTop="5dp"
+			            android:src="@drawable/ic_action_favorite_outline" />
+			        
+			        <ImageButton
+			            android:id="@+id/coupon_share_btn"
+			            android:layout_toRightOf="@id/coupon_like_btn"
+			            android:layout_width="wrap_content"
+			            android:layout_height="match_parent"
+			            android:layout_marginBottom="8dp"
+			            android:layout_marginLeft="16dp"
+			            android:layout_marginTop="8dp"
+			            android:background="@drawable/news_ctrl_btn_selector"
+			            android:paddingBottom="5dp"
+			            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
+			            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
+			            android:paddingTop="5dp"
+			            android:src="@drawable/ic_share_26_gray" />
+			        
+			        <TextView
+			            android:id="@id/coupon_ctrl_btn"
+			            android:layout_width="wrap_content"
+			            android:layout_height="match_parent"
+			            android:layout_alignParentRight="true"
+			            android:layout_marginBottom="8dp"
+			            android:layout_marginTop="8dp"
+			            android:background="@drawable/news_ctrl_btn_selector"
+			            android:clickable="true"
+			            android:drawableLeft="@drawable/ic_coupon_down_24"
+			            android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
+			            android:gravity="center_vertical"
+			            android:paddingBottom="5dp"
+			            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
+			            android:paddingRight="@dimen/cp_ctrl_btn_padding_right"
+			            android:paddingTop="5dp"
+			            android:text="@string/get_coupon"
+			            android:textColor="@color/coupon_normal_ctrl_text"
+			            android:textSize="@dimen/text_14" />
+			    </RelativeLayout>
+			</RelativeLayout>
+			
+		    <!-- 뒷면 -->
+		    <LinearLayout 
+		        android:id="@+id/coupon_top_back"
+		        android:layout_width="match_parent"
+		        android:layout_height="180dp"
+		        android:orientation="vertical"
+			    android:background="@drawable/coupon_bot_shadow"
+		        android:visibility="gone"
 		        >
-		
-		        <!-- 쿠폰 이미지 -->
-		        <com.concordiatec.vilnet.widget.CircleImageView
-		            android:id="@+id/coupon_img"
-		            android:layout_width="@dimen/cp_img_width"
-		            android:layout_height="@dimen/cp_img_height"
-		            android:contentDescription="@string/coupon_img"
-		            android:src="@drawable/ic_editor_insert_photo"
-		             />
-		    </LinearLayout>
-		    <!-- 거리 -->
-		
-		    <TextView
-		        android:id="@+id/shop_distance"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentRight="true"
-		        android:layout_alignParentTop="true"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginTop="@dimen/cp_distance_margin_top"
-		        android:drawableLeft="@drawable/ic_action_room"
-		        android:text="500m"
-		        android:textColor="@color/coupon_normal_ctrl_text" />
-		
-		    <!-- 쿠폰과 가게 정보 -->
-		
-		    <LinearLayout
-		        android:id="@+id/main_coupon_info"
-		        android:layout_toRightOf="@id/main_coupon_img_layout"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="@dimen/cp_info_margin_h"
-		        android:layout_marginRight="@dimen/cp_info_margin_h"
-		        android:layout_marginTop="@dimen/cp_info_margin_top"
-		        android:orientation="vertical" >
-		
-		        <!-- 쿠폰 태그 -->
-		
-		        <com.concordiatec.vilnet.widget.TagView
-		            android:id="@+id/coupon_tag"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:gravity="center_vertical" />
-		
-		        <!-- 가게이름 -->
-		
-		        <TextView
-		            android:id="@+id/shop_name"
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:layout_marginTop="6dp"
-		            android:maxHeight="40dp"
-		            android:gravity="center_vertical"
-		            android:textSize="@dimen/text_18"
-		            android:textStyle="bold" />
-		
-		        <!-- 쿠폰 타이틀 -->
-		
-		        <TextView
-		            android:id="@+id/coupon_title"
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:gravity="center_vertical"
-		            android:textSize="@dimen/text_14" />
-		
-		        <!-- 가격 레이아웃 -->
-		
+				<LinearLayout 
+				    android:layout_width="match_parent"
+				    android:layout_height="118dp"
+				    android:orientation="vertical">
+				    <TextView
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:paddingTop="8dp"
+				        android:paddingBottom="8dp"
+				        android:paddingLeft="80dp"
+				        android:paddingRight="80dp"
+				        android:layout_marginTop="10dp"
+				        android:textStyle="bold"
+				        android:textColor="@color/normal_font"
+				        android:textSize="@dimen/text_14"
+				        android:gravity="center"
+				        android:text="@string/coupon_confirm_notice"
+				        />
+				    <TextView
+				        android:id="@+id/coupon_confirm_use"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:paddingLeft="24dp"
+				        android:paddingRight="24dp"
+				        android:paddingTop="6dp"
+				        android:paddingBottom="6dp"
+				        android:layout_marginTop="10dp"
+				        android:textColor="@android:color/white"
+				        android:textSize="@dimen/text_18"
+				        android:textStyle="bold"
+				        android:background="@drawable/btn_primary_selector"
+				        android:clickable="true"
+				        android:layout_gravity="center"
+				        android:text="@string/coupon_confirm_btn"
+				        />
+				</LinearLayout>
 		        <LinearLayout
-		            android:id="@+id/price_layout"
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:orientation="horizontal"
-		            android:visibility="gone" >
-		
-		            <!-- 상품 원가 -->
-		
-		            <TextView
-		                android:id="@+id/coupon_list_price"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:layout_marginRight="@dimen/cp_info_price_margin"
-		                android:gravity="center_vertical"
-		                android:textColor="@color/coupon_list_price"
-		                android:textSize="@dimen/text_12" />
-		
-		            <!-- 쿠폰가격 -->
-		
-		            <TextView
-		                android:id="@+id/coupon_price"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:gravity="center_vertical"
-		                android:textSize="@dimen/text_16"
-		                android:textStyle="bold" />
-		        </LinearLayout>
-		        <!-- 마감 시간 -->
-		        <TextView
-		            android:id="@+id/coupon_end_time"
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:drawableLeft="@drawable/ic_device_access_time"
-		            android:drawablePadding="3dp"
-		            android:gravity="center_vertical"
-		            android:textColor="@color/cp_time_color"
-		            android:visibility="gone"
-		            android:textSize="@dimen/text_14" />
-		        
+			        android:id="@+id/coupon_use_btn_layout"
+			        android:layout_width="match_parent"
+			        android:layout_height="@dimen/cp_ctrl_btn_layout_height"
+			        android:layout_marginTop="@dimen/cp_ctrl_margin_top"
+			        android:orientation="horizontal"
+			        android:layout_gravity="bottom"
+			        android:background="@android:color/white" >
+			        
+			        <com.concordiatec.vilnet.widget.DrawableCenterTextView
+			            android:id="@+id/return_coupon"
+			            android:layout_width="0dp"
+			            android:layout_height="match_parent"
+			            android:layout_weight="1"
+			            android:drawableLeft="@drawable/ic_action_return_22_2"
+			            android:drawablePadding="5dp"
+			            android:gravity="center_vertical"
+			            android:textSize="@dimen/text_16"
+			            android:textColor="@color/light_font"
+			            android:background="@drawable/border_1dp_selector"
+			            android:text="@string/coupon_return_btn" />
+			        
+			        <com.concordiatec.vilnet.widget.DrawableCenterTextView
+			            android:id="@+id/coupon_cancel_use"
+			            android:layout_width="0dp"
+			            android:layout_height="match_parent"
+			            android:layout_weight="1"
+			            android:drawableLeft="@drawable/ic_action_cancel_22_2"
+			            android:drawablePadding="5dp"
+			            android:gravity="center_vertical"
+			            android:textSize="@dimen/text_16"
+			            android:textColor="@color/light_font"
+			            android:background="@drawable/t_r_b_border_1dp_selector"
+			            android:text="@string/coupon_cancel_use" />
+			    </LinearLayout>
 		    </LinearLayout>
-		    <!-- 가격 정보 끝 -->
+	    </FrameLayout>
 		
-		
-		    <!-- 아래 측 버튼 -->
-			<RelativeLayout
-		        android:layout_below="@id/main_coupon_img_layout"
-		        android:id="@+id/coupon_ctrl_layout"
-		        android:layout_width="match_parent"
-		        android:layout_height="@dimen/cp_ctrl_btn_layout_height"
-		        android:layout_marginTop="@dimen/cp_ctrl_margin_top"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:background="@drawable/top_bgcolor_border_1_dp" >
-		        
-		        <ImageButton
-		            android:id="@+id/coupon_like_btn"
-		            android:layout_width="wrap_content"
-		            android:layout_height="match_parent"
-		            android:layout_marginBottom="8dp"
-		            android:layout_marginTop="8dp"
-		            android:background="@drawable/news_ctrl_btn_selector"
-		            android:paddingBottom="5dp"
-		            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-		            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
-		            android:paddingTop="5dp"
-		            android:src="@drawable/ic_action_favorite_outline" />
-		        
-		        <ImageButton
-		            android:id="@+id/coupon_share_btn"
-		            android:layout_toRightOf="@id/coupon_like_btn"
-		            android:layout_width="wrap_content"
-		            android:layout_height="match_parent"
-		            android:layout_marginBottom="8dp"
-		            android:layout_marginLeft="16dp"
-		            android:layout_marginTop="8dp"
-		            android:background="@drawable/news_ctrl_btn_selector"
-		            android:paddingBottom="5dp"
-		            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-		            android:paddingRight="@dimen/cp_ctrl_btn_padding_horizontal"
-		            android:paddingTop="5dp"
-		            android:src="@drawable/ic_share_26_gray" />
-		        
-		        <TextView
-		            android:id="@+id/coupon_ctrl_btn"
-		            android:layout_width="wrap_content"
-		            android:layout_height="match_parent"
-		            android:layout_alignParentRight="true"
-		            android:layout_marginBottom="8dp"
-		            android:layout_marginTop="8dp"
-		            android:background="@drawable/news_ctrl_btn_selector"
-		            android:clickable="true"
-		            android:drawableLeft="@drawable/ic_coupon_down_24"
-		            android:drawablePadding="@dimen/cp_ctrl_drawable_padding"
-		            android:gravity="center_vertical"
-		            android:paddingBottom="5dp"
-		            android:paddingLeft="@dimen/cp_ctrl_btn_padding_horizontal"
-		            android:paddingRight="@dimen/cp_ctrl_btn_padding_right"
-		            android:paddingTop="5dp"
-		            android:text="@string/get_coupon"
-		            android:textColor="@color/coupon_normal_ctrl_text"
-		            android:textSize="@dimen/text_14" />
-		    </RelativeLayout>
-		    
-		</RelativeLayout>
+		<!-- 쿠폰 설명 문자 시작 -->
 	    <LinearLayout
-	        android:layout_below="@id/coupon_detail_top"
+	        android:layout_below="@id/coupon_top_info_frame"
 	        android:id="@+id/coupon_detail_bot"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"

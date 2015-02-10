@@ -1,7 +1,9 @@
 package com.concordiatec.vilnet.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -39,7 +41,6 @@ import com.concordiatec.vilnet.model.Coupon;
 import com.concordiatec.vilnet.model.ResData;
 import com.concordiatec.vilnet.service.CouponService;
 import com.concordiatec.vilnet.util.AniUtil;
-import com.concordiatec.vilnet.util.LogUtil;
 import com.concordiatec.vilnet.util.NotifyUtil;
 import com.concordiatec.vilnet.util.ProgressUtil;
 import com.google.gson.internal.LinkedTreeMap;
@@ -209,8 +210,7 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 			@Override
 			public void onFailure(int httpResponseCode, String responseBody) {
 				if (Constant.DEBUG) {
-					LogUtil.show("Status : " + httpResponseCode);
-					LogUtil.show("Response Body : " + responseBody);
+					super.onFailure(httpResponseCode, responseBody);
 				}
 				NotifyUtil.toast(getActivity(), getString(R.string.failed_to_request_data));
 				setNullView();
@@ -243,6 +243,40 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 	 * 더 보기
 	 */
 	private void getMoreCoupons() {
+		if (isNoMoreData) return;
+		isLoadingNow = true;
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("id", adapter.getLastRecordId() + "");
+		couponService.getCoupons(new SimpleVicResponseListener() {
+			@Override
+			public void onSuccess(ResData data) {
+				List<Coupon> tmpData = couponService.mapListToModelList((ArrayList<LinkedTreeMap<String, Object>>) data.getData());
+				adapter.addData(tmpData);
+				isLoadingNow = false;
+			}
+			@Override
+			public void onFailure(int httpResponseCode, String responseBody) {
+				if (Constant.DEBUG) {
+					super.onFailure(httpResponseCode, responseBody);
+				}
+				isLoadingNow = false;
+			}
+
+			@Override
+			public void onEmptyResponse() {
+				if (Constant.DEBUG) {
+					super.onEmptyResponse();
+				}
+				isNoMoreData = true;
+				isLoadingNow = false;
+				if (ProgressUtil.isShowing()) {
+					ProgressUtil.dismiss();
+				}
+				if (ptrLayout.isRefreshing()) {
+					ptrLayout.setRefreshComplete();
+				}
+			}
+		});
 	}
 
 	/**
@@ -347,7 +381,7 @@ public class CouponsFragment extends BaseSherlockFragment implements OnRefreshLi
 			clickedCoupon = adapter.getItem(id);
 			Intent intent = new Intent(getActivity(), CouponDetailActivity.class);
 			intent.putExtra("coupon_id", clickedCoupon.getId());
-			startActivityForResult(intent, Constant.COUPON_DETAIL_ACTIVITY_REQUEST);
+			startActivity(intent);
 		}
 	}
 

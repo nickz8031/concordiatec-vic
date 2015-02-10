@@ -277,7 +277,7 @@ public class ShopsFragment extends BaseSherlockFragment implements OnRefreshList
 			clickedShop = adapter.getItem(id);
 			Intent intent = new Intent(getActivity(), ShopDetailActivity.class);
 			intent.putExtra("shop_id", clickedShop.getId());
-			startActivityForResult(intent, Constant.SHOP_DETAIL_ACTIVITY_REQUEST);
+			startActivity(intent);
 		}
 	}
 

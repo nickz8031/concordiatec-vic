@@ -51,4 +51,5 @@
     <string name="menu_help">도움말</string>
     <string name="menu_notification">소식</string>
     <string name="menu_cart">카트</string>
+    <string name="menu_mycoupon">내 쿠폰함</string>
 </resources>

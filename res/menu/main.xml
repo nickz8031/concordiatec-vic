@@ -9,40 +9,49 @@
         android:icon="@drawable/ic_action_social_notifications_none"/>
     
     <item
-        android:id="@+id/menu_cart"
+        android:id="@+id/menu_mycoupon"
         android:orderInCategory="200"
+        android:showAsAction="always"
+        android:title="@string/menu_mycoupon"
+        android:icon="@drawable/ic_action_mycoupon"/>
+    
+    <!-- 
+    <item
+        android:id="@+id/menu_cart"
+        android:orderInCategory="300"
         android:showAsAction="always"
         android:title="@string/menu_cart"
         android:icon="@drawable/ic_action_action_add_shopping_cart"/>
+     -->
     
     <item
         android:id="@+id/menu_refresh"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
         android:showAsAction="never"
         android:icon="@drawable/ic_action_action_cached"
         android:title="@string/menu_refresh"/>
     
     <item
         android:id="@+id/menu_setting"
-        android:orderInCategory="400"
+        android:orderInCategory="500"
         android:showAsAction="never"
         android:title="@string/menu_setting"/>
     
     <item
         android:id="@+id/menu_suggestion"
-        android:orderInCategory="500"
+        android:orderInCategory="600"
         android:showAsAction="never"
         android:title="@string/menu_suggestion"/>
     
     <item
         android:id="@+id/menu_help"
-        android:orderInCategory="600"
+        android:orderInCategory="700"
         android:showAsAction="never"
         android:title="@string/menu_help"/>
     
     <item 
         android:id="@+id/logout"
-        android:orderInCategory="700"
+        android:orderInCategory="800"
         android:showAsAction="never"
         android:title="@string/logout"/>
 

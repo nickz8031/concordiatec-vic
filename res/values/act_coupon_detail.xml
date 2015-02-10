@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item type="id" name="coupon_use_confirm">coupon_use_confirm</item>
+    <item type="id" name="coupon_ctrl_btn">coupon_ctrl_btn</item>
+    
     <string name="coupon_use_info_title">쿠폰사용정보</string>
     <string name="use_period">사용시간 : </string>
     <string name="coupon_period_use_notice">(표기된 사용시간 안에 제시하셔야 쿠폰 사용이 가능합니다.)</string>
@@ -7,5 +10,10 @@
     <string name="shop_guide">매장안내</string>
     <string name="download_coupon_btn">쿠폰받기</string>
     <string name="coupon_download_succed">쿠폰 다운로드가 완료되었습니다. 다운로드된 쿠폰은 내 쿠폰함에서 찾아보실수 있습니다.</string>
+    <string name="coupon_return_succed">쿠폰이 반납되었습니다.</string>
     <string name="coupon_sell_timeout">쿠폰 판매기간이 완료되었습니다.</string>
+    <string name="coupon_confirm_notice">버튼을 누르지 말고, 업체직원에게 제시해 주세요!</string>
+    <string name="coupon_confirm_btn">사용확인</string>
+    <string name="coupon_return_btn">반납하기</string>
+    <string name="coupon_cancel_use">취소하기</string>
 </resources>

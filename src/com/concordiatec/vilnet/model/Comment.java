@@ -12,10 +12,6 @@ public class Comment extends VicModel implements Serializable {
 	 */
 	private int id;
 	
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", articleId=" + articleId + ", writerId=" + writerId + ", writerName=" + writerName + ", writerPhotoURL=" + writerPhotoURL + ", content=" + content + ", pastTime=" + pastTime + ", plusCount=" + plusCount + ", replyId=" + replyId + ", replyWhose=" + replyWhose + ", replyWhoseName=" + replyWhoseName + ", isPlus=" + isPlus + "]";
-	}
 	/**
 	 * 댓글 소속 원글 아이디
 	 */
